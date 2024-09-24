@@ -9,7 +9,7 @@ namespace LoanManagementSystem.Models
     {
         public virtual Guid LoanSchemeId { get; set; }
         public virtual SchemeType SchemeType { get; set; }
-        public virtual string Category { get; set; } // Retail or Corporate
         public virtual double InterestRate { get; set; }
+        public virtual Admin Admin { get; set; }
     }
 }

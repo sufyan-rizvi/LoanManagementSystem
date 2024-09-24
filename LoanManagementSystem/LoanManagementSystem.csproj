@@ -265,6 +265,16 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Mappings\AddressMap.cs" />
+    <Compile Include="Mappings\CollateralDocsMap.cs" />
+    <Compile Include="Mappings\LoanApplicationMap.cs" />
+    <Compile Include="Mappings\LoanOfficerMap.cs" />
+    <Compile Include="Mappings\CustomerMap.cs" />
+    <Compile Include="Mappings\AdminMap.cs" />
+    <Compile Include="Mappings\LoanSchemeMap.cs" />
+    <Compile Include="Mappings\RegistrationDocumentsMap.cs" />
+    <Compile Include="Mappings\RoleMap.cs" />
+    <Compile Include="Mappings\UserMap.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\AddressType.cs" />
     <Compile Include="Models\Admin.cs" />
@@ -322,7 +332,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="DTOs\" />
     <Folder Include="Mappers\" />
-    <Folder Include="Mappings\" />
     <Folder Include="Service\" />
     <Folder Include="WebProvider\" />
   </ItemGroup>
