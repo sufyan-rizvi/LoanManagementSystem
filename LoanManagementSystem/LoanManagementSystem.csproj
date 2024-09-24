@@ -267,9 +267,11 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Address.cs" />
+    <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\ApplicationStatus.cs" />
-    <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\LoanApplication.cs" />
+    <Compile Include="Models\LoanOfficer.cs" />
     <Compile Include="Models\LoanScheme.cs" />
     <Compile Include="Models\Repayment.cs" />
     <Compile Include="Models\Role.cs" />
