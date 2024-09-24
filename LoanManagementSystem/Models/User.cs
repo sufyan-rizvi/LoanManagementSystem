@@ -13,10 +13,9 @@ namespace LoanManagementSystem.Models
         public virtual string Email { get; set; }
         public virtual string FirstName { get; set; }
         public virtual string LastName { get; set; }
-        public virtual string AadharNumber { get; set; }
-        public virtual string PANNumber { get; set; }
+        public virtual Address Address { get; set; }
         public virtual bool IsActive { get; set; }
-        //public virtual Role Role { get; set; }
+        public virtual Role Role { get; set; }
 
 
 
