@@ -16,7 +16,6 @@ namespace LoanManagementSystem.Models
         public virtual Address Address { get; set; }
         public virtual bool IsActive { get; set; }
         public virtual Role Role { get; set; }
-        public virtual Role Role2 { get; set; }
         
 
 
