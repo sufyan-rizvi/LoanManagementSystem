@@ -11,8 +11,8 @@ namespace LoanManagementSystem.Models
         public virtual string AadharNumber { get; set; }
         public virtual string PANNumber { get; set; }
         public virtual User User { get; set; }
-        public virtual RegistrationDocuments RegistrationDocuments { get; set; }
-        public virtual CollateralDocuments CollateralDocuments { get; set; }
+        public virtual IList<RegistrationDocuments> RegistrationDocuments { get; set; }
+        public virtual IList<CollateralDocuments> CollateralDocuments { get; set; }
 
     }
 }

@@ -5,8 +5,8 @@ using System.Web;
 
 namespace LoanManagementSystem.Models
 {
-    public enum SchemeType
+    public enum DocumentType
     {
-        Retail, Corporate
+        Aadhar,PAN, Photo, VehicleDoc, HouseDoc, SharesDoc
     }
 }
