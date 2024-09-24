@@ -8,6 +8,7 @@ namespace LoanManagementSystem.Models
     public class Address
     {
         public virtual Guid AddressId { get; set; }
+        public virtual AddressType AddressType { get; set; }
         public virtual string FlatNo { get; set; }
         public virtual string BuildingName { get; set; }
         public virtual string StreetName { get; set; }
