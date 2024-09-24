@@ -13,17 +13,17 @@ namespace LoanManagementSystem.Data
     {
         private static ISessionFactory _sessionFactory = null;
 
-        public static ISession CreateSession()
-        {
-            if (_sessionFactory == null)
-            {
-                _sessionFactory = Fluently.Configure()
-                    .Database(MsSqlConfiguration.MsSql2012.ConnectionString(""))
-                    .Mappings(m => m.FluentMappings.AddFromAssemblyOf<>())
-                    .ExposeConfiguration(cfg => new SchemaUpdate(cfg).Execute(true, true))
-                    .BuildSessionFactory();
-            }
-            return _sessionFactory.OpenSession();
-        }
+        //public static ISession CreateSession()
+        //{
+        //    if (_sessionFactory == null)
+        //    {
+        //        _sessionFactory = Fluently.Configure()
+        //            .Database(MsSqlConfiguration.MsSql2012.ConnectionString(""))
+        //            .Mappings(m => m.FluentMappings.AddFromAssemblyOf<>())
+        //            .ExposeConfiguration(cfg => new SchemaUpdate(cfg).Execute(true, true))
+        //            .BuildSessionFactory();
+        //    }
+        //    return _sessionFactory.OpenSession();
+        //}
     }
 }
