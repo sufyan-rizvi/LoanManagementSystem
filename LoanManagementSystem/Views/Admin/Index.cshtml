@@ -1,18 +1,114 @@
 ﻿
 @{
-    Layout = null;
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-</head>
-<body>
-    <div> 
-        <h1>Hello!</h1>
+
+
+<div id="detailList" class="container">
+    <h2>List of LoanOfficers</h2>
+    
+    <div>
+        <table id="grid"></table>
+        <div id="pager"></div>
     </div>
-</body>
-</html>
+</div>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/redmond/jquery-ui.css">
+
+<script>
+    $(document).ready(() => {
+        $("#grid").jqGrid({
+            url: "/admin/GetData",
+            datatype: "json",
+            colNames: ["Id", "First Name", "Last Name"],
+            colModel: [{ name: "Id", key: true, hidden: true },
+            { name: "User.FirstName", editable: true, searchoptions: { sopt: ['eq'] } },
+            { name: "User.LastName", editable: true }
+            ],
+            height: "400",
+            width:"1300",
+            caption: "Product Records",
+            //loadonce: true,
+            //jsonReader: {
+            //    root: (obj) => { return obj },
+            //    repeatitems: false
+            //}
+
+            pager: "#pager",
+            rowNum: 5,
+            rowList: [5, 10, 15],
+            sortname: 'id',
+            sortorder: 'asc',
+            viewrecord: true,
+            gridComplete: () => {
+                $("#grid").jqGrid('navGrid', '#pager', { edit: true, add: true, del: true, search: true, refresh: true },
+                    {
+                        //edit
+                        url: "/detail/edit",
+                        closeAfterEdit: true,
+                        width: 600,
+                        afterSubmit: (response, postdata) => {
+                            var result = JSON.parse(response.responseText);
+                            if (result.success) {
+                                alert(result.message)
+                                return [true];
+                            }
+                            else {
+                                alert(result.message)
+                                return [false];
+                            }
+                        }
+
+
+                    }, {
+
+                    //add
+                    url: "/detail/add",
+                    closeAfterAdd: true,
+                    width: 600,
+                    afterSubmit: (response, postdata) => {
+
+                        var result = JSON.parse(response.responseText);
+                        if (result.success) {
+                            alert(result.message)
+                            return [true];
+
+                        } else {
+                            alert(result.message)
+                            return [false];
+                        }
+                    }
+
+                }, {
+                    url: "/detail/Delete",
+                    afterSubmit: (response, postdata) => {
+                        var result = JSON.parse(response.responseText);
+                        if (result.success) {
+                            alert(result.message)
+                            return [true];
+                        }
+                        else {
+                            alert(result.message)
+                            return [false];
+                        }
+                    }
+
+                },
+                    {
+                        multipleSearch: false,
+                        closeAfterSearch: true
+                    }
+                );
+                $("#refreshButton").click(() => {
+                    $("#grid").jqGrid('setGridParam', { search: false });
+
+                    $("#grid").jqGrid('setGridParam', { page: 1 }).trigger('reloadGrid')
+                })
+            }
+
+
+        })
+    })
+</script>
