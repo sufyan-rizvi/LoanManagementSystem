@@ -13,7 +13,6 @@ namespace LoanManagementSystem.Mappings
         {
             Table("Address");
             Id(a => a.AddressId).GeneratedBy.GuidComb();
-            Map(a => a.AddressType);
             Map(a => a.FlatNo);
             Map(a => a.BuildingName);
             Map(a => a.StreetName);

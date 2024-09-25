@@ -18,9 +18,10 @@ namespace LoanManagementSystem.Mappings
             Map(u => u.Email).Unique().Not.Nullable();
             Map(u => u.FirstName).Not.Nullable();
             Map(u => u.LastName).Not.Nullable();
+            Map(u => u.PhoneNumber).Not.Nullable();
             Map(u => u.IsActive);
             HasOne(u => u.Role).PropertyRef(u=>u.User).Cascade.All();
-            HasMany(u=>u.Address).Inverse().Cascade.All();
+            HasOne(u=>u.Address).PropertyRef(u=>u.User).Cascade.All();
             HasMany(u => u.Admins).Inverse().Cascade.All();
             HasMany(u => u.LoanOfficers).Inverse().Cascade.All();
             HasMany(u => u.Customers).Inverse().Cascade.All();

@@ -15,8 +15,8 @@ namespace LoanManagementSystem.Models
         public virtual string LastName { get; set; }
         public virtual string PhoneNumber { get; set; }
         public virtual bool IsActive { get; set; }
-        public virtual Role Role { get; set; }        
-        public virtual IList<Address> Address { get; set; }
+        public virtual Address Address { get; set; }
+        public virtual Role Role { get; set; }           
         public virtual IList<Admin> Admins { get; set; }
         public virtual IList<LoanOfficer> LoanOfficers { get; set; }
         public virtual IList<Customer> Customers { get; set; }

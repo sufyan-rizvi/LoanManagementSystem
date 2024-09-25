@@ -13,7 +13,7 @@ namespace LoanManagementSystem.Mappings
         {
             Table("LoanOfficers");
             Id(l => l.OfficerId).GeneratedBy.GuidComb();
-            References(l => l.User).Column("UserId").Cascade.None();
+            References(l => l.User).Column("UserId").Cascade.All();
             References(l => l.Admin).Column("AdminId").Cascade.None();
             HasMany(l=>l.LoanApplications).Inverse().Cascade.All();
         }
