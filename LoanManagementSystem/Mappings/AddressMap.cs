@@ -20,7 +20,7 @@ namespace LoanManagementSystem.Mappings
             Map(a => a.PinCode);
             Map(a => a.State);
             Map(a => a.Country);
-            References(a=>a.User).Column("UserId").Cascade.None();
+            References(a=>a.User).Column("UserId").Cascade.All();
 
         }
     }

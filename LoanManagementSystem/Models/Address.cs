@@ -17,12 +17,5 @@ namespace LoanManagementSystem.Models
         public virtual string Country { get; set; }
         public virtual User User { get; set; }
 
-        public virtual string FullAddress
-        {
-            get
-            {
-                return $"{FlatNo}, {BuildingName}, {StreetName}, {City}- {PinCode}, {State}, {Country} ";
-            }
-        }
     }
 }

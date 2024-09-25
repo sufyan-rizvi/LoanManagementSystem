@@ -15,7 +15,7 @@ namespace LoanManagementSystem.Mappings
             Id(c=>c.CustId).GeneratedBy.GuidComb();
             Map(c => c.AadharNumber).Unique();
             Map(c => c.PANNumber).Unique();
-            References(c => c.User).Column("UserId").Cascade.None();
+            References(c => c.User).Column("UserId").Cascade.All();
             HasMany(c=>c.RegistrationDocuments).Inverse().Cascade.All();//check cascade all.. if loan officer deleted, distribute his work among other officers
             HasMany(c=>c.CollateralDocuments).Inverse().Cascade.All(); //check cascade all.. if loan officer deleted, distribute his work among other officers
         }
