@@ -1,0 +1,98 @@
+﻿
+@{
+    ViewBag.Title = "LoginUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model LoanManagementSystem.ViewModels.LoginVM
+
+@*@{ 
+    ViewBag.Type = "User";
+}*@
+
+<h2>Login</h2>
+
+<div>
+    <form id="loginForm">
+        <div>
+            <button type="button" id="asUserLoginBtn">User</button>
+            <button type="button" id="asEmployeeLoginBtn">Employee</button>
+        </div>
+        <div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="UseNname" required />
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="Password" required />
+            <input type="hidden" id="loginTypeVal" name="LoginType" value="User" /> <!-- Hidden field to store login type -->
+        </div>
+        <div id="userRegister">
+            @Html.ActionLink("New User?  Register", "Register")
+        </div>
+
+        <br />
+
+        <button type="button" id="userLoginBtn">Login</button>
+    </form>
+</div>
+
+<div id="loginResult"></div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+    });
+    function loginUser() {
+    var formData = {
+        UserName: $('#username').val(),
+        Password: $('#password').val(),
+        LoginType: $('#loginTypeVal').val() //loginType
+    };
+
+    $.ajax({
+        url: '@Url.Action("LoginUser", "Account")',
+        type: 'POST',
+        data: formData,
+        success: function (response) {
+            if (response.success) {
+                if (formData.LoginType == "User") { }
+                window.location.href = '@Url.Action("Index", "Account")';  // Redirect to Home page
+            } else {
+                $('#loginResult').html(response.message); // Show error message
+            }
+        },
+        error: function () {
+            $('#loginResult').html('Error occurred during login.');
+        }
+    });
+}
+
+
+    $('#asUserLoginBtn').click(function () {
+        $('#userRegister').show();
+        $('#loginTypeVal').val('User');
+    });
+    $('#asEmployeeLoginBtn').click(function () {
+        $('#userRegister').hide();
+        $('#loginTypeVal').val('Employee');
+    });
+    
+
+// Handle User login
+    $('#userLoginBtn').click(function () {
+    
+        loginUser();
+});
+
+// Handle Employee login
+//$('#employeeLoginBtn').click(function () {
+//    loginUser('Employee');
+//});
+
+
+    
+</script>
+
+
