@@ -261,6 +261,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Data\NhibernateHelper.cs" />
     <Compile Include="Global.asax.cs">
@@ -283,6 +284,7 @@
     <Compile Include="Models\CollateralDocuments.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\DocumentType.cs" />
+    <Compile Include="Models\HashingService.cs" />
     <Compile Include="Models\LoanApplication.cs" />
     <Compile Include="Models\LoanOfficer.cs" />
     <Compile Include="Models\LoanScheme.cs" />
@@ -324,6 +326,8 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Account\LoginUser.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
