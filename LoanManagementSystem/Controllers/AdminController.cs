@@ -7,7 +7,7 @@ using System.Web.Mvc;
 using LoanManagementSystem.Data;
 using LoanManagementSystem.Models;
 using NHibernate.Linq;
-using NHibernate.Proxy;
+using BC = BCrypt.Net.BCrypt;
 
 namespace LoanManagementSystem.Controllers
 {
@@ -103,6 +103,7 @@ namespace LoanManagementSystem.Controllers
                 using (var txn = session.BeginTransaction())
                 {
                     officer = new LoanOfficer();
+                    user.Password = BC.EnhancedHashPassword(user.Password, 6);
                     officer.User = user;
                     officer.User.Address.User = user;
                     officer.User.IsActive = true;                    
