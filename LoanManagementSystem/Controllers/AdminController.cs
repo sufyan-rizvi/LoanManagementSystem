@@ -139,8 +139,6 @@ namespace LoanManagementSystem.Controllers
                 return Json(new { success = true, message = "Officer Reactivated successfully" });
             return Json(new { success = true, message = "Officer Deleted successfully" });
 
-
-
         }
 
         public ActionResult Edit(LoanOfficer officer)
