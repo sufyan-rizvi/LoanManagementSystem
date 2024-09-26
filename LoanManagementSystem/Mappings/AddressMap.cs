@@ -13,7 +13,6 @@ namespace LoanManagementSystem.Mappings
         {
             Table("Address");
             Id(a => a.AddressId).GeneratedBy.GuidComb();
-            Map(a => a.AddressType);
             Map(a => a.FlatNo);
             Map(a => a.BuildingName);
             Map(a => a.StreetName);
@@ -21,7 +20,7 @@ namespace LoanManagementSystem.Mappings
             Map(a => a.PinCode);
             Map(a => a.State);
             Map(a => a.Country);
-            References(a=>a.User).Column("UserId").Cascade.None();
+            References(a=>a.User).Column("UserId").Cascade.All();
 
         }
     }

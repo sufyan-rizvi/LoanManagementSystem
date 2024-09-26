@@ -278,7 +278,6 @@
     <Compile Include="Mappings\RoleMap.cs" />
     <Compile Include="Mappings\UserMap.cs" />
     <Compile Include="Models\Address.cs" />
-    <Compile Include="Models\AddressType.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\ApplicationStatus.cs" />
     <Compile Include="Models\CollateralDocuments.cs" />

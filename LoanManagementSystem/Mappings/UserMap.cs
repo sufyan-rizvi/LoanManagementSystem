@@ -13,14 +13,15 @@ namespace LoanManagementSystem.Mappings
         {
             Table("Users");
             Id(u=>u.UserId).GeneratedBy.GuidComb();
-            Map(u => u.Username).Not.Nullable().Unique();
-            Map(u => u.Password).Not.Nullable();
-            Map(u => u.Email).Unique().Not.Nullable();
-            Map(u => u.FirstName).Not.Nullable();
-            Map(u => u.LastName).Not.Nullable();
+            Map(u => u.Username);
+            Map(u => u.Password);
+            Map(u => u.Email);
+            Map(u => u.FirstName);
+            Map(u => u.LastName);
+            Map(u => u.PhoneNumber);
             Map(u => u.IsActive);
             HasOne(u => u.Role).PropertyRef(u=>u.User).Cascade.All();
-            HasMany(u=>u.Address).Inverse().Cascade.All();
+            HasOne(u=>u.Address).PropertyRef(u=>u.User).Cascade.All();
             HasMany(u => u.Admins).Inverse().Cascade.All();
             HasMany(u => u.LoanOfficers).Inverse().Cascade.All();
             HasMany(u => u.Customers).Inverse().Cascade.All();
