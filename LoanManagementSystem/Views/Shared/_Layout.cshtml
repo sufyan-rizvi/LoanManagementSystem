@@ -14,14 +14,17 @@
     <link href="~/Content/jquery.jqGrid/ui.jqgrid.css" rel="stylesheet" />
 </head>
 <body>
-    <div class="navbar navbar-dark bg-black navbar-fixed-top">
+    <div class="navbar navbar-dark bg-black navbar-fixed-top" style="flex-direction: column; align-items: flex-start;">
 
-        <div class="navbar-header">
-            @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+        <div class="p-1 display-2 text-light">
+            Loan Management System
         </div>
-        <br />
-        <div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
             @RenderSection("NavbarOptions", required: false)
+            @if (User.Identity.IsAuthenticated)
+            {
+                @Html.ActionLink("Logout", "Logout", "Account", null, new { style = "margin-left: 950px; margin-top: -10px", @class = "btn text-light" })
+            }
         </div>
 
 

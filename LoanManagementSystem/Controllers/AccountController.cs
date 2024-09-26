@@ -135,7 +135,7 @@ namespace LoanManagementSystem.Controllers
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
-            return RedirectToAction("Login");
+            return RedirectToAction("Loginuser");
         }
 
     }

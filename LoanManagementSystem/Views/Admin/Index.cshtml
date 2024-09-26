@@ -5,28 +5,35 @@
 }
 
 @section NavbarOptions {
-    <div>
-        <h1 class="text-bg-light">hello</h1>
+    <div style="display: flex; align-items: center;">
+        <p class="m-2 text-light btn" onclick="displayAnalytics()">
+            Analytics
+        </p>
+        <p class="m-2 text-light btn" onclick="displaySchemes()">
+            View Loan Schemes
+        </p>
+        <p class="m-2 text-light btn" onclick="displayOfficers()">
+            View All Loan Officers
+        </p>
     </div>
 
 }
 
 
 <div id="detailList" class="container">
-    <div id="loanschemes">
-        <h1></h1>
+
+    <div id="analytics">
+
     </div>
+    <div id="loanschemes" style="display:none">
 
-
-
-
+    </div>
     <div id="listofficer" style="display:none">
-        <h2>List of LoanOfficers</h2>
 
-        <div>
-            <table id="grid"></table>
-            <div id="pager"></div>
-        </div>
+        <h2 class="my-3">List of LoanOfficers</h2>
+        <table id="grid"></table>
+        <div id="pager"></div>
+
     </div>
 </div>
 @*<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/redmond/jquery-ui.css">*@
@@ -36,7 +43,45 @@
 
 
 <script>
+    function displayAnalytics() {
+        $("#listofficer").hide(500)
+        $("#loanschemes").hide(500)
+        $("#analytics").fadeIn(1500, function () {
+            localStorage.setItem('currentSection', 'analytics'); // Save current section
+        });
+    }
+
+    function displaySchemes() {
+        $("#listofficer").hide(500)
+        $("#analytics").hide(500)
+        $("#loanschemes").fadeIn(1500, function () {
+            localStorage.setItem('currentSection', 'loanschemes'); // Save current section
+        });
+    }
+
+    function displayOfficers() {
+        $("#loanschemes").hide(500)
+        $("#analytics").hide(500)
+        $("#listofficer").fadeIn(1500, function () {
+            localStorage.setItem('currentSection', 'listofficer'); // Save current section
+        });
+    }
+
     $(document).ready(() => {
+        $("#analytics").hide();
+        $("#loanschemes").hide();
+        $("#listofficer").hide();
+
+        const currentSection = localStorage.getItem('currentSection');
+
+        if (currentSection === 'analytics') {
+            displayAnalytics();
+        } else if (currentSection === 'loanschemes') {
+            displaySchemes();
+        } else if (currentSection === 'listofficer') {
+            displayOfficers();
+        }
+
         $("#grid").jqGrid({
             url: "/admin/GetData",
             datatype: "json",
@@ -58,11 +103,11 @@
             { name: "User.Address.State", hidden: true, editable: true, editrules: { edithidden: true } }, // Hidden field for State
             { name: "User.Address.Country", hidden: true, editable: true, editrules: { edithidden: true } } // Hidden field for Country
             ],
-            height: "400",
+            height: "275",
             width: "1300",
             caption: "Product Records",
             pager: "#pager",
-            rowNum: 15,
+            rowNum: 6,
             rowList: [5, 10, 15],
             sortname: 'User.FirstName',
             sortorder: 'asc',
