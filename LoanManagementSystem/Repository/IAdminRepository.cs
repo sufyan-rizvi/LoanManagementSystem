@@ -8,5 +8,6 @@ namespace LoanManagementSystem.Repository
 {
     internal interface IAdminRepository
     {
+        
     }
 }
