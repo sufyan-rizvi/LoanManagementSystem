@@ -3,10 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LoanManagementSystem.Models;
 
 namespace LoanManagementSystem.Service
 {
-    internal interface IAdminService
+    public interface IAdminService
     {
+        IList<LoanOfficer> GetAllOfficers();
+        void AddOfficer(LoanOfficer officer);
+        LoanOfficer ToggleDelete(Guid id);
+        void EditOfficer(LoanOfficer officer);
     }
 }

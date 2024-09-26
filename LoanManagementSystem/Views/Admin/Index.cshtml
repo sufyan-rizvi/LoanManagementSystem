@@ -85,23 +85,25 @@
         $("#grid").jqGrid({
             url: "/admin/GetData",
             datatype: "json",
-            colNames: ["Id", "First Name", "Last Name", "Email", "Phone Number", "Address", "Active Status", "Username", "Password", "FlatNo", "Building Name", "Street Name", "City", "Pincode", "State", "Country"],
-            colModel: [{ name: "Id", key: true, hidden: true, editable: true },
-            { name: "User.FirstName", editable: true, searchoptions: { sopt: ['eq'] } },
-            { name: "User.LastName", editable: true, searchoptions: { sopt: ['eq'] } },
-            { name: "User.Email", editable: true, searchoptions: { sopt: ['eq'] } },
-            { name: "User.PhoneNumber", editable: true, searchoptions: { sopt: ['eq'] } },
-            { name: "FullAddress", editable: false, search: false },
-            { name: "User.IsActive", editable: false, search: false, type: 'checkbox', formatter: 'checkbox', align: "center", cellattr: function () { return 'style="display: flex; justify-content: center; align-items: center;"'; } },
-            { name: "User.Username", hidden: true, editable: false, editrules: { edithidden: true } },
-            { name: "User.Password", hidden: true, editable: false, editrules: { edithidden: true } },
-            { name: "User.Address.FlatNo", hidden: true, editable: true, editrules: { edithidden: true } }, // Hidden field for Flat No
-            { name: "User.Address.BuildingName", hidden: true, editable: true, editrules: { edithidden: true } }, // Hidden field for Building Name
-            { name: "User.Address.StreetName", hidden: true, editable: true, editrules: { edithidden: true } }, // Hidden field for Street Name
-            { name: "User.Address.City", hidden: true, editable: true, editrules: { edithidden: true } }, // Hidden field for City
-            { name: "User.Address.PinCode", hidden: true, editable: true, editrules: { edithidden: true } }, // Hidden field for Pin Code
-            { name: "User.Address.State", hidden: true, editable: true, editrules: { edithidden: true } }, // Hidden field for State
-            { name: "User.Address.Country", hidden: true, editable: true, editrules: { edithidden: true } } // Hidden field for Country
+            colNames: ["Id", "UserId", "First Name", "Last Name", "Email", "Phone Number", "Address", "Active Status", "Username", "Password", "FlatNo", "Building Name", "Street Name", "City", "Pincode", "State", "Country"],
+            colModel: [
+                { name: "OfficerId", key: true, hidden: true, editable: true, editrules: { edithidden: false } },
+                { name: "User.UserId", hidden: true, editable: true, editrules: { edithidden: false } },
+                { name: "User.FirstName", editable: true, searchoptions: { sopt: ['eq'] } },
+                { name: "User.LastName", editable: true, searchoptions: { sopt: ['eq'] } },
+                { name: "User.Email", editable: true, searchoptions: { sopt: ['eq'] } },
+                { name: "User.PhoneNumber", editable: true, searchoptions: { sopt: ['eq'] } },
+                { name: "FullAddress", editable: false, search: false },
+                { name: "User.IsActive", editable: false, search: false, type: 'checkbox', formatter: 'checkbox', align: "center", cellattr: function () { return 'style="display: flex; justify-content: center; align-items: center;"'; } },
+                { name: "User.Username", hidden: true, editable: true, editrules: { edithidden: true } },
+                { name: "User.Password", hidden: true, editable: true, editrules: { edithidden: true } },
+                { name: "User.Address.FlatNo", hidden: true, editable: true, editrules: { edithidden: true } }, // Hidden field for Flat No
+                { name: "User.Address.BuildingName", hidden: true, editable: true, editrules: { edithidden: true } }, // Hidden field for Building Name
+                { name: "User.Address.StreetName", hidden: true, editable: true, editrules: { edithidden: true } }, // Hidden field for Street Name
+                { name: "User.Address.City", hidden: true, editable: true, editrules: { edithidden: true } }, // Hidden field for City
+                { name: "User.Address.PinCode", hidden: true, editable: true, editrules: { edithidden: true } }, // Hidden field for Pin Code
+                { name: "User.Address.State", hidden: true, editable: true, editrules: { edithidden: true } }, // Hidden field for State
+                { name: "User.Address.Country", hidden: true, editable: true, editrules: { edithidden: true } } // Hidden field for Country
             ],
             height: "275",
             width: "1300",
@@ -120,6 +122,13 @@
                         url: "/admin/edit",
                         closeAfterEdit: true,
                         width: "600",
+                        beforeShowForm: (form) => {
+                            var addForm = $(form);
+
+                            // Remove existing Username and Password fields if they are present
+                            addForm.find("#tr_User\\.Username").css("display", "none");
+                            addForm.find("#tr_User\\.Password").css("display", "none");
+                        },
                         afterSubmit: (response, postdata) => {
                             var result = JSON.parse(response.responseText);
                             if (result.success) {
@@ -141,28 +150,12 @@
                     width: "500",
                     autoheight: true,
                     addCaption: "Add New Loan Officer",
-
-
                     beforeShowForm: (form) => {
                         var addForm = $(form);
 
-                        // Add Username field after the first row
-                        addForm.find("tr:nth-child(1)").after(
-                            '<tr class="FormData" id="tr_Username">' +
-                            '<td class="CaptionTD">Username</td>' +
-                            '<td class="DataTD">&nbsp;<input type="text" id="Username" name="User.Username" class="FormElement ui-widget-content ui-corner-all"/></td>' +
-                            '</tr>'
-                        );
-
-                        // Add Password field after the second row
-                        addForm.find("tr:nth-child(2)").after(
-                            '<tr class="FormData" id="tr_Password">' +
-                            '<td class="CaptionTD">Password</td>' +
-                            '<td class="DataTD">&nbsp;<input type="password" id="Password" name="User.Password" class="FormElement ui-widget-content ui-corner-all"/></td>' +
-                            '</tr>'
-                        );
-
-
+                        // Remove existing Username and Password fields if they are present
+                        addForm.find("#tr_User\\.Username").css("display", "");
+                        addForm.find("#tr_User\\.Password").css("display", "");
                     },
                     afterSubmit: (response, postdata) => {
                         console.log(postdata)
@@ -179,6 +172,7 @@
 
                 }, {
                     url: "/admin/DeleteUpdate",
+                    width:"400",
                     afterSubmit: (response, postdata) => {
                         var result = JSON.parse(response.responseText);
                         if (result.success) {
