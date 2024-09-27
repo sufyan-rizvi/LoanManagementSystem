@@ -341,6 +341,7 @@
     <Content Include="Views\LoanOfficer\CollateralApproval.cshtml" />
     <Content Include="Views\Shared\_PartialSchemeList.cshtml" />
     <Content Include="Views\Shared\_PartialSchemeAdd.cshtml" />
+    <Content Include="Views\Shared\_PartialSchemeEdit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

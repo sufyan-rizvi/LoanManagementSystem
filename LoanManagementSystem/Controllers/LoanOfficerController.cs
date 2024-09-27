@@ -8,7 +8,7 @@ using LoanManagementSystem.Models;
 
 namespace LoanManagementSystem.Controllers
 {
-    [Authorize(Roles = "LoanOfficer")]
+    //[Authorize(Roles = "LoanOfficer")]
     public class LoanOfficerController : Controller
     {
         // Action method for displaying the welcome page

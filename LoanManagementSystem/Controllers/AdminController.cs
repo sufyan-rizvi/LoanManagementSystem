@@ -170,9 +170,9 @@ namespace LoanManagementSystem.Controllers
         }
 
         [HttpPost]
-        public JsonResult EditScheme(Guid id)
+        public JsonResult EditScheme(LoanScheme scheme)
         {
-            _adminService.EditScheme(id);
+            _adminService.EditScheme(scheme);
             return Json("Scheme Edited Successfully!");
         }
     }

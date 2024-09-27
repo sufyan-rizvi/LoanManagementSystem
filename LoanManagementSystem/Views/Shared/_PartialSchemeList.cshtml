@@ -10,7 +10,8 @@
             <th>Principal Amount</th>
             <th>Rate of Interest</th>
             <th>Tenure</th>
-            <th>Description</th>
+            <th>Short Description</th>
+            <th>Long Description</th>
             <th>Active Status</th>
             <th>Options</th>
         </tr>
@@ -34,10 +35,11 @@
                         + '<td>' + item.InterestRate + '</td>'
                         + '<td>' + item.PrincipalAmount + '</td>'
                         + '<td>' + item.Tenure + '</td>'
-                        + '<td>' + item.Description + '</td>'
+                        + '<td>' + item.ShortDescription + '</td>'
+                        + '<td>' + item.LongDescription + '</td>'
                         + `<td><input type="checkbox" style:"margin=auto" ${item.IsActive ? "checked" : ""} value="${item.IsActive}" onclick=deleteScheme('${item.LoanSchemeId}',this) /></td>`
                         + `<td  id="${item.LoanSchemeId}" style="display: ${item.IsActive ? "" : "none"};">
-                        <input type= "button" value = "Edit" class="btn btn-primary py-1" style= "float:center; height: 40px;" onclick=editScheme('${item.LoanSchemeId}')></input>
+                        <input type= "button" value = "Edit" class="btn btn-primary py-1" style= "float:center; height: 40px;" onclick=editScheme()></input>
                    </td >`
                         + `<td></td>`
                         + '</tr>';
@@ -101,16 +103,9 @@
         $("#addscheme").show(250);
     }
 
-    function editScheme(itemId) {
-        $.ajax({
-            url: "/admin/editscheme",
-            type: "POST",
-            data: { LoanSchemeId: itemId },
-            success: (data) => {
-
-            }
-        })
-
+    function editScheme() {
+        $("#schemelist").hide()
+        $("#editscheme").show()
 
     }
 

@@ -35,7 +35,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.ShortDescription, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.ShortDescription, new { htmlAttributes = new { @class = "form-control", id = "Description" } })
+            @Html.EditorFor(model => model.ShortDescription, new { htmlAttributes = new { @class = "form-control", id = "ShortDescription" } })
             @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -43,7 +43,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.LongDescription, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.LongDescription, new { htmlAttributes = new { @class = "form-control", id = "Description" } })
+            @Html.EditorFor(model => model.LongDescription, new { htmlAttributes = new { @class = "form-control", id = "LongDescription" } })
             @Html.ValidationMessageFor(model => model.LongDescription, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -68,7 +68,8 @@
             InterestRate: $("#interest").val(),
             PrincipalAmount: $("#principal").val(),
             Tenure: $("#tenure").val(),
-            Description: $("#description").val()            
+            LongDescription: $("#LongDescription").val() ,           
+            ShortDescription: $("#ShortDescription").val()            
         }
 
         $.ajax({
