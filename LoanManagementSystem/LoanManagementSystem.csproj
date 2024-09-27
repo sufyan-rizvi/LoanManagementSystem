@@ -263,6 +263,8 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\LoanOfficerController.cs" />
+    <Compile Include="Controllers\LoanSchemeController.cs" />
     <Compile Include="Data\NhibernateHelper.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -280,6 +282,7 @@
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\ApplicationStatus.cs" />
+    <Compile Include="Models\Collateral.cs" />
     <Compile Include="Models\CollateralDocuments.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\DocumentType.cs" />
@@ -331,6 +334,11 @@
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Account\LoginUser.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\LoanScheme\ListSchemes.cshtml" />
+    <Content Include="Views\LoanScheme\SchemeDetails.cshtml" />
+    <Content Include="Views\LoanOfficer\Welcome.cshtml" />
+    <Content Include="Views\LoanOfficer\LoanApproval.cshtml" />
+    <Content Include="Views\LoanOfficer\CollateralApproval.cshtml" />
     <Content Include="Views\Shared\_PartialSchemeList.cshtml" />
     <Content Include="Views\Shared\_PartialSchemeAdd.cshtml" />
     <None Include="Web.Debug.config">

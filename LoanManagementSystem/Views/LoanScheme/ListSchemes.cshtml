@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "ListSchemes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model IEnumerable<LoanScheme>
+
+<h2>Available Loan Schemes</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Scheme Name</th>
+            <th>Short Description</th>
+            <th>Category</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var scheme in Model)
+        {
+            <tr>
+                <td>@scheme.SchemeName</td>
+                <td>@scheme.ShortDescription</td>
+                <td>@scheme.Category</td>
+                <td>
+                    @Html.ActionLink("Know More", "SchemeDetails", new { id = scheme.SchemeId }, new { @class = "btn btn-primary" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
