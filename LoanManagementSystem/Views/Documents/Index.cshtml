@@ -1,0 +1,58 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Document Management";
+}
+
+<h2>Document Management</h2>
+
+<a href="@Url.Action("ViewRegistrationDocuments", "Documents", new { customerId = 1 })">
+    View Registration Documents
+</a>
+<br />
+<a href="@Url.Action("ViewCollateralDocuments", "Documents", new { customerId = 1})">
+    View Collateral Documents
+</a>
+
+<hr />
+
+<h3>Upload Registration Document</h3>
+@using (Html.BeginForm("UploadRegistrationDocument", "Documents", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <input type="hidden" name="customerId" value="customer-guid-here" />
+    <label for="documentType">Select Document Type:</label>
+    <select name="documentTypeId">
+        <!-- Populate the Document Type options here -->
+        <option value="1">ID Proof</option>
+        <option value="2">Address Proof</option>
+    </select>
+
+    <label for="file">Select Document:</label>
+    <input type="file" name="file" />
+
+    <button type="submit">Upload Registration Document</button>
+}
+
+<hr />
+
+<h3>Upload Collateral Document</h3>
+@using (Html.BeginForm("UploadCollateralDocument", "Documents", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <input type="hidden" name="customerId" value="customer-guid-here" />
+    <label for="documentType">Select Document Type:</label>
+    <select name="documentTypeId">
+        <!-- Populate the Document Type options here -->
+        <option value="1">Property Documents</option>
+        <option value="2">Vehicle Documents</option>
+    </select>
+
+    <label for="file">Select Document:</label>
+    <input type="file" name="file" />
+
+    <button type="submit">Upload Collateral Document</button>
+}
+
