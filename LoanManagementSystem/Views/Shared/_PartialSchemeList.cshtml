@@ -1,0 +1,51 @@
+﻿@model IEnumerable<LoanManagementSystem.Models.LoanScheme>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.InterestRate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PrincipalAmount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Tenture)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EMIAmount)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.InterestRate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PrincipalAmount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Tenture)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EMIAmount)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.LoanSchemeId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.LoanSchemeId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.LoanSchemeId })
+        </td>
+    </tr>
+}
+
+</table>

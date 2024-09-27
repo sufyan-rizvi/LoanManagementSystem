@@ -134,7 +134,7 @@ namespace LoanManagementSystem.Controllers
 
         public ActionResult DeleteUpdate(Guid id)
         {
-            var Officer = _adminService.ToggleDelete(id);
+            var Officer = _adminService.ToggleOfficerDelete(id);
             if (Officer.User.IsActive)
                 return Json(new { success = true, message = "Officer Reactivated successfully" });
             return Json(new { success = true, message = "Officer Deleted successfully" });

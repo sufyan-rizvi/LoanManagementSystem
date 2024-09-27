@@ -10,11 +10,17 @@ namespace LoanManagementSystem.Repository
     public interface IAdminRepository
     {
         LoanOfficer GetByOfficerId(Guid id);
-        LoanOfficer GetByEmail(string email);
-        LoanOfficer GetByUsername(string username);
-        void Add(LoanOfficer officer);
-        void Update(LoanOfficer officer);
-        void Delete(LoanOfficer officer);
-        IList<LoanOfficer> GetAll();
+        LoanOfficer GetByOfficerEmail(string email);
+        LoanOfficer GetByOfficerUsername(string username);
+        void AddOfficer(LoanOfficer officer);
+        void UpdateOfficer(LoanOfficer officer);
+        void DeleteOfficer(LoanOfficer officer);
+        IList<LoanOfficer> GetAllOfficers();
+        LoanScheme GetSchemeById(Guid id);
+        IList<LoanScheme> GetAllSchemes();
+        void AddScheme(LoanScheme scheme);
+        void UpdateScheme(LoanScheme scheme);
+        void DeleteScheme(LoanScheme scheme);
+
     }
 }
