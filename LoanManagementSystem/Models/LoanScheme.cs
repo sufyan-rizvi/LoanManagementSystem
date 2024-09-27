@@ -12,7 +12,8 @@ namespace LoanManagementSystem.Models
         public virtual double InterestRate { get; set; }
         public virtual double PrincipalAmount { get; set; }
         public virtual double Tenure { get; set; }
-        public virtual string Description { get; set; }
+        public virtual string LongDescription { get; set; }
+        public virtual string ShortDescription { get; set; }
         public virtual bool IsActive { get; set; }  
         public virtual IList<Customer> Customers { get; set; }
         public virtual double EMIAmount

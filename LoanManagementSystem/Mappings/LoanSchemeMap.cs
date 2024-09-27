@@ -15,6 +15,8 @@ namespace LoanManagementSystem.Mappings
             Id(s => s.LoanSchemeId).GeneratedBy.GuidComb();
             Map(s => s.SchemeType);
             Map(s => s.InterestRate);
+            Map(s => s.LongDescription);
+            Map(s => s.ShortDescription);
             Map(s=>s.PrincipalAmount);
             Map(s=>s.Tenure);
             Map(s=>s.IsActive);
