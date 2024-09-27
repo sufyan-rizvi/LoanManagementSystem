@@ -398,6 +398,7 @@
     <Content Include="Views\Documents\ViewRegistrationDocuments.cshtml" />
     <Content Include="Views\Documents\ViewCollateralDocuments.cshtml" />
     <Content Include="Views\EMICalculator\Index.cshtml" />
+    <Content Include="Views\Shared\_PartialSchemeEdit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

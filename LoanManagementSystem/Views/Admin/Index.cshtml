@@ -26,13 +26,21 @@
 
     </div>
     <div id="loanschemes" style="display:none">
-        
+
         <div id="addscheme" style="display:none">
             <h1 class="my-3">
                 Add New Scheme
             </h1>
             @Html.Partial("_PartialSchemeAdd")
         </div>
+
+        <div id="editscheme" style="display:none">
+            <h1 class="my-3">
+                Edit Scheme
+            </h1>
+            @Html.Partial("_PartialSchemeEdit")
+        </div>
+
         <div id="schemelist">
             <h1 class="my-3">
                 List of Loan Schemes
