@@ -4,49 +4,114 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section NavbarOptions {
+    <div style="display: flex; align-items: center;">
+        <p class="m-2 text-light btn" onclick="displayAnalytics()">
+            Analytics
+        </p>
+        <p class="m-2 text-light btn" onclick="displaySchemes()">
+            View Loan Schemes
+        </p>
+        <p class="m-2 text-light btn" onclick="displayOfficers()">
+            View All Loan Officers
+        </p>
+    </div>
 
+}
 
 
 <div id="detailList" class="container">
-    <h2>List of LoanOfficers</h2>
 
-    <div>
+    <div id="analytics">
+
+    </div>
+    <div id="loanschemes" style="display:none">
+
+    </div>
+    <div id="listofficer" style="display:none">
+
+        <h2 class="my-3">List of LoanOfficers</h2>
         <table id="grid"></table>
         <div id="pager"></div>
+
     </div>
 </div>
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/redmond/jquery-ui.css">
+@*<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/redmond/jquery-ui.css">*@
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/hot-sneaks/jquery-ui.css">
+
+
+
 
 <script>
+    function displayAnalytics() {
+        $("#listofficer").hide(500)
+        $("#loanschemes").hide(500)
+        $("#analytics").fadeIn(1500, function () {
+            localStorage.setItem('currentSection', 'analytics'); // Save current section
+        });
+    }
+
+    function displaySchemes() {
+        $("#listofficer").hide(500)
+        $("#analytics").hide(500)
+        $("#loanschemes").fadeIn(1500, function () {
+            localStorage.setItem('currentSection', 'loanschemes'); // Save current section
+        });
+    }
+
+    function displayOfficers() {
+        $("#loanschemes").hide(500)
+        $("#analytics").hide(500)
+        $("#listofficer").fadeIn(1500, function () {
+            localStorage.setItem('currentSection', 'listofficer'); // Save current section
+        });
+    }
+
     $(document).ready(() => {
+        $("#analytics").hide();
+        $("#loanschemes").hide();
+        $("#listofficer").hide();
+
+        const currentSection = localStorage.getItem('currentSection');
+
+        if (currentSection === 'analytics') {
+            displayAnalytics();
+        } else if (currentSection === 'loanschemes') {
+            displaySchemes();
+        } else if (currentSection === 'listofficer') {
+            displayOfficers();
+        }
+
         $("#grid").jqGrid({
             url: "/admin/GetData",
             datatype: "json",
-            colNames: ["Id", "First Name", "Last Name", "Email", "Phone Number", "Address", "Active Status", "UserName", "Password", "FlatNo", "Building Name", "Street Name", "City", "Pincode", "State", "Country"],
-            colModel: [{ name: "Id", key: true, hidden: true, editable: true },
-            { name: "User.FirstName", editable: true, searchoptions: { sopt: ['eq'] } },
-            { name: "User.LastName", editable: true },
-            { name: "User.Email", editable: true },
-            { name: "User.PhoneNumber", editable: true },
-            { name: "FullAddress", editable: false },
-            { name: "User.IsActive", editable: false, type: 'checkbox', formatter: 'checkbox', align: "center", cellattr: function () { return 'style="display: flex; justify-content: center; align-items: center;"'; } },
-            { name: "User.UserName", hidden: true, editable: true },
-            { name: "User.Password", hidden: true, editable: true },
-            { name: "User.Address.FlatNo", hidden: true, editable: true, editrules: { edithidden: true } }, // Hidden field for Flat No
-            { name: "User.Address.BuildingName", hidden: true, editable: true, editrules: { edithidden: true } }, // Hidden field for Building Name
-            { name: "User.Address.StreetName", hidden: true, editable: true, editrules: { edithidden: true } }, // Hidden field for Street Name
-            { name: "User.Address.City", hidden: true, editable: true, editrules: { edithidden: true } }, // Hidden field for City
-            { name: "User.Address.PinCode", hidden: true, editable: true, editrules: { edithidden: true } }, // Hidden field for Pin Code
-            { name: "User.Address.State", hidden: true, editable: true, editrules: { edithidden: true } }, // Hidden field for State
-            { name: "User.Address.Country", hidden: true, editable: true, editrules: { edithidden: true } }, // Hidden field for Country
+            colNames: ["Id", "UserId", "First Name", "Last Name", "Email", "Phone Number", "Address", "Active Status", "Username", "Password", "FlatNo", "Building Name", "Street Name", "City", "Pincode", "State", "Country"],
+            colModel: [
+                { name: "OfficerId", key: true, hidden: true, editable: true, editrules: { edithidden: false } },
+                { name: "User.UserId", hidden: true, editable: true, editrules: { edithidden: false } },
+                { name: "User.FirstName", editable: true, searchoptions: { sopt: ['eq'] } },
+                { name: "User.LastName", editable: true, searchoptions: { sopt: ['eq'] } },
+                { name: "User.Email", editable: true, searchoptions: { sopt: ['eq'] } },
+                { name: "User.PhoneNumber", editable: true, searchoptions: { sopt: ['eq'] } },
+                { name: "FullAddress", editable: false, search: false },
+                { name: "User.IsActive", editable: false, search: false, type: 'checkbox', formatter: 'checkbox', align: "center", cellattr: function () { return 'style="display: flex; justify-content: center; align-items: center;"'; } },
+                { name: "User.Username", hidden: true, editable: true, editrules: { edithidden: true } },
+                { name: "User.Password", hidden: true, editable: true, editrules: { edithidden: true } },
+                { name: "User.Address.FlatNo", hidden: true, editable: true, editrules: { edithidden: true } }, // Hidden field for Flat No
+                { name: "User.Address.BuildingName", hidden: true, editable: true, editrules: { edithidden: true } }, // Hidden field for Building Name
+                { name: "User.Address.StreetName", hidden: true, editable: true, editrules: { edithidden: true } }, // Hidden field for Street Name
+                { name: "User.Address.City", hidden: true, editable: true, editrules: { edithidden: true } }, // Hidden field for City
+                { name: "User.Address.PinCode", hidden: true, editable: true, editrules: { edithidden: true } }, // Hidden field for Pin Code
+                { name: "User.Address.State", hidden: true, editable: true, editrules: { edithidden: true } }, // Hidden field for State
+                { name: "User.Address.Country", hidden: true, editable: true, editrules: { edithidden: true } } // Hidden field for Country
             ],
-            height: "400",
+            height: "275",
             width: "1300",
             caption: "Product Records",
             pager: "#pager",
-            rowNum: 5,
+            rowNum: 6,
             rowList: [5, 10, 15],
-            sortname: 'id',
+            sortname: 'User.FirstName',
             sortorder: 'asc',
             viewrecord: true,
             gridComplete: () => {
@@ -57,6 +122,13 @@
                         url: "/admin/edit",
                         closeAfterEdit: true,
                         width: "600",
+                        beforeShowForm: (form) => {
+                            var addForm = $(form);
+
+                            // Remove existing Username and Password fields if they are present
+                            addForm.find("#tr_User\\.Username").css("display", "none");
+                            addForm.find("#tr_User\\.Password").css("display", "none");
+                        },
                         afterSubmit: (response, postdata) => {
                             var result = JSON.parse(response.responseText);
                             if (result.success) {
@@ -78,24 +150,12 @@
                     width: "500",
                     autoheight: true,
                     addCaption: "Add New Loan Officer",
-                    recreateForm: true,
-
                     beforeShowForm: (form) => {
-                        var addForm = $(form)
+                        var addForm = $(form);
 
-                        addForm.find("tr:nth-child(6)").after('<tr class="FormData" id="tr_Username"><td class="CaptionTD">Username</td><td class="DataTD">&nbsp;<input type="text" id="Username" name="User.Username" class="FormElement ui-widget-content ui-corner-all"/></td></tr>');
-                        addForm.find("tr:nth-child(7)").after('<tr class="FormData" id="tr_Password"><td class="CaptionTD">Password</td><td class="DataTD">&nbsp;<input type="text" id="Password" name="User.Password" class="FormElement ui-widget-content ui-corner-all"/></td></tr>');
-                        //addForm.find("tr:nth-child(8)").after('<tr class="FormData" id="tr_FlatNo"><td class="CaptionTD">Flat No</td><td class="DataTD">&nbsp;<input type="text" id="FlatNo" name="Address.FlatNo" class="FormElement ui-widget-content ui-corner-all"/></td></tr>');
-                        //addForm.find("tr:nth-child(9)").after('<tr class="FormData" id="tr_BuildingName"><td class="CaptionTD">Building Name</td><td class="DataTD">&nbsp;<input type="text" id="BuildingName" name="Address.BuildingName" class="FormElement ui-widget-content ui-corner-all"/></td></tr>');
-                        //addForm.find("tr:nth-child(10)").after('<tr class="FormData" id="tr_StreetName"><td class="CaptionTD">Street Name</td><td class="DataTD">&nbsp;<input type="text" id="StreetName" name="Address.StreetName" class="FormElement ui-widget-content ui-corner-all"/></td></tr>');
-                        //addForm.find("tr:nth-child(11)").after('<tr class="FormData" id="tr_City"><td class="CaptionTD">City</td><td class="DataTD">&nbsp;<input type="text" id="City" name="Address.City" class="FormElement ui-widget-content ui-corner-all"/></td></tr>');
-                        //addForm.find("tr:nth-child(12)").after('<tr class="FormData" id="tr_PinCode"><td class="CaptionTD">Pin Code</td><td class="DataTD">&nbsp;<input type="text" id="PinCode" name="Address.PinCode" class="FormElement ui-widget-content ui-corner-all"/></td></tr>');
-                        //addForm.find("tr:nth-child(13)").after('<tr class="FormData" id="tr_State"><td class="CaptionTD">State</td><td class="DataTD">&nbsp;<input type="text" id="State" name="Address.State" class="FormElement ui-widget-content ui-corner-all"/></td></tr>');
-                        //addForm.find("tr:nth-child(14)").after('<tr class="FormData" id="tr_Country"><td class="CaptionTD">Country</td><td class="DataTD">&nbsp;<input type="text" id="Country" name="Address.Country" class="FormElement ui-widget-content ui-corner-all"/></td></tr>');
-                        //addForm.find("tr:nth-child(16)").css("display", "none")
-                        //addForm.find("tr:nth-child(17)").css("display", "none")
-
-
+                        // Remove existing Username and Password fields if they are present
+                        addForm.find("#tr_User\\.Username").css("display", "");
+                        addForm.find("#tr_User\\.Password").css("display", "");
                     },
                     afterSubmit: (response, postdata) => {
                         console.log(postdata)
@@ -112,6 +172,7 @@
 
                 }, {
                     url: "/admin/DeleteUpdate",
+                    width:"400",
                     afterSubmit: (response, postdata) => {
                         var result = JSON.parse(response.responseText);
                         if (result.success) {

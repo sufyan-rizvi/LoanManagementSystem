@@ -12,34 +12,33 @@
     <script src="~/Scripts/jquery.jqGrid.min.js"></script>
     <script src="~/Scripts/i18n/grid.locale-en.js"></script>
     <link href="~/Content/jquery.jqGrid/ui.jqgrid.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="navbar navbar-dark bg-black navbar-fixed-top" style="flex-direction: column; align-items: flex-start;">
 
-    <body>
-        <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                    </ul>
-                </div>
-            </div>
+        <div class="p-1 display-2 text-light">
+            Loan Management System
         </div>
-
-        <div class="container body-content">
-            @RenderBody()
-            <hr />
-            <footer>
-                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-            </footer>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            @RenderSection("NavbarOptions", required: false)
+            @if (User.Identity.IsAuthenticated)
+            {
+                @Html.ActionLink("Logout", "Logout", "Account", null, new { style = "margin-left: 950px; margin-top: -10px", @class = "btn text-light" })
+            }
         </div>
 
 
+    </div>
 
-    </body>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+
+
+
+</body>
 </html>

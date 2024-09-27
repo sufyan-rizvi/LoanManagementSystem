@@ -11,8 +11,10 @@ namespace LoanManagementSystem
     {
         protected void Application_Start()
         {
+            UnityConfig.RegisterComponents();
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            GlobalFilters.Filters.Add(new HandleErrorAttribute());
         }
     }
 }

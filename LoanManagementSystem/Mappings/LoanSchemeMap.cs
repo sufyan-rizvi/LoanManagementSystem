@@ -15,7 +15,10 @@ namespace LoanManagementSystem.Mappings
             Id(s => s.LoanSchemeId).GeneratedBy.GuidComb();
             Map(s => s.SchemeType);
             Map(s => s.InterestRate);
-            References(s=>s.Admin).Column("AdminId").Cascade.None();
+            Map(s=>s.PrincipalAmount);
+            Map(s=>s.Tenure);
+            Map(s=>s.IsActive);
+            HasMany(s => s.Customers).Inverse().Cascade.All();
         }
     }
 }
