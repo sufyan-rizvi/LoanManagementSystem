@@ -146,5 +146,34 @@ namespace LoanManagementSystem.Controllers
             _adminService.EditOfficer(officer);
             return Json(new { success = true, message = "Officer details updated!" });
         }
+
+        public JsonResult GetAllSchemes()
+        {
+            var schemes = _adminService.GetAllSchemes();
+            return Json(schemes, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult AddScheme(LoanScheme scheme)
+        {
+            _adminService.AddScheme(scheme);
+            return Json("Scheme Added Successfully!");
+        }
+
+        [HttpPost]
+        public JsonResult DeleteScheme(Guid id)
+        {
+            var scheme = _adminService.DeleteScheme(id);
+            if (scheme.IsActive)
+                return Json("Scheme Reactivated!");
+            return Json("Scheme Deleted!");
+        }
+
+        [HttpPost]
+        public JsonResult EditScheme(Guid id)
+        {
+            _adminService.EditScheme(id);
+            return Json("Scheme Edited Successfully!");
+        }
     }
 }

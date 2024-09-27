@@ -1,51 +1,117 @@
 ﻿@model IEnumerable<LoanManagementSystem.Models.LoanScheme>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    <button class="btn btn-primary" onclick="addScheme()">Create New Scheme</button>
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.InterestRate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PrincipalAmount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Tenture)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EMIAmount)
-        </th>
-        <th></th>
-    </tr>
+<table class="table table-borderless">
+    <thead>
+        <tr>
+            <th>Scheme Type</th>
+            <th>Principal Amount</th>
+            <th>Rate of Interest</th>
+            <th>Tenure</th>
+            <th>Description</th>
+            <th>Active Status</th>
+            <th>Options</th>
+        </tr>
+    </thead>
+    <tbody id="tblBody">
+    </tbody>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.InterestRate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PrincipalAmount)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Tenture)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EMIAmount)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.LoanSchemeId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.LoanSchemeId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.LoanSchemeId })
-        </td>
-    </tr>
-}
 
 </table>
+<script>
+    function loadItems() {
+        $.ajax({
+            url: "/admin/getallschemes", // Controller action to get data
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                var rows = '';
+                $.each(data, function (index, item) {
+                    rows += `<tr class="${item.IsActive ? "" : "table-danger"}">`
+                        + '<td>' + item.SchemeType + '</td>'
+                        + '<td>' + item.InterestRate + '</td>'
+                        + '<td>' + item.PrincipalAmount + '</td>'
+                        + '<td>' + item.Tenure + '</td>'
+                        + '<td>' + item.Description + '</td>'
+                        + `<td><input type="checkbox" style:"margin=auto" ${item.IsActive ? "checked" : ""} value="${item.IsActive}" onclick=deleteScheme('${item.LoanSchemeId}',this) /></td>`
+                        + `<td  id="${item.LoanSchemeId}" style="display: ${item.IsActive ? "" : "none"};">
+                        <input type= "button" value = "Edit" class="btn btn-primary py-1" style= "float:center; height: 40px;" onclick=editScheme('${item.LoanSchemeId}')></input>
+                   </td >`
+                        + `<td></td>`
+                        + '</tr>';
+                });
+                $('#tblBody').html(rows);
+            },
+            error: function (xhr, status, error) {
+                alert('Error: ' + error);
+            }
+        })
+    }
+
+    $(document).ready(() => {
+        loadItems()
+    });
+
+    function deleteScheme(itemId, checkbox) {
+        console.log("aaaa")
+
+        var getConfirm;
+
+        var row = $(checkbox).closest('tr')
+        console.log(row)
+        if (!checkbox.checked) {
+            getConfirm = confirm("You want to Delete this scheme?")
+        }
+        else {
+            getConfirm = confirm("You want to Re-Activate this scheme?")
+        }
+        if (getConfirm) {
+            $.ajax({
+                url: "/Admin/DeleteScheme",
+                type: "POST",
+                data: { id: itemId },
+                success: () => {
+
+                    if (!checkbox.checked) {
+                        row.addClass("table-danger")
+                        $(`#${itemId}`).hide()
+                        alert("Contact Deleted Successfully!")
+                    }
+                    else {
+                        row.removeClass("table-danger")
+                        $(`#${itemId}`).show()
+                        alert("Contact Re-activated!")
+                    }
+                },
+                error: (err) => {
+                    console.log(err)
+                }
+            })
+        }
+        else {
+            checkbox.checked = !checkbox.checked;
+        }
+    }
+
+    function addScheme() {
+
+        $("#schemelist").hide();
+        $("#addscheme").show(250);
+    }
+
+    function editScheme(itemId) {
+        $.ajax({
+            url: "/admin/editscheme",
+            type: "POST",
+            data: { LoanSchemeId: itemId },
+            success: (data) => {
+
+            }
+        })
+
+
+    }
+
+</script>

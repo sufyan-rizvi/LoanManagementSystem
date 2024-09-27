@@ -36,6 +36,7 @@ namespace LoanManagementSystem.Repository
             {
                 scheme.IsActive = true;
                 _session.Save(scheme);
+                txn.Commit();
             }
         }
 

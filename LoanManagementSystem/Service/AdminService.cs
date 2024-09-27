@@ -68,8 +68,11 @@ namespace LoanManagementSystem.Service
             _adminRepo.UpdateOfficer(officer);
         }
 
-        public void EditScheme(LoanScheme scheme)
+        public void EditScheme(Guid id)
         {
+            var scheme = _adminRepo.GetSchemeById(id);
+            if (scheme == null)
+                throw new InvalidOperationException("Scheme does not exsist!");
             _adminRepo.UpdateScheme(scheme);
         }
 

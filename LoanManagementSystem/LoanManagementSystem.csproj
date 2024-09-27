@@ -332,6 +332,7 @@
     <Content Include="Views\Account\LoginUser.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Shared\_PartialSchemeList.cshtml" />
+    <Content Include="Views\Shared\_PartialSchemeAdd.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
