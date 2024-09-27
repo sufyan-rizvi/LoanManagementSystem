@@ -13,6 +13,7 @@ namespace LoanManagementSystem.Service
         void AddOfficer(LoanOfficer officer);
         LoanOfficer ToggleOfficerDelete(Guid id);
         void EditOfficer(LoanOfficer officer);
+        LoanOfficer GetOfficerById(Guid id);
 
         IList<LoanScheme> GetAllSchemes();
         void AddScheme(LoanScheme scheme);

@@ -8,6 +8,7 @@ using LoanManagementSystem.Data;
 using LoanManagementSystem.Models;
 using LoanManagementSystem.Repository;
 using LoanManagementSystem.Service;
+using LoanManagementSystem.ViewModels;
 using NHibernate.Linq;
 using BC = BCrypt.Net.BCrypt;
 
@@ -174,6 +175,25 @@ namespace LoanManagementSystem.Controllers
         {
             _adminService.EditScheme(scheme);
             return Json("Scheme Edited Successfully!");
+        }
+
+        public JsonResult GetSchemeTypes()
+        {
+            var schemeTypes = Enum.GetValues(typeof(SchemeType))
+                          .Cast<SchemeType>()
+                          .Select(e => new
+                          {
+                              Value = (int)e,
+                              Text = e.ToString()
+                          });
+
+            return Json(schemeTypes, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetOfficerById(Guid id)
+        {
+            var officer = _adminService.GetOfficerById(id);
+            return Json(officer, JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -6,6 +6,7 @@
 <table class="table table-borderless">
     <thead>
         <tr>
+            <th>Scheme Name</th>
             <th>Scheme Type</th>
             <th>Principal Amount</th>
             <th>Rate of Interest</th>
@@ -31,7 +32,8 @@
                 var rows = '';
                 $.each(data, function (index, item) {
                     rows += `<tr class="${item.IsActive ? "" : "table-danger"}">`
-                        + '<td>' + item.SchemeType + '</td>'
+                        + '<td>' + item.SchemeName + '</td>'
+                        + '<td>' + item.SchemeTypeString + '</td>'                        
                         + '<td>' + item.InterestRate + '</td>'
                         + '<td>' + item.PrincipalAmount + '</td>'
                         + '<td>' + item.Tenure + '</td>'
@@ -39,7 +41,7 @@
                         + '<td>' + item.LongDescription + '</td>'
                         + `<td><input type="checkbox" style:"margin=auto" ${item.IsActive ? "checked" : ""} value="${item.IsActive}" onclick=deleteScheme('${item.LoanSchemeId}',this) /></td>`
                         + `<td  id="${item.LoanSchemeId}" style="display: ${item.IsActive ? "" : "none"};">
-                        <input type= "button" value = "Edit" class="btn btn-primary py-1" style= "float:center; height: 40px;" onclick=editScheme()></input>
+                        <input type= "button" value = "Edit" class="btn btn-primary py-1" style= "float:center; height: 40px;" onclick=editScheme(${item.LoanSchemeId})></input>
                    </td >`
                         + `<td></td>`
                         + '</tr>';
@@ -103,10 +105,24 @@
         $("#addscheme").show(250);
     }
 
-    function editScheme() {
+    function editScheme(itemId) {
         $("#schemelist").hide()
         $("#editscheme").show()
 
+        $.ajax({
+            url: "/admin/GetOfficerById",
+            type: "GET",
+            data: { id: itemId },
+            success: (data) => {
+
+            }
+
+        })
+        InterestRate: $("#ir").val(),
+            PrincipalAmount: $("#pa").val(),
+                Tenure: $("#ten").val(),
+                    LongDescription: $("#sd").val(),
+                        ShortDescription: $("#ld").val()
     }
 
 </script>
