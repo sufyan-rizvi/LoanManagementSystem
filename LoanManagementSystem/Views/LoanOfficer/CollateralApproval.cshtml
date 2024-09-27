@@ -1,0 +1,42 @@
+﻿
+@{
+    //ViewBag.Title = "CollateralApproval";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model IEnumerable<Collateral>
+
+@{
+    ViewBag.Title = "Pending Collateral Approvals";
+}
+
+<h2>Pending Collateral Approvals</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Collateral ID</th>
+            <th>Loan ID</th>
+            <th>Collateral Value</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var collateral in Model)
+        {
+            <tr>
+                <td>@collateral.CollateralId</td>
+                <td>@collateral.LoanId</td>
+                <td>@collateral.CollateralValue</td>
+                <td>@collateral.Status</td>
+                <td>
+                    @Html.ActionLink("Approve", "ApproveCollateral", "LoanOfficer", new { id = collateral.CollateralId }, new { @class = "btn btn-success" })
+                    @Html.ActionLink("Reject", "RejectCollateral", "LoanOfficer", new { id = collateral.CollateralId }, new { @class = "btn btn-danger" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

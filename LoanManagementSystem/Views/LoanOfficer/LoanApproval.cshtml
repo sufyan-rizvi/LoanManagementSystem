@@ -1,0 +1,42 @@
+﻿
+@{
+    //ViewBag.Title = "LoanApproval";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model IEnumerable<LoanApplication>
+
+@{
+    ViewBag.Title = "Pending Loan Approvals";
+}
+
+<h2>Pending Loan Approvals</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Loan ID</th>
+            <th>Applicant Name</th>
+            <th>Loan Amount</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var loan in Model)
+        {
+            <tr>
+                <td>@loan.LoanId</td>
+                <td>@loan.ApplicantName</td>
+                <td>@loan.LoanAmount</td>
+                <td>@loan.Status</td>
+                <td>
+                    @Html.ActionLink("Approve", "ApproveLoan", "LoanOfficer", new { id = loan.LoanId }, new { @class = "btn btn-success" })
+                    @Html.ActionLink("Reject", "RejectLoan", "LoanOfficer", new { id = loan.LoanId }, new { @class = "btn btn-danger" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

@@ -1,0 +1,20 @@
+﻿
+@{
+    //ViewBag.Title = "Welcome";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Welcome Loan Officer";
+}
+
+<h2>Welcome, Loan Officer</h2>
+
+<p>Please choose one of the following actions:</p>
+
+<div class="btn-group">
+    @Html.ActionLink("Loan Approval", "LoanApproval", "LoanOfficer", new { }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Collateral Approval", "CollateralApproval", "LoanOfficer", new { }, new { @class = "btn btn-secondary" })
+</div>
+
+
