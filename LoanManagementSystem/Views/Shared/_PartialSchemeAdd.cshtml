@@ -21,7 +21,7 @@
             @Html.LabelFor(model => model.SchemeType, htmlAttributes: new { @class = "control-label col-md-2 my-1" })
             <div class="col-md-10">
                 @Html.EnumDropDownListFor(m => m.SchemeType, new {id="schemeenum"})
-                @Html.ValidationMessageFor(model => model.SchemeType, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.SchemeType, "", new { @class = "text-danger" }) 
             </div>
         </div>
 
