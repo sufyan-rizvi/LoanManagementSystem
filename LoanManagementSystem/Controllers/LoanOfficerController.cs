@@ -22,7 +22,7 @@ namespace LoanManagementSystem.Controllers
         {
             using (var session = NhibernateHelper.CreateSession())
             {
-                var pendingLoans = session.Query<LoanApplication>().Where(l => l.Status == "Pending").ToList();
+                var pendingLoans = session.Query<LoanApplication>().Where(l => l.Status == ApplicationStatus.PendingApproval).ToList();
                 return View(pendingLoans);
             }
         }

@@ -418,6 +418,7 @@
     <Content Include="Views\Documents\ViewCollateralDocuments.cshtml" />
     <Content Include="Views\EMICalculator\Index.cshtml" />
     <Content Include="Views\Shared\_PartialSchemeEdit.cshtml" />
+    <Content Include="Views\Payment\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -429,7 +430,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="DTOs\" />
     <Folder Include="Mappers\" />
-    <Folder Include="Views\Payment\" />
     <Folder Include="WebProvider\" />
   </ItemGroup>
   <PropertyGroup>
