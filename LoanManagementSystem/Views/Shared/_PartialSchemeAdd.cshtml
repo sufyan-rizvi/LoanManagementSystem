@@ -34,21 +34,6 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.PrincipalAmount, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PrincipalAmount, new { htmlAttributes = new { @class = "form-control", id = "principal" } })
-                @Html.ValidationMessageFor(model => model.PrincipalAmount, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Tenure, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Tenure, new { htmlAttributes = new { @class = "form-control", id = "tenure" } })
-                @Html.ValidationMessageFor(model => model.Tenure, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.ShortDescription, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -87,8 +72,6 @@
             InterestRate: $("#interest").val(),
             SchemeName: $("#schemename").val(),
             SchemeType: $("#schemeenum").val(),
-            PrincipalAmount: $("#principal").val(),
-            Tenure: $("#tenure").val(),
             LongDescription: $("#LongDescription").val(),
             ShortDescription: $("#ShortDescription").val()
         }

@@ -88,6 +88,11 @@ namespace LoanManagementSystem.Service
             return _adminRepo.GetByOfficerId(id);
         }
 
+        public LoanScheme GetSchemeById(Guid id)
+        {
+            return _adminRepo.GetSchemeById(id);
+        }
+
         public LoanOfficer ToggleOfficerDelete(Guid id)
         {
             var userExists = _adminRepo.GetByOfficerId(id);

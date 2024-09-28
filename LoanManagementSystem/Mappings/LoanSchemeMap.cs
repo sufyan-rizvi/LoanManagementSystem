@@ -18,8 +18,6 @@ namespace LoanManagementSystem.Mappings
             Map(s => s.InterestRate);
             Map(s => s.LongDescription);
             Map(s => s.ShortDescription);
-            Map(s=>s.PrincipalAmount);
-            Map(s=>s.Tenure);
             Map(s=>s.IsActive);
             HasMany(s => s.Customers).Inverse().Cascade.All();
         }

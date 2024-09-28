@@ -32,7 +32,7 @@ public class CloudinaryService
         var uploadParams = new RawUploadParams()
         {
             File = new FileDescription(file.FileName, stream),
-            ResourceType = "raw" // Correct usage for document upload
+            //ResourceType = "raw" // Correct usage for document upload
         };
 
         // Perform the upload

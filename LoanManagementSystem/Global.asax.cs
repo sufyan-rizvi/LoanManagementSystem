@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Quartz.Impl;
+using Quartz;
 
 namespace LoanManagementSystem
 {
@@ -15,6 +17,9 @@ namespace LoanManagementSystem
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             GlobalFilters.Filters.Add(new HandleErrorAttribute());
+            IScheduler scheduler = StdSchedulerFactory.GetDefaultScheduler().Result;
+            scheduler.Start();
+            Application["Scheduler"] = scheduler;
         }
     }
 }
