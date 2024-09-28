@@ -19,6 +19,7 @@ namespace LoanManagementSystem.Controllers
                 var schemes = session.Query<LoanScheme>().ToList();
                 return View(schemes);
             }
+            
         }
 
         // Action to show the full details of a loan scheme

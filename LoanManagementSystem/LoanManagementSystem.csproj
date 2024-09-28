@@ -385,7 +385,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
-    <Content Include="Views\Account\LoginUser.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\LoanScheme\ListSchemes.cshtml" />
     <Content Include="Views\LoanScheme\SchemeDetails.cshtml" />
@@ -399,6 +398,8 @@
     <Content Include="Views\Documents\ViewCollateralDocuments.cshtml" />
     <Content Include="Views\EMICalculator\Index.cshtml" />
     <Content Include="Views\Shared\_PartialSchemeEdit.cshtml" />
+    <Content Include="Views\Account\LoginUser.cshtml" />
+    <Content Include="Views\Account\View.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

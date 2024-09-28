@@ -1,98 +1,62 @@
-﻿
+﻿@model LoanManagementSystem.ViewModels.LoginVM
+
 @{
     ViewBag.Title = "LoginUser";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@model LoanManagementSystem.ViewModels.LoginVM
+<h2>LoginUser</h2>
 
-@*@{ 
-    ViewBag.Type = "User";
-}*@
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    <h4>LoginVM</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div>
+        <button type="button" id="asUserLoginBtn">User</button>
+        <button type="button" id="asEmployeeLoginBtn">Employee</button>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+        </div>
+    </div>
 
-<h2>Login</h2>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div id="userRegister" style="display:none">
+        @Html.ActionLink("New User?  Register", "Register")
+    </div>
+    
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Login" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
 
 <div>
-    <form id="loginForm">
-        <div>
-            <button type="button" id="asUserLoginBtn">User</button>
-            <button type="button" id="asEmployeeLoginBtn">Employee</button>
-        </div>
-        <div>
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="Username" required />
-        </div>
-        <div>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="Password" required />
-            <input type="hidden" id="loginTypeVal" name="LoginType" value="User" /> <!-- Hidden field to store login type -->
-        </div>
-        <div id="userRegister">
-            @Html.ActionLink("New User?  Register", "Register")
-        </div>
-
-        <br />
-
-        <button type="button" id="userLoginBtn">Login</button>
-    </form>
+    @Html.ActionLink("Back to List", "Index")
 </div>
-
-<div id="loginResult"></div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function () {
-
-    });
-    function loginUser() {
-    var formData = {
-        UserName: $('#username').val(),
-        Password: $('#password').val(),
-        LoginType: $('#loginTypeVal').val() //loginType
-    };
-
-    $.ajax({
-        url: '@Url.Action("LoginUser", "Account")',
-        type: 'POST',
-        data: formData,
-        success: function (response) {
-            if (response.success) {
-                if (formData.LoginType == "User") { }
-                window.location.href = '@Url.Action("Index", "Account")';  // Redirect to Home page
-            } else {
-                $('#loginResult').html(response.message); // Show error message
-            }
-        },
-        error: function () {
-            $('#loginResult').html('Error occurred during login.');
-        }
-    });
-}//s.Query<Loanofficer>().Fetch(l=>l.USer).FirstorDefault()
-
-
     $('#asUserLoginBtn').click(function () {
-        $('#userRegister').show();
-        $('#loginTypeVal').val('User');
+        var div = document.getElementById("userRegister");
+        div.style.display = "block";
     });
     $('#asEmployeeLoginBtn').click(function () {
-        $('#userRegister').hide();
-        $('#loginTypeVal').val('Employee');
+        var div = document.getElementById("userRegister");
+        div.style.display = "none";
     });
-    
-
-// Handle User login
-    $('#userLoginBtn').click(function () {
-    
-        loginUser();
-});
-
-// Handle Employee login
-//$('#employeeLoginBtn').click(function () {
-//    loginUser('Employee');
-//});
-
-
-    
 </script>
-
-
