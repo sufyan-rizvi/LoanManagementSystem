@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewBag.Title = "UploadResult";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Image Uploaded Successfully!</h2>
+
+<div>
+    <img src="@ViewBag.ImageUrl" alt="Uploaded Image" />
+</div>
+
+<div>
+    <a href="@Url.Action("ShowImage", "Customer", new { publicId = ViewBag.PublicId })">Click to show full image</a>
+</div>
+
+

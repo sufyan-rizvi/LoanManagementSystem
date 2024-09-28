@@ -322,7 +322,7 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
-    <Compile Include="Controllers\DocumentsController.cs" />
+    <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\EMICalculatorController.cs" />
     <Compile Include="Controllers\LoanOfficerController.cs" />
     <Compile Include="Controllers\LoanSchemeController.cs" />
@@ -366,8 +366,8 @@
     <Compile Include="Repository\IAdminRepository.cs" />
     <Compile Include="Repository\IPaymentRepository.cs" />
     <Compile Include="Repository\PaymentRepository.cs" />
-    <Compile Include="Services\CloudinaryService.cs" />
     <Compile Include="Service\AdminService.cs" />
+    <Compile Include="Service\CloudinaryService.cs" />
     <Compile Include="Service\IAdminService.cs" />
     <Compile Include="Service\IPaymentService.cs" />
     <Compile Include="Service\PaymentService.cs" />
@@ -418,6 +418,9 @@
     <Content Include="Views\Shared\_PartialSchemeEdit.cshtml" />
     <Content Include="Views\Account\LoginUser.cshtml" />
     <Content Include="Views\Payment\Index.cshtml" />
+    <Content Include="Views\Customer\ApprovalDocIndex.cshtml" />
+    <Content Include="Views\Customer\UploadResult.cshtml" />
+    <Content Include="Views\Customer\ColateralDocIndex.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

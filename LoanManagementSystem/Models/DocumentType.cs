@@ -5,13 +5,9 @@ using System.Web;
 
 namespace LoanManagementSystem.Models
 {
-    //public enum DocumentType
-    //{
-    //    Aadhar, PAN, Photo, VehicleDoc, HouseDoc, SharesDoc
-    //}
-    public class DocumentType //currently unbinding wherever this is
+    public enum DocumentType
     {
-        public virtual int DocumentTypeId { get; set; }
-        public virtual string Name { get; set; }
+        Aadhar=1, PAN=2, Photo=3, VehicleDoc=4, HouseDoc=5, SharesDoc=6
     }
+
 }

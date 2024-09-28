@@ -13,8 +13,10 @@ namespace LoanManagementSystem.Mappings
         {
             Table("CollateralDocs");
             Id(c => c.CollateralId).GeneratedBy.GuidComb();
-            //Map(c => c.DocumentType);
-            Map(c => c.DocLink);
+            //Map(c => c.DocLink);
+            Map(r => r.DocumentType);
+            Map(r => r.ImageUrl);
+            Map(r => r.PublicId);
             References(r => r.Customer).Column("CustomerId").Cascade.None();
         }
     }
