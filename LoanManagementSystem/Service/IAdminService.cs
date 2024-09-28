@@ -17,6 +17,7 @@ namespace LoanManagementSystem.Service
 
         IList<LoanScheme> GetAllSchemes();
         void AddScheme(LoanScheme scheme);
+        LoanScheme GetSchemeById(Guid id);
         void EditScheme(LoanScheme scheme);
         LoanScheme DeleteScheme(Guid id);
 

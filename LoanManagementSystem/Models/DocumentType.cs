@@ -7,9 +7,9 @@ namespace LoanManagementSystem.Models
 {
     //public enum DocumentType
     //{
-    //    Aadhar,PAN, Photo, VehicleDoc, HouseDoc, SharesDoc
+    //    Aadhar, PAN, Photo, VehicleDoc, HouseDoc, SharesDoc
     //}
-    public class DocumentType
+    public class DocumentType //currently unbinding wherever this is
     {
         public virtual int DocumentTypeId { get; set; }
         public virtual string Name { get; set; }

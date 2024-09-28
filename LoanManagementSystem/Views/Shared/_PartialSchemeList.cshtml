@@ -8,9 +8,7 @@
         <tr>
             <th>Scheme Name</th>
             <th>Scheme Type</th>
-            <th>Principal Amount</th>
             <th>Rate of Interest</th>
-            <th>Tenure</th>
             <th>Short Description</th>
             <th>Long Description</th>
             <th>Active Status</th>
@@ -33,15 +31,13 @@
                 $.each(data, function (index, item) {
                     rows += `<tr class="${item.IsActive ? "" : "table-danger"}">`
                         + '<td>' + item.SchemeName + '</td>'
-                        + '<td>' + item.SchemeTypeString + '</td>'                        
+                        + '<td>' + item.SchemeTypeString + '</td>'
                         + '<td>' + item.InterestRate + '</td>'
-                        + '<td>' + item.PrincipalAmount + '</td>'
-                        + '<td>' + item.Tenure + '</td>'
                         + '<td>' + item.ShortDescription + '</td>'
                         + '<td>' + item.LongDescription + '</td>'
                         + `<td><input type="checkbox" style:"margin=auto" ${item.IsActive ? "checked" : ""} value="${item.IsActive}" onclick=deleteScheme('${item.LoanSchemeId}',this) /></td>`
                         + `<td  id="${item.LoanSchemeId}" style="display: ${item.IsActive ? "" : "none"};">
-                        <input type= "button" value = "Edit" class="btn btn-primary py-1" style= "float:center; height: 40px;" onclick=editScheme(${item.LoanSchemeId})></input>
+                        <input type= "button" value = "Edit" class="btn btn-primary py-1" style= "float:center; height: 40px;" onclick=editScheme('${item.LoanSchemeId}')></input>
                    </td >`
                         + `<td></td>`
                         + '</tr>';
@@ -110,19 +106,23 @@
         $("#editscheme").show()
 
         $.ajax({
-            url: "/admin/GetOfficerById",
+            url: "/admin/GetSchemeById",
             type: "GET",
             data: { id: itemId },
             success: (data) => {
-
+                $("#sname").val(data.SchemeName),
+                $("#ir").val(data.InterestRate),
+                $("#sd").val(data.LongDescription),
+                $("#ld").val(data.ShortDescription)
+            },
+            error:(err)=>{
+                console.log(err)
+                alert("There was a problem in getting the scheme")
             }
 
         })
-        InterestRate: $("#ir").val(),
-            PrincipalAmount: $("#pa").val(),
-                Tenure: $("#ten").val(),
-                    LongDescription: $("#sd").val(),
-                        ShortDescription: $("#ld").val()
+
+
     }
 
 </script>

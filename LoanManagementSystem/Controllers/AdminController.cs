@@ -1,16 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
+using System.Net;
 using System.Runtime.Remoting.Messaging;
 using System.Web;
 using System.Web.Mvc;
 using LoanManagementSystem.Data;
+using LoanManagementSystem.Jobs;
 using LoanManagementSystem.Models;
 using LoanManagementSystem.Repository;
 using LoanManagementSystem.Service;
 using LoanManagementSystem.ViewModels;
 using NHibernate.Linq;
+using Quartz;
 using BC = BCrypt.Net.BCrypt;
+using System.Threading.Tasks;
 
 namespace LoanManagementSystem.Controllers
 {
@@ -24,6 +29,18 @@ namespace LoanManagementSystem.Controllers
 
         public ActionResult Index()
         {
+            var scheduler = (IScheduler)HttpContext.Application["Scheduler"];
+            IJobDetail job = JobBuilder.Create<RepaymentEmailSendingJob>().Build();
+
+            ITrigger trigger = TriggerBuilder.Create()
+                .WithIdentity("trigger1", "group1")
+                .StartNow()
+                .WithSimpleSchedule(x => x
+                    .WithIntervalInSeconds(0).WithRepeatCount(0))  // Schedule to repeat indefinitely
+                .Build();
+
+            scheduler.ScheduleJob(job, trigger);
+
 
             return View();
         }
@@ -190,10 +207,10 @@ namespace LoanManagementSystem.Controllers
             return Json(schemeTypes, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult GetOfficerById(Guid id)
+        public JsonResult GetSchemeById(Guid id)
         {
-            var officer = _adminService.GetOfficerById(id);
-            return Json(officer, JsonRequestBehavior.AllowGet);
+            var scheme = _adminService.GetSchemeById(id);
+            return Json(scheme, JsonRequestBehavior.AllowGet);
         }
     }
 }

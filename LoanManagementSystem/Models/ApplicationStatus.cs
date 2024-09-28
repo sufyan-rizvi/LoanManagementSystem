@@ -7,6 +7,6 @@ namespace LoanManagementSystem.Models
 {
     public enum ApplicationStatus
     {
-        Pending, Approved, CollateralApproved
+        PendingApproval, Approved, CollateralApproved, LoanRepayment, RepaymentCompleted
     }
 }

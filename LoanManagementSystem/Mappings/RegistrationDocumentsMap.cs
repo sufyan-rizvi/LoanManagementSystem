@@ -13,7 +13,7 @@ namespace LoanManagementSystem.Mappings
         {
             Table("RegistrationDocs");
             Id(r=>r.RegId).GeneratedBy.GuidComb();
-            Map(r => r.DocumentType);
+            //Map(r => r.DocumentType);
             Map(r => r.DocLink);
             References(r=>r.Customer).Column("CustomerId").Cascade.None();
         }

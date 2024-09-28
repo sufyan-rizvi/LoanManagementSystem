@@ -63,32 +63,35 @@
 
 
 <script>
+    var inTime = 1500
+    var outTime = 0
     function displayAnalytics() {
-        $("#listofficer").hide(500)
-        $("#loanschemes").hide(500)
-        $("#analytics").fadeIn(1500, function () {
+
+        $("#listofficer").fadeOut(outTime)
+        $("#loanschemes").fadeOut(outTime)
+        $("#analytics").fadeIn(inTime, function () {
             localStorage.setItem('currentSection', 'analytics'); // Save current section
         });
     }
 
     function displaySchemes() {
-        $("#listofficer").hide(500)
-        $("#analytics").hide(500)
-        $("#loanschemes").fadeIn(1500, function () {
+        $("#listofficer").fadeOut(outTime)
+        $("#analytics").fadeOut(outTime)
+        $("#loanschemes").fadeIn(inTime, function () {
             localStorage.setItem('currentSection', 'loanschemes'); // Save current section
         });
     }
 
     function displayOfficers() {
-        $("#loanschemes").hide(500)
-        $("#analytics").hide(500)
-        $("#listofficer").fadeIn(1500, function () {
+        $("#loanschemes").fadeOut(outTime)
+        $("#analytics").fadeOut(outTime)
+        $("#listofficer").fadeIn(inTime, function () {
             localStorage.setItem('currentSection', 'listofficer'); // Save current section
         });
     }
 
     $(document).ready(() => {
-        $("#analytics").hide();
+        $("#analytics").show();
         $("#loanschemes").hide();
         $("#listofficer").hide();
 

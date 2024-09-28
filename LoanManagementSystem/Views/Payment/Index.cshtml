@@ -1,0 +1,87 @@
+﻿@model LoanManagementSystem.Models.LoanApplication
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<div>
+    <h2>Loan Application Details</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Application Date</th>
+                @*<td>@Model.ApplicationDate.ToShortDateString()</td>*@
+            </tr>
+            <tr>
+                <th>Applicant Name</th>
+                <td>@Model.Applicant.User.FirstName</td>
+            </tr>
+            <tr>
+                <th>Loan Amount</th>
+                @*<td>@Model.LoanAmount.ToString("C")</td>*@
+            </tr>
+            <tr>
+                <th>Tenure (Months)</th>
+                @*<td>@Model.Tenure</td>*@
+            </tr>
+            <tr>
+                <th>EMI Amount</th>
+                @*<td>@Model.EMIAmount.ToString("C")</td>*@
+            </tr>
+            <tr>
+                <th>Status</th>
+                @*<td>@Model.Status</td>*@
+            </tr>
+            <tr>
+                <th>Assigned Officer</th>
+                @*<td>@Model.AssignedOfficer.User.FirstName</td>*@
+            </tr>
+            <tr>
+                <th>Loan Scheme</th>
+                @*<td>@Model.Scheme.SchemeName</td>*@
+            </tr>
+    </table>
+
+    <h2>Repayment Schedule</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Loan Name Under</th>
+                <th>Next Payment Date</th>
+                <th>Amount Payable</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                var date = Model.PaymentStartDate;
+            }
+            @for (int i = 0; i < Model.Tenure; i++)
+            {
+
+                <tr>
+                    <td>@Model.Applicant.User.FirstName</td>
+                    <td>@date</td>
+                    <td>@Model.EMIAmount</td>
+                    <td>
+                        <button onclick="payEMI()"
+                                class="btn btn-primary">
+                            Pay EMI
+                        </button>
+                    </td>
+
+                </tr>
+                if (Model.Tenure != Model.Repayments.Count)
+                {
+                    @date.AddMonths(1)
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
