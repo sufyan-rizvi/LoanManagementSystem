@@ -24,7 +24,7 @@ namespace LoanManagementSystem.Data
                     .ExposeConfiguration(cfg => new SchemaUpdate(cfg).Execute(true, true))
                     .BuildSessionFactory();
             }
-            return _sessionFactory.OpenSession();
+            return _sessionFactory.OpenSession(); //54321
         }
     }
 }
