@@ -118,7 +118,7 @@ namespace LoanManagementSystem.Controllers
                         var collateralDocs = new CollateralDocuments()
                         {
 
-                            DocumentType = ((DocumentType)(i+3)).ToString(),
+                            DocumentType = (DocumentType)(i+3),
                             PublicId = result.PublicId,
                             ImageUrl = result.SecureUrl.ToString(),
 
