@@ -81,6 +81,7 @@ namespace LoanManagementSystem.Controllers
                 {
                     customer.User.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(customer.User.Password, 6);
                     customer.User.IsActive = true;
+                    customer.User.Address.User = customer.User;
                     customer.User.Role = new Role();
                     customer.User.Role.RoleName = "Customer";
                     customer.User.Role.User = customer.User;
