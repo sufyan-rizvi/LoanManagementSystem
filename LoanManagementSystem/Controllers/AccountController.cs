@@ -30,23 +30,23 @@ namespace LoanManagementSystem.Controllers
                         if (user != null)
                         {
                             //string hashedPassword = HashingService.HashPassword(model.Password);
-                            bool isPasswordValid = BCrypt.Net.BCrypt.Verify(model.Password, user.Password);
+                            bool isPasswordValid = BCrypt.Net.BCrypt.EnhancedVerify(model.Password, user.Password);
                             if (isPasswordValid)
                             {
                                 if (user.Role.RoleName == "Admin")
                                 {
                                     FormsAuthentication.SetAuthCookie(model.UserName, true);
-                                    return RedirectToAction("Action", "Controller");
+                                    return RedirectToAction("Index", "Admin");
                                 }
                                 else if(user.Role.RoleName == "LoanOfficer")
                                 {
                                     FormsAuthentication.SetAuthCookie(model.UserName, true);
-                                    return RedirectToAction("Action", "Controller");
+                                    return RedirectToAction("Welcome", "LoanOfficer");
                                 }
                                 else
                                 {
                                     FormsAuthentication.SetAuthCookie(model.UserName, true);
-                                    return RedirectToAction("Action", "Controller");
+                                    return RedirectToAction("ListSchemes", "LoanScheme");
                                 }
                                 
                                 
@@ -79,7 +79,7 @@ namespace LoanManagementSystem.Controllers
             {
                 using (var transaction = session.BeginTransaction())
                 {
-                    string hashedPassword = BCrypt.Net.BCrypt.HashPassword(user.Password);
+                    string hashedPassword = BCrypt.Net.BCrypt.EnhancedHashPassword(user.Password,6);
                     user.Password = hashedPassword;
                     user.IsActive = true;
                     user.Role = new Role()
