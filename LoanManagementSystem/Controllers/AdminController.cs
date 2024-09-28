@@ -13,7 +13,7 @@ using LoanManagementSystem.Repository;
 using LoanManagementSystem.Service;
 using LoanManagementSystem.ViewModels;
 using NHibernate.Linq;
-using Quartz;
+
 using BC = BCrypt.Net.BCrypt;
 using System.Threading.Tasks;
 
@@ -29,19 +29,6 @@ namespace LoanManagementSystem.Controllers
 
         public ActionResult Index()
         {
-            var scheduler = (IScheduler)HttpContext.Application["Scheduler"];
-            IJobDetail job = JobBuilder.Create<RepaymentEmailSendingJob>().Build();
-
-            ITrigger trigger = TriggerBuilder.Create()
-                .WithIdentity("trigger1", "group1")
-                .StartNow()
-                .WithSimpleSchedule(x => x
-                    .WithIntervalInSeconds(0).WithRepeatCount(0))  // Schedule to repeat indefinitely
-                .Build();
-
-            scheduler.ScheduleJob(job, trigger);
-
-
             return View();
         }
 

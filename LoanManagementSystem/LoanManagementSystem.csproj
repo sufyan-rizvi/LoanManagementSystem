@@ -333,7 +333,6 @@
     </Compile>
     <Compile Include="Jobs\RepaymentEmailSendingJob.cs" />
     <Compile Include="Jobs\PaymentTrackingJob.cs" />
-    <Compile Include="Jobs\TaskManager.cs" />
     <Compile Include="Mappings\AddressMap.cs" />
     <Compile Include="Mappings\CollateralDocsMap.cs" />
     <Compile Include="Mappings\LoanApplicationMap.cs" />
