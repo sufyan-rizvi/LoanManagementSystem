@@ -52,7 +52,7 @@ namespace LoanManagementSystem.Controllers
                         {
                             Session["Customer"] = _accountService.GetCustomerByUserId(user.UserId);
                             FormsAuthentication.SetAuthCookie(model.UserName, true);
-                            return RedirectToAction("ListSchemes", "LoanScheme");
+                            return RedirectToAction("Index", "Customer");
                         }
                     }
                 }

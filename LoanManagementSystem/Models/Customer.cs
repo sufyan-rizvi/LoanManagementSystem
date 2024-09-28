@@ -13,7 +13,7 @@ namespace LoanManagementSystem.Models
         public virtual string PANNumber { get; set; }
         public virtual int PaymentsMissed { get; set; } = 0;
         public virtual User User { get; set; }
-        public virtual LoanScheme LoanScheme { get; set; }
+        public virtual IList<LoanApplication> LoanApplications { get; set; }
         public virtual BankAccountDetails BankAccountDetails { get; set; }
         public virtual IList<RegistrationDocuments> RegistrationDocuments { get; set; }
         public virtual IList<CollateralDocuments> CollateralDocuments { get; set; }

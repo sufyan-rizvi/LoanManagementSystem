@@ -12,12 +12,35 @@ namespace LoanManagementSystem.Controllers
     public class CustomerController : Controller
     {
         private readonly CloudinaryService _cloudinaryService;
+        private readonly ICustomerService _schemeService;
 
-        public CustomerController()
+        public CustomerController(ICustomerService schemeService)
         {
             _cloudinaryService = new CloudinaryService();
+            _schemeService = schemeService;
         }
-        // GET: Customer
+
+        public ActionResult Schemes()
+        {
+            using (var session = NhibernateHelper.CreateSession())
+            {
+                var schemes = _schemeService.GetAllSchemes();
+                return View(schemes);
+            }
+        }
+        public ActionResult Index()
+        {
+            var customer = (Customer)Session["Customer"];
+            var loans = _schemeService.CustomerApplications(customer.CustId);
+            return View(loans);
+        }
+
+
+        public ActionResult CustomerLoanSchemes()
+        {
+            var customer = (Customer)Session["Customer"];
+            return View(customer);
+        }
         public ActionResult ApprovalDocIndex()
         {
             return View();
@@ -118,12 +141,12 @@ namespace LoanManagementSystem.Controllers
                         var collateralDocs = new CollateralDocuments()
                         {
 
-                            DocumentType = (DocumentType)(i+3),
+                            DocumentType = (DocumentType)(i + 3),
                             PublicId = result.PublicId,
                             ImageUrl = result.SecureUrl.ToString(),
 
                         };
-                        
+
                         session.Save(collateralDocs);
                         transaction.Commit();
 

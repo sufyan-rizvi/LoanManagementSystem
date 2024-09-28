@@ -328,7 +328,6 @@
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\EMICalculatorController.cs" />
     <Compile Include="Controllers\LoanOfficerController.cs" />
-    <Compile Include="Controllers\LoanSchemeController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Data\NhibernateHelper.cs" />
     <Compile Include="Global.asax.cs">
@@ -371,14 +370,18 @@
     <Compile Include="Repository\AdminRepository.cs" />
     <Compile Include="Repository\IAccountRepository.cs" />
     <Compile Include="Repository\IAdminRepository.cs" />
+    <Compile Include="Repository\ICustomerRepository.cs" />
     <Compile Include="Repository\IPaymentRepository.cs" />
+    <Compile Include="Repository\CustomerRepository.cs" />
     <Compile Include="Repository\PaymentRepository.cs" />
     <Compile Include="Service\AccountService.cs" />
     <Compile Include="Service\AdminService.cs" />
     <Compile Include="Service\CloudinaryService.cs" />
     <Compile Include="Service\IAccountService.cs" />
     <Compile Include="Service\IAdminService.cs" />
+    <Compile Include="Service\ICustomerService.cs" />
     <Compile Include="Service\IPaymentService.cs" />
+    <Compile Include="Service\CustomerService.cs" />
     <Compile Include="Service\PaymentService.cs" />
     <Compile Include="ViewModels\LoginVM.cs" />
   </ItemGroup>
@@ -412,8 +415,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
-    <Content Include="Views\LoanScheme\ListSchemes.cshtml" />
-    <Content Include="Views\LoanScheme\SchemeDetails.cshtml" />
+    <Content Include="Views\Customer\Schemes.cshtml" />
     <Content Include="Views\LoanOfficer\Welcome.cshtml" />
     <Content Include="Views\LoanOfficer\LoanApproval.cshtml" />
     <Content Include="Views\LoanOfficer\CollateralApproval.cshtml" />
@@ -430,6 +432,7 @@
     <Content Include="Views\Customer\UploadResult.cshtml" />
     <Content Include="Views\Customer\ColateralDocIndex.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Customer\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
