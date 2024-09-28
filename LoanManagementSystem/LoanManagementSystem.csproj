@@ -418,7 +418,6 @@
     <Content Include="Views\EMICalculator\Index.cshtml" />
     <Content Include="Views\Shared\_PartialSchemeEdit.cshtml" />
     <Content Include="Views\Account\LoginUser.cshtml" />
-    <Content Include="Views\Account\View.cshtml" />
     <Content Include="Views\Payment\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
