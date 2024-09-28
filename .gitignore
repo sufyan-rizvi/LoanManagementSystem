@@ -361,3 +361,11 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+Data/
+/LoanManagementSystem/Data/NhibernateHelper.cs
+/LoanManagementSystem/Views/Shared/_PartialSchemeAdd.cshtml
+/LoanManagementSystem/Views/Shared/_PartialSchemeEdit.cshtml
+/LoanManagementSystem/Views/Shared/_PartialSchemeList.cshtml
+/LoanManagementSystem/Views/Account/Register.cshtml
+/LoanManagementSystem/Views/Admin/Index.cshtml
