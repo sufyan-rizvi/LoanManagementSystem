@@ -23,7 +23,7 @@ namespace LoanManagementSystem.Controllers
         }
 
         // Action to show the full details of a loan scheme
-        public ActionResult SchemeDetails(int id)
+        public ActionResult SchemeDetails(Guid id)
         {
             using (var session = NhibernateHelper.CreateSession())
             {
