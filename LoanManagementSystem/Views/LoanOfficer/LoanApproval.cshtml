@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@model IEnumerable<LoanApplication>
+@model IEnumerable<LoanManagementSystem.Models.LoanApplication>
 
 @{
     ViewBag.Title = "Pending Loan Approvals";
@@ -26,13 +26,13 @@
         @foreach (var loan in Model)
         {
             <tr>
-                <td>@loan.LoanId</td>
-                <td>@loan.ApplicantName</td>
+                <td>@loan.ApplicationId</td>
+                <td>@loan.Applicant.User.FirstName</td>
                 <td>@loan.LoanAmount</td>
                 <td>@loan.Status</td>
                 <td>
-                    @Html.ActionLink("Approve", "ApproveLoan", "LoanOfficer", new { id = loan.LoanId }, new { @class = "btn btn-success" })
-                    @Html.ActionLink("Reject", "RejectLoan", "LoanOfficer", new { id = loan.LoanId }, new { @class = "btn btn-danger" })
+                    @Html.ActionLink("Approve", "ApproveLoan", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-success" })
+                    @Html.ActionLink("Reject", "RejectLoan", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-danger" })
                 </td>
             </tr>
         }

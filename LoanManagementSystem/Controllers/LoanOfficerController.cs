@@ -32,7 +32,7 @@ namespace LoanManagementSystem.Controllers
         {
             using (var session = NhibernateHelper.CreateSession())
             {
-                var pendingCollaterals = session.Query<Collateral>().Where(c => c.Status == "Pending").ToList();
+                var pendingCollaterals = session.Query<LoanApplication>().Where(c => c.Status == ApplicationStatus.CollateralPending).ToList();
                 return View(pendingCollaterals);
             }
         }

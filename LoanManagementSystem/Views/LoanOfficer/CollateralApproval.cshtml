@@ -1,10 +1,11 @@
 ﻿
+
 @{
-    //ViewBag.Title = "CollateralApproval";
+    //ViewBag.Title = "LoanApproval";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@model IEnumerable<LoanManagementSystem.Models.Collateral>
+@model IEnumerable<LoanManagementSystem.Models.LoanApplication>
 
 @{
     ViewBag.Title = "Pending Collateral Approvals";
@@ -15,28 +16,30 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Collateral ID</th>
             <th>Loan ID</th>
-            <th>Collateral Value</th>
+            <th>Applicant Name</th>
+            <th>Loan Amount</th>
             <th>Status</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var collateral in Model)
+        @foreach (var loan in Model)
         {
             <tr>
-                <td>@collateral.CollateralId</td>
-                <td>@collateral.LoanId</td>
-                <td>@collateral.CollateralValue</td>
-                <td>@collateral.Status</td>
+                <td>@loan.ApplicationId</td>
+                <td>@loan.Applicant.User.FirstName</td>
+                <td>@loan.LoanAmount</td>
+                <td>@loan.Status</td>
                 <td>
-                    @Html.ActionLink("Approve", "ApproveCollateral", "LoanOfficer", new { id = collateral.CollateralId }, new { @class = "btn btn-success" })
-                    @Html.ActionLink("Reject", "RejectCollateral", "LoanOfficer", new { id = collateral.CollateralId }, new { @class = "btn btn-danger" })
+                    @Html.ActionLink("Approve", "ApproveCollateral", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-success" })
+                    @Html.ActionLink("Reject", "RejectCollateral", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-danger" })
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+
 
 

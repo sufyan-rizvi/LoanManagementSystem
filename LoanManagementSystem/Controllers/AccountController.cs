@@ -84,7 +84,7 @@ namespace LoanManagementSystem.Controllers
                     user.IsActive = true;
                     user.Role = new Role()
                     {
-                        RoleName = "customer",
+                        RoleName = "Customer",
                         User = user,
                     };
                     //user.Role.User = user;
