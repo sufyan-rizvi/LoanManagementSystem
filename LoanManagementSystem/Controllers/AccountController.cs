@@ -62,7 +62,7 @@ namespace LoanManagementSystem.Controllers
                 }
 
             }
-            return RedirectToAction("LoginUser");
+            return View();
 
             
         }
@@ -73,26 +73,21 @@ namespace LoanManagementSystem.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Register(User user)
+        public ActionResult Register(Customer customer)
         {
             using (var session = NhibernateHelper.CreateSession())
             {
                 using (var transaction = session.BeginTransaction())
                 {
-                    string hashedPassword = BCrypt.Net.BCrypt.EnhancedHashPassword(user.Password,6);
-                    user.Password = hashedPassword;
-                    user.IsActive = true;
-                    user.Role = new Role()
-                    {
-                        RoleName = "Customer",
-                        User = user,
-                    };
-                    //user.Role.User = user;
+                    customer.User.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(customer.User.Password, 6);
+                    customer.User.IsActive = true;
+                    customer.User.Role = new Role();
+                    customer.User.Role.RoleName = "Customer";
+                    customer.User.Role.User = customer.User;
 
-
-                    session.Save(user);
+                    session.Save(customer);
                     transaction.Commit();
-                    return RedirectToAction("Login");
+                    return RedirectToAction("Loginuser");
                 }
             }
         }

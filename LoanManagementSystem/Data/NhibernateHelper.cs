@@ -19,7 +19,7 @@ namespace LoanManagementSystem.Data
             if (_sessionFactory == null)
             {
                 _sessionFactory = Fluently.Configure()
-                    .Database(MsSqlConfiguration.MsSql2012.ConnectionString("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=LoanDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;"))
+                    .Database(MsSqlConfiguration.MsSql2012.ConnectionString("Data Source=DESKTOP-646UVFV\\SQLEXPRESS;Initial Catalog=LoanDb;Integrated Security=True;Connect Timeout=30;Encrypt=false;"))
                     .Mappings(m => m.FluentMappings.AddFromAssemblyOf<UserMap>())
                     .ExposeConfiguration(cfg => new SchemaUpdate(cfg).Execute(true, true))
                     .BuildSessionFactory();
