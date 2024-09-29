@@ -452,6 +452,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="DTOs\" />
     <Folder Include="Mappers\" />
+    <Folder Include="Views\Repayment\" />
     <Folder Include="WebProvider\" />
   </ItemGroup>
   <PropertyGroup>
