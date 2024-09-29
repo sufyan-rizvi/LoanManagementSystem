@@ -7,7 +7,7 @@
 
 <div style="display:@(Model.Count() == 0 ? "" : "none")">
     <h1 class="my-2">You have no Loan Applications</h1>
-    Apply Now!
+    @Html.ActionLink("Apply Now!", "schemes")
 </div>
 <div style="display:@(Model.Count() == 0 ? "none" : "")">
     <h1 class="my-2">My Loans</h1>
@@ -60,4 +60,8 @@
         }
 
     </table>
+    <p>
+        Want Another Loan? Get instant Approval!
+        @Html.ActionLink("Apply Now!", "schemes")
+    </p>
 </div>

@@ -318,6 +318,11 @@
     <Content Include="Scripts\jquery.jqGrid.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -383,6 +388,7 @@
     <Compile Include="Service\IPaymentService.cs" />
     <Compile Include="Service\CustomerService.cs" />
     <Compile Include="Service\PaymentService.cs" />
+    <Compile Include="ViewModels\LoanApplicationSchemeVM.cs" />
     <Compile Include="ViewModels\LoginVM.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -433,6 +439,7 @@
     <Content Include="Views\Customer\ColateralDocIndex.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Customer\Index.cshtml" />
+    <Content Include="Views\Customer\ApplyLoan.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using LoanManagementSystem.Data;
 using LoanManagementSystem.Models;
 using LoanManagementSystem.Service;
+using LoanManagementSystem.ViewModels;
 
 namespace LoanManagementSystem.Controllers
 {
@@ -35,6 +36,18 @@ namespace LoanManagementSystem.Controllers
             return View(loans);
         }
 
+        public ActionResult ApplyLoan()
+        {
+            var scheme = new LoanApplicationSchemeVM();
+            scheme.LoanScheme = new LoanScheme() { InterestRate=5 };    
+            return View(scheme);
+        }
+
+        public JsonResult AddLoanDetails(LoanApplicationSchemeVM vm)
+        {
+            return Json("Nice");
+        }
+
 
         public ActionResult CustomerLoanSchemes()
         {
@@ -50,7 +63,7 @@ namespace LoanManagementSystem.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult UploadApprovalDoc(List<HttpPostedFileBase> file)
+        public ActionResult UploadDoc(List<HttpPostedFileBase> file)
         {
             for (var i = 1; i <= file.Count(); i++)
             {
