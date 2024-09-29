@@ -26,6 +26,26 @@ namespace LoanManagementSystem.Controllers
         {
             _adminService = adminService;
         }
+        public ActionResult Analytics()
+        {
+            //bhai jii we will send these data from our DataBase accordingly
+            var loanApplications = new List<int> { 12, 19, 3, 5, 2 };  // Example data
+            var loanAmounts = new List<int> { 5000, 10000, 7500, 12000, 9000 };  // Data for line chart
+            var months = new List<string> { "January", "February", "March", "April", "May" };  // X-axis labels
+                                                                                               // Data for NPA (example: percentage of NPAs each month)
+            var npaPercentages = new List<int> { 5, 7, 6, 8, 10 };
+
+
+            ViewBag.LoanApplications = loanApplications;
+            ViewBag.LoanAmounts = loanAmounts;
+            ViewBag.Months = months;
+            ViewBag.NPAPercentages = npaPercentages;
+
+
+
+
+            return View();
+        }
 
         public ActionResult Index()
         {

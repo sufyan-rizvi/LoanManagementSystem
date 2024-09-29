@@ -427,6 +427,7 @@
     <Content Include="Views\Customer\UploadResult.cshtml" />
     <Content Include="Views\Customer\ColateralDocIndex.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Admin\Analytics.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

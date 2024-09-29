@@ -22,9 +22,15 @@
 
 <div id="detailList" class="container">
 
+    <!--For analytics-->
     <div id="analytics">
-
+        @Html.Action("Analytics")
     </div>
+
+
+
+
+    @*for  Loan schemes*@
     <div id="loanschemes" style="display:none">
 
         <div id="addscheme" style="display:none">
@@ -48,6 +54,13 @@
             @Html.Partial("_PartialSchemeList")
         </div>
     </div>
+
+
+
+
+
+
+
     <div id="listofficer" style="display:none">
 
         <h2 class="my-3">List of LoanOfficers</h2>
