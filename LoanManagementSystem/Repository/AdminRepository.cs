@@ -22,6 +22,9 @@ namespace LoanManagementSystem.Repository
         {
             using (var txn = _session.BeginTransaction())
             {
+                officer.User.Role = new Role();
+                officer.User.Role.RoleName = "LoanOfficer";
+                officer.User.Role.User = officer.User;
                 officer.User.Password = BC.EnhancedHashPassword(officer.User.Password, 6);
                 officer.User.Address.User = officer.User;
                 officer.User.IsActive = true;

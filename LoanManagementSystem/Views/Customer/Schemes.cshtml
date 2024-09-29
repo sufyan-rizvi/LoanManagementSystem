@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewBag.Title = "ListSchemes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model IEnumerable<LoanManagementSystem.Models.LoanScheme>
+
+<h2 class="my-2">Available Loan Schemes</h2>
+
+<table class="table table-borderless table-striped">
+    <thead>
+        <tr>
+            <th>Scheme Name</th>
+            <th>Scheme Type</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var scheme in Model)
+        {
+            <tr>
+                <th>@scheme.SchemeName</th>
+                <td>@scheme.SchemeType</td>
+                <td>@scheme.ShortDescription</td>
+                <td></td>
+                <td>
+                    <button class="btn btn-outline-primary" , onclick="showLongDescrip('@scheme.LoanSchemeId')">Know More</button>
+                </td>
+
+            </tr>
+
+            <tr id="@scheme.LoanSchemeId" style="display:none">
+                <td style="width:800px">@scheme.LongDescription</td>
+                <td >@Html.ActionLink("Apply Now!", "ApplyLoan")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<script>
+    function showLongDescrip(itemId) {
+        $(`#${itemId}`).toggle(1000)
+    }
+</script>

@@ -17,6 +17,11 @@ namespace LoanManagementSystem
             container.RegisterType<ISession>(new InjectionFactory(c => NhibernateHelper.CreateSession()));
             container.RegisterType<IAdminService, AdminService>();
             container.RegisterType<IAdminRepository, AdminRepository>();
+            container.RegisterType<IAccountRepository, AccountRepository>();
+            container.RegisterType<IAccountService, AccountService>();
+            container.RegisterType<ICustomerService, CustomerService>();
+            container.RegisterType<ICustomerRepository, CustomerRepository>();
+           
             // register all your components with the container here
             // it is NOT necessary to register your controllers
 
