@@ -13,67 +13,69 @@ namespace LoanManagementSystem.Controllers
     public class CustomerController : Controller
     {
         private readonly CloudinaryService _cloudinaryService;
-        private readonly ICustomerService _schemeService;
+        private readonly ICustomerService _customerService;
+        private readonly IAdminService _adminService;
 
-        public CustomerController(ICustomerService schemeService)
+
+        public CustomerController(ICustomerService customerService, IAdminService adminService)
         {
             _cloudinaryService = new CloudinaryService();
-            _schemeService = schemeService;
+            _customerService = customerService;
+            _adminService = adminService;
         }
 
         public ActionResult Schemes()
         {
             using (var session = NhibernateHelper.CreateSession())
             {
-                var schemes = _schemeService.GetAllSchemes();
+                var schemes = _customerService.GetAllSchemes();
                 return View(schemes);
             }
         }
         public ActionResult Index()
         {
             var customer = (Customer)Session["Customer"];
-            var loans = _schemeService.CustomerApplications(customer.CustId);
+            var loans = _customerService.CustomerApplications(customer.CustId);
             return View(loans);
         }
 
-        public ActionResult ApplyLoan()
+        public ActionResult ApplyLoan(Guid id)
         {
             var scheme = new LoanApplicationSchemeVM();
-            scheme.LoanScheme = new LoanScheme() { InterestRate=5 };    
+            scheme.LoanScheme = _customerService.GetSchemeById(id);   
             return View(scheme);
         }
 
         public JsonResult AddLoanDetails(LoanApplicationSchemeVM vm)
         {
+            var application = vm.LoanApplication;
+            application.Scheme = _customerService.GetSchemeById(vm.LoanScheme.LoanSchemeId);
+            
+
+            application.Applicant = (Customer)Session["Customer"];
+            
+            var officerList = _adminService.GetAllOfficers();            
+            Random number = new Random();            ;
+            application.AssignedOfficer = officerList[number.Next(0, officerList.Count)];
+
+            application.ApplicationDate = DateTime.Now;
+
+            _customerService.AddLoanApplication(application);
             return Json("Nice");
         }
 
-
-        public ActionResult CustomerLoanSchemes()
-        {
-            var customer = (Customer)Session["Customer"];
-            return View(customer);
-        }
-        public ActionResult ApprovalDocIndex()
-        {
-            return View();
-        }
-        public ActionResult ColateralDocIndex()
-        {
-            return View();
-        }
         [HttpPost]
-        public ActionResult UploadDoc(List<HttpPostedFileBase> file)
+        public ActionResult UploadDoc(List<HttpPostedFileBase> files)
         {
-            for (var i = 1; i <= file.Count(); i++)
+            for (var i = 0; i < files.Count(); i++)
             {
-                if (file == null || file[i].ContentLength == 0)
+                if (files == null || files[i].ContentLength == 0)
                 {
                     ViewBag.Message = "Please select a file to upload.";
                     return View("ApprovalDocIndex");
                 }
 
-                var result = _cloudinaryService.UploadImage(file[i]);
+                var result = _cloudinaryService.UploadImage(files[i]);
 
                 // Check if the result contains an error
                 if (result.Error != null)

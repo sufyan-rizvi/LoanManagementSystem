@@ -14,6 +14,8 @@
         <div class="col">
             <div class="form-horizontal">
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.LoanScheme.LoanSchemeId, new { id = "lsid" })
+
                 <div class="form-group">
                     @Html.LabelFor(model => model.LoanScheme.SchemeName, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
@@ -162,6 +164,8 @@
                 $(input).siblings('.text-danger').text('');
             }
         }
+
+
         $("#detailCreate").click(() => {
             event.preventDefault()
             var LoanApplicationData = {
@@ -173,42 +177,32 @@
                 }
             };
 
-            var registrationdoc = new FormData()
-            registrationdoc.append("file", $("#aadharFile")[0].files[0]) // Get the file object
-            registrationdoc.append("file", $("#panFile")[0].files[0]) // Get the file object
-            registrationdoc.append("file", $("#photoFile")[0].files[0]) // Get the file object
-
-            console.log(registrationdoc)
+            var formData = new FormData();
+            formData.append("files", $("#aadharFile")[0].files[0], $("#aadharFile")[0].files[0].name);
+            formData.append("files", $("#panFile")[0].files[0], $("#panFile")[0].files[0].name); // PAN
+            formData.append("files", $("#photoFile")[0].files[0], $("#photoFile")[0].files[0].name);
 
 
             $.ajax({
                 url: "/customer/addloandetails",
                 type: "POST",
-                data: { LoanApplication: LoanApplicationData },
+                data: {
+                    LoanScheme: {
+                        LoanSchemeId: $("#lsid").val()
+                    },
+                    LoanApplication: LoanApplicationData
+                },
                 success: () => {
-                    alert("Your data has been sent to a loan officer for approval!");
+                   
 
-                    // AJAX request for Document Uploads
-                    //var formData = new FormData(); // Create FormData for file uploads
-
-                    //formData.append("registrationDocuments", registrationdoc.AadharFile);
-
-
-                    //formData.append("registrationDocuments", registrationdoc.PANFile);
-
-
-                    //formData.append("registrationDocuments", registrationdoc.PhotoFile);
-
-
-                    // Upload registration documents
                     $.ajax({
                         url: "/customer/uploaddoc",
                         type: "POST",
-                        data: registrationdoc,
-                        processData: false, // Prevent jQuery from processing the data
-                        contentType: false, // Set content type to false
+                        data: formData,
+                        processData: false, 
+                        contentType: false, 
                         success: () => {
-                            alert("Documents uploaded successfully!");
+                            alert("Your documents has=ve been sent to a loan officer for approval!");
                         },
                         error: (err) => {
                             console.log("Error uploading documents:", err);
