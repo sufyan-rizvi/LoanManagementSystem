@@ -1,4 +1,4 @@
-﻿
+﻿@model LoanManagementSystem.Models.LoanApplication
 @{
     ViewBag.Title = "Razorpay Payment Page";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -9,7 +9,7 @@
 <form id="payment-form" action="/Payment/ProcessPayment" method="POST">
     <div class="form-group">
         <label for="amount">Enter Amount (in INR):</label>
-        <input type="number" id="amount" name="amount" class="form-control" required />
+        <input type="number" id="amount" name="amount" class="form-control" value="@Model.EMIAmount" required />
     </div>
     <input type="hidden" id="rzp_payment_id" name="rzp_payment_id" />
     <input type="hidden" id="rzp_order_id" name="rzp_order_id" />

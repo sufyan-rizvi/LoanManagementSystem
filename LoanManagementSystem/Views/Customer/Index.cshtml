@@ -18,13 +18,10 @@
             <th>
                 @Html.DisplayNameFor(model => model.Scheme.SchemeName)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EMIAmount)
+            </th>
 
-            <th>
-                @Html.DisplayNameFor(model => model.Scheme.SchemeType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Applicant.User.FirstName)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.ApplicationDate)
             </th>
@@ -48,10 +45,7 @@
                     @Html.DisplayFor(modelItem => item.Scheme.SchemeName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Scheme.SchemeType)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Applicant.User.FirstName)
+                    @Html.DisplayFor(modelItem => item.EMIAmount)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ApplicationDate)

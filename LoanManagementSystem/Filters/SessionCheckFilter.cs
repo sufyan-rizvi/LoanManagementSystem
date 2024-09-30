@@ -10,23 +10,32 @@ namespace LoanManagementSystem.Filters
 {
     public class SessionCheckFilter : ActionFilterAttribute
     {
+        private readonly string[] _allowedUrls = new[]
+    {
+        "/Customer/Schemes",  // Allow login page
+        "/Account/Register",  
+        "/Account/Login"// Allow home page
+        // Add more URLs as needed
+    };
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            // Check if all session values are null
-            if (HttpContext.Current.Session["Customer"] == null &&
-                HttpContext.Current.Session["Admin"] == null &&
-                HttpContext.Current.Session["LoanOfficer"] == null)
+
+            var httpContext = filterContext.HttpContext;
+
+            // Check if the request URL is in the allowed list
+            string requestUrl = httpContext.Request.Url.AbsolutePath;
+            if (Array.Exists(_allowedUrls, url => url.Equals(requestUrl, StringComparison.OrdinalIgnoreCase)))
             {
-                var isLoginPage = filterContext.HttpContext.Request.Url.AbsolutePath.Contains("/Account/Login");
+                return; // Allow the request to go through
+            }
 
-                if (!isLoginPage)
-                {
-                    // Clear the session
-                    HttpContext.Current.Session.Clear();
-
-                    // Redirect to the login page
-                    filterContext.Result = new RedirectResult("~/Account/Login");
-                }
+            // Check session variables
+            if (httpContext.Session["Customer"] == null &&
+                httpContext.Session["Admin"] == null &&
+                httpContext.Session["LoanOfficer"] == null)
+            {
+                // Redirect to login page if all session variables are null
+                filterContext.Result = new RedirectResult("/Account/Login");
             }
 
             base.OnActionExecuting(filterContext);

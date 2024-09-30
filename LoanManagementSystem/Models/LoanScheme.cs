@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using Unity.Resolution;
@@ -18,6 +19,8 @@ namespace LoanManagementSystem.Models
                 return Enum.GetName(typeof(SchemeType), (int)SchemeType);
             }
         }
+        [Required]
+        [Display(Name ="Interest %")]
         public virtual double InterestRate { get; set; }
         public virtual string LongDescription { get; set; }
         public virtual string ShortDescription { get; set; }

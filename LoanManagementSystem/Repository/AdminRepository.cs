@@ -55,7 +55,7 @@ namespace LoanManagementSystem.Repository
         }
         public IList<LoanOfficer> GetAllOfficers()
         {
-            return _session.Query<LoanOfficer>().Fetch(l => l.User).ThenFetch(u => u.Address).ToList();
+            return _session.Query<LoanOfficer>().Fetch(l => l.User).ThenFetch(u => u.Address).Where(l=>l.User.IsActive).ToList();
         }
 
         public void DeleteScheme(LoanScheme scheme)
@@ -98,17 +98,6 @@ namespace LoanManagementSystem.Repository
                 var existingOfficer = _session.Query<LoanOfficer>().FirstOrDefault(l => l.OfficerId == officer.OfficerId);
                 if (existingOfficer != null)
                 {
-                    //existingOfficer.User.FirstName = officer.User.FirstName;
-                    //existingOfficer.User.LastName = officer.User.LastName;
-                    //existingOfficer.User.PhoneNumber = officer.User.PhoneNumber;
-                    //existingOfficer.User.Email = officer.User.PhoneNumber;
-                    //existingOfficer.User.Address.FlatNo = officer.User.Address.FlatNo;
-                    //existingOfficer.User.Address.BuildingName = officer.User.Address.BuildingName;
-                    //existingOfficer.User.Address.StreetName = officer.User.Address.StreetName;
-                    //existingOfficer.User.Address.City = officer.User.Address.City;
-                    //existingOfficer.User.Address.PinCode = officer.User.Address.PinCode;
-                    //existingOfficer.User.Address.State = officer.User.Address.State;
-                    //existingOfficer.User.Address.Country = officer.User.Address.Country;
                     existingOfficer.User = officer.User;
 
                     _session.Merge(existingOfficer);

@@ -19,7 +19,7 @@ namespace LoanManagementSystem
             UnityConfig.RegisterComponents();
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);            
+            //FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             Mapper.Initialize(cfg =>
             {
                 cfg.AddProfile<MappingProfile>();
