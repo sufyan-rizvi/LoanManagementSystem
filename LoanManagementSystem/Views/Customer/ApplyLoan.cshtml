@@ -214,7 +214,9 @@
                         processData: false,
                         contentType: false,
                         success: () => {
-                            alert("Your documents has=ve been sent to a loan officer for approval!");
+                            alert("Your documents have been sent to a loan officer for approval!");
+                            window.location.href = "https://localhost:44330/Customer/index"
+                            location.reload()
                         },
                         error: (err) => {
                             console.log("Error uploading documents:", err);

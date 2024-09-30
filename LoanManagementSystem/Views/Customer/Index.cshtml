@@ -32,10 +32,10 @@
                 @Html.DisplayNameFor(model => model.PaymentStartDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LoanAmount)
+                @Html.DisplayNameFor(model => model.NextPaymentDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Tenure)
+                @Html.DisplayNameFor(model => model.PaymentsMissed)
             </th>
             <th>@Html.DisplayNameFor(m => m.Status)</th>
             <th>Options</th>
@@ -61,16 +61,17 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.PaymentStartDate)
                     </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NextPaymentDate)
+                    </td>
                 }
                 else
                 {
                     <td>N/A</td>
+                    <td>N/A</td>
                 }
                 <td>
-                    @Html.DisplayFor(modelItem => item.LoanAmount)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Tenure)
+                    @Html.DisplayFor(modelItem => item.PaymentsMissed)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Status)
@@ -78,13 +79,13 @@
                 @if (item.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment)
                 {
                     <td>
-                        @Html.ActionLink("Pay Now!","")
+                        @Html.ActionLink("Pay Now!", "Index", "Payment", null, new { @class = "btn btn-primary" })
                     </td>
                 }
                 else if (item.Status == LoanManagementSystem.Models.ApplicationStatus.CollateralPending)
                 {
                     <td>
-                       @Html.ActionLink("Add Collateral Documents", "AddCollateral", "Customer", null,new {@class= "btn btn-primary"})
+                        @Html.ActionLink("Add Collateral Documents", "AddCollateral", "Customer", null, new { @class = "btn btn-primary" })
                     </td>
                 }
                 else

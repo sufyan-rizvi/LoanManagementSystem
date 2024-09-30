@@ -346,9 +346,10 @@
     <Compile Include="Controllers\EMICalculatorController.cs" />
     <Compile Include="Controllers\LoanOfficerController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
-    <Compile Include="Controllers\RazorPaymentController.cs" />
     <Compile Include="Data\NhibernateHelper.cs" />
     <Compile Include="DTOs\LoanSchemeDTO.cs" />
+    <Compile Include="Filters\FilterConfig.cs" />
+    <Compile Include="Filters\SessionCheckFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -446,7 +447,6 @@
     <Content Include="Views\EMICalculator\Index.cshtml" />
     <Content Include="Views\Shared\_PartialSchemeEdit.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Payment\Index.cshtml" />
     <Content Include="Views\Customer\UploadResult.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Admin\Analytics.cshtml" />
@@ -455,9 +455,9 @@
     <Content Include="Views\Customer\AddCollateral.cshtml" />
     <Content Include="Views\LoanOfficer\GetLoanDocuments.cshtml" />
     <Content Include="Views\LoanOfficer\GetCollateralDocuments.cshtml" />
-    <Content Include="Views\RazorPayment\Index.cshtml" />
-    <Content Include="Views\RazorPayment\Success.cshtml" />
-    <Content Include="Views\RazorPayment\Error.cshtml" />
+    <Content Include="Views\Payment\Index.cshtml" />
+    <Content Include="Views\Payment\Success.cshtml" />
+    <Content Include="Views\Payment\Error.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
