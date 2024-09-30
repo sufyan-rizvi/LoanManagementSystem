@@ -24,7 +24,8 @@ namespace LoanManagementSystem.Controllers
         {
             using (var session = NhibernateHelper.CreateSession())
             {
-                var pendingLoans = session.Query<LoanApplication>().Where(l => l.Status == ApplicationStatus.PendingApproval).ToList();
+                var pendingLoans = session.Query<LoanApplication>().Where(l => l.Status ==
+                ApplicationStatus.PendingApproval).ToList();
                 return View(pendingLoans);
             }
         }
@@ -34,7 +35,8 @@ namespace LoanManagementSystem.Controllers
             using (var session = NhibernateHelper.CreateSession())
             {
                 var loanApplication = session.Get<LoanApplication>(id);
-                var documents = session.Query<RegistrationDocuments>().Where(r => r.Customer.CustId == loanApplication.Applicant.CustId).ToList();
+                var documents = session.Query<RegistrationDocuments>().Where(r => r.Customer.CustId == 
+                loanApplication.Applicant.CustId).ToList();
                 return View(documents);
             }
         }
@@ -98,7 +100,8 @@ namespace LoanManagementSystem.Controllers
         {
             using (var session = NhibernateHelper.CreateSession())
             {
-                var pendingCollaterals = session.Query<LoanApplication>().Where(c => c.Status == ApplicationStatus.CollateralPending).ToList();
+                var pendingCollaterals = session.Query<LoanApplication>().Where(c => c.Status == 
+                ApplicationStatus.CollateralPending).ToList();
                 return View(pendingCollaterals);
             }
         }
@@ -108,7 +111,8 @@ namespace LoanManagementSystem.Controllers
             using (var session = NhibernateHelper.CreateSession())
             {
                 var loanApplication = session.Get<LoanApplication>(id);
-                var documents = session.Query<CollateralDocuments>().Where(r => r.Customer.CustId == loanApplication.Applicant.CustId).ToList();
+                var documents = session.Query<CollateralDocuments>().Where(r => r.Customer.CustId == 
+                loanApplication.Applicant.CustId).ToList();
                 return View(documents);
             }
         }

@@ -19,7 +19,7 @@
             <th>Applicant Name</th>
             <th>Loan Amount</th>
             <th>Status</th>
-            <th>Actions</th>
+            <th>Documents</th>
         </tr>
     </thead>
     <tbody>
@@ -31,8 +31,9 @@
                 <td>@loan.LoanAmount</td>
                 <td>@loan.Status</td>
                 <td>
-                    @Html.ActionLink("Approve", "ApproveLoan", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-success" })
-                    @Html.ActionLink("Reject", "RejectLoan", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-danger" })
+                    @Html.ActionLink("Verify", "GetLoanDocuments", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-success" })
+                    @*@Html.ActionLink("Approve", "ApproveLoan", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-success" })
+        @Html.ActionLink("Reject", "RejectLoan", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-danger" })*@
                 </td>
             </tr>
         }

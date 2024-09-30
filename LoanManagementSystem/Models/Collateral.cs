@@ -10,7 +10,7 @@ namespace LoanManagementSystem.Models
         public virtual Guid CollateralId { get; set; }
         public virtual int LoanId { get; set; }
         public virtual decimal CollateralValue { get; set; }
-        public virtual string Status { get; set; } // "Pending", "Approved", "Rejected"
+        public virtual ApplicationStatus Status { get; set; } // "Pending", "Approved", "Rejected"
     }
 
 }
