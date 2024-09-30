@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -8,6 +9,8 @@ namespace LoanManagementSystem.Models
     public class Address
     {
         public virtual Guid AddressId { get; set; }
+        [Required]
+        [Display(Name ="Flat Number")]
         public virtual string FlatNo { get; set; }
         public virtual string BuildingName { get; set; }
         public virtual string StreetName { get; set; }

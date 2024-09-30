@@ -32,6 +32,7 @@ namespace LoanManagementSystem.Controllers
         //Show Rejistration Documents to the Loan Officesr
         public ActionResult GetLoanDocuments(Guid id)
         {
+            TempData["registerApplicationId"] = id;
             using (var session = NhibernateHelper.CreateSession())
             {
                 var loanApplication = session.Get<LoanApplication>(id);
@@ -40,8 +41,10 @@ namespace LoanManagementSystem.Controllers
                 return View(documents);
             }
         }
-        public ActionResult ApproveLoan(Guid id)
+        public ActionResult ApproveLoan()
         {
+
+            var id = TempData.Peek("registerApplicationId");
             using (var session = NhibernateHelper.CreateSession())
             {
                 var loan = session.Get<LoanApplication>(id);
@@ -64,8 +67,9 @@ namespace LoanManagementSystem.Controllers
         }
 
         // Action method for rejecting a loan
-        public ActionResult RejectLoan(Guid id)
+        public ActionResult RejectLoan()
         {
+            var id = TempData.Peek("registerApplicationId");
             using (var session = NhibernateHelper.CreateSession())
             {
                 var loan = session.Get<LoanApplication>(id);
@@ -108,6 +112,7 @@ namespace LoanManagementSystem.Controllers
         //Show Collateral Documents to the Loan Officesr
         public ActionResult GetCollateralDocuments(Guid id)
         {
+            TempData["collateralApplicationId"] = id;
             using (var session = NhibernateHelper.CreateSession())
             {
                 var loanApplication = session.Get<LoanApplication>(id);
@@ -117,8 +122,9 @@ namespace LoanManagementSystem.Controllers
             }
         }
         // Action method for approving a collateral
-        public ActionResult ApproveCollateral(Guid id)
+        public ActionResult ApproveCollateral()
         {
+            var id = TempData.Peek("collateralApplicationId");
             using (var session = NhibernateHelper.CreateSession())
             {
                 var collateral = session.Get<LoanApplication>(id);
@@ -141,8 +147,9 @@ namespace LoanManagementSystem.Controllers
         }
 
         // Action method for rejecting a collateral
-        public ActionResult RejectCollateral(Guid id)
+        public ActionResult RejectCollateral()
         {
+            var id = TempData.Peek("collateralApplicationId");
             using (var session = NhibernateHelper.CreateSession())
             {
                 var collateral = session.Get<LoanApplication>(id);
