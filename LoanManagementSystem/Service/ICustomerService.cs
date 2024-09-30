@@ -12,5 +12,6 @@ namespace LoanManagementSystem.Service
         IList<LoanScheme> GetAllSchemes();
         LoanScheme GetSchemeById(Guid id);
         IList<LoanApplication> CustomerApplications(Guid id);
+        void AddLoanApplication(LoanApplication application);
     }
 }

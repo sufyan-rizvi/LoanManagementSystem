@@ -31,5 +31,15 @@ namespace LoanManagementSystem.Repository
         {
             return _session.Query<LoanApplication>().Fetch(l=>l.Applicant).Where(l=>l.Applicant.CustId == id).ToList();
         }
+
+        public void AddloanDetail(LoanApplication application)
+        {
+            using(var txn =  _session.BeginTransaction())
+            {
+                application.Status = ApplicationStatus.PendingApproval;
+                _session.Merge(application);
+                txn.Commit();   
+            }
+        }
     }
 }

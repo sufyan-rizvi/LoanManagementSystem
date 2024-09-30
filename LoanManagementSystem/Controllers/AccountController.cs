@@ -26,46 +26,47 @@ namespace LoanManagementSystem.Controllers
         [HttpPost]
         public ActionResult LoginUser(LoginVM model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                return View();
+            var user = _accountService.GetUserByUsername(model.UserName);
+            if (user == null)
+                throw new InvalidOperationException("Username/ password does not match");
+            if (model.LoginType == "Employee")
             {
+                if (user.Role.RoleName == "Customer")
+                    throw new InvalidOperationException("The username/ password does not match");
+            }
+            else
+            {
+                if (user.Role.RoleName == "Admin" || user.Role.RoleName == "LoanOfficer")
+                    throw new InvalidOperationException("The username/ password does not match");
+            }
 
-                var user = _accountService.GetUserByUsername(model.UserName);
-                if (user != null)
+
+            //string hashedPassword = HashingService.HashPassword(model.Password);
+            bool isPasswordValid = BCrypt.Net.BCrypt.EnhancedVerify(model.Password, user.Password);
+            if (isPasswordValid)
+            {
+                if (user.Role.RoleName == "Admin")
                 {
-                    //string hashedPassword = HashingService.HashPassword(model.Password);
-                    bool isPasswordValid = BCrypt.Net.BCrypt.EnhancedVerify(model.Password, user.Password);
-                    if (isPasswordValid)
-                    {
-                        if (user.Role.RoleName == "Admin")
-                        {
-                            Session["Admin"] = _accountService.GetAdminByUserId(user.UserId);
-                            FormsAuthentication.SetAuthCookie(model.UserName, true);
-                            return RedirectToAction("Index", "Admin");
-                        }
-                        else if (user.Role.RoleName == "LoanOfficer")
-                        {
-                            Session["Officer"] = _accountService.GetOfficerByUserId(user.UserId);
-                            FormsAuthentication.SetAuthCookie(model.UserName, true);
-                            return RedirectToAction("Welcome", "LoanOfficer");
-                        }
-                        else
-                        {
-                            Session["Customer"] = _accountService.GetCustomerByUserId(user.UserId);
-                            FormsAuthentication.SetAuthCookie(model.UserName, true);
-                            return RedirectToAction("Index", "Customer");
-                        }
-                    }
+                    Session["Admin"] = _accountService.GetAdminByUserId(user.UserId);
+                    FormsAuthentication.SetAuthCookie(model.UserName, true);
+                    return RedirectToAction("Index", "Admin");
+                }
+                else if (user.Role.RoleName == "LoanOfficer")
+                {
+                    Session["Officer"] = _accountService.GetOfficerByUserId(user.UserId);
+                    FormsAuthentication.SetAuthCookie(model.UserName, true);
+                    return RedirectToAction("Welcome", "LoanOfficer");
                 }
                 else
                 {
-                    return View();
+                    Session["Customer"] = _accountService.GetCustomerByUserId(user.UserId);
+                    FormsAuthentication.SetAuthCookie(model.UserName, true);
+                    return RedirectToAction("Index", "Customer");
                 }
-
-
             }
             return View();
-
-
         }
 
 
@@ -76,7 +77,7 @@ namespace LoanManagementSystem.Controllers
         [HttpPost]
         public ActionResult Register(Customer customer)
         {
-            _accountService.AddCustomer(customer);  
+            _accountService.AddCustomer(customer);
             return RedirectToAction("Loginuser");
 
         }

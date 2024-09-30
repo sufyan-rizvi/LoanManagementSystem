@@ -16,7 +16,14 @@
     <table class="table">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ApplicationId)
+                @Html.DisplayNameFor(model => model.Scheme.SchemeName)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Scheme.SchemeType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Applicant.User.FirstName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ApplicationDate)
@@ -30,21 +37,35 @@
             <th>
                 @Html.DisplayNameFor(model => model.Tenure)
             </th>
-            <th></th>
+            <th>@Html.DisplayNameFor(m => m.Status)</th>
+            <th>Options</th>
         </tr>
 
         @foreach (var item in Model)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ApplicationId)
+                    @Html.DisplayFor(modelItem => item.Scheme.SchemeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Scheme.SchemeType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Applicant.User.FirstName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ApplicationDate)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PaymentStartDate)
-                </td>
+                @if (item.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment)
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PaymentStartDate)
+                    </td>
+                }
+                else
+                {
+                    <td>N/A</td>
+                }
                 <td>
                     @Html.DisplayFor(modelItem => item.LoanAmount)
                 </td>
@@ -52,16 +73,42 @@
                     @Html.DisplayFor(modelItem => item.Tenure)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    @Html.DisplayFor(modelItem => item.Status)
                 </td>
+                @if (item.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment)
+                {
+                    <td>
+                        <button>Pay Installment</button>
+                    </td>
+                }
+                else if (item.Status == LoanManagementSystem.Models.ApplicationStatus.CollateralPending)
+                {
+                    <td>
+                        <button>Add Collateral Documents</button>
+                    </td>
+                }
+                else if (item.Status == LoanManagementSystem.Models.ApplicationStatus.Approved || item.Status == LoanManagementSystem.Models.ApplicationStatus.CollateralApproved)
+                {
+                    <td>
+                        <button>Add Bank Details</button>
+                    </td>
+                }
+                else if (item.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment)
+                {
+                    <td>
+                        <button>Add Bank Details</button>
+                    </td>
+                }
+                else
+                {
+                    <td></td>
+                }
             </tr>
         }
 
     </table>
     <p>
-        Want Another Loan? Get instant Approval!
+        <span class="text-primary"> Want Another Loan? Get instant Approval!</span>
         @Html.ActionLink("Apply Now!", "schemes")
     </p>
 </div>

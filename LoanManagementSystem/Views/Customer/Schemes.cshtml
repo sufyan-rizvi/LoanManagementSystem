@@ -31,7 +31,7 @@
 
             <tr id="@scheme.LoanSchemeId" style="display:none">
                 <td style="width:800px">@scheme.LongDescription</td>
-                <td >@Html.ActionLink("Apply Now!", "ApplyLoan")</td>
+                <td >@Html.ActionLink("Apply Now!", "ApplyLoan", new {id=@scheme.LoanSchemeId})</td>
             </tr>
         }
     </tbody>
