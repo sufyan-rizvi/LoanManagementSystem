@@ -10,6 +10,7 @@ namespace LoanManagementSystem.Models
         public virtual Guid ApplicationId { get; set; }
         public virtual DateTime ApplicationDate { get; set; }
         public virtual DateTime PaymentStartDate { get; set; }
+        public virtual DateTime NextPaymentDate { get; set; }
         public virtual double LoanAmount { get; set; }
         public virtual int Tenure { get; set; }//monthly  
         public virtual int PaymentsMissed { get; set; } = 0;

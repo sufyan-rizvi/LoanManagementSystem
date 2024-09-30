@@ -78,7 +78,7 @@
                 @if (item.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment)
                 {
                     <td>
-                        <button class="btn btn-primary">Pay Installments</button>
+                        @Html.ActionLink("Pay Now!","")
                     </td>
                 }
                 else if (item.Status == LoanManagementSystem.Models.ApplicationStatus.CollateralPending)

@@ -15,6 +15,7 @@ namespace LoanManagementSystem.Mappings
             Id(a => a.ApplicationId).GeneratedBy.GuidComb();
             Map(a => a.ApplicationDate);
             Map(a => a.PaymentStartDate);
+            Map(a => a.NextPaymentDate);
             Map(a => a.LoanAmount);
             Map(a => a.PaymentsMissed);
             Map(a => a.PaymentsMade);
