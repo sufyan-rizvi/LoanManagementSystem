@@ -125,21 +125,47 @@
             colModel: [
                 { name: "OfficerId", key: true, hidden: true, editable: true, editrules: { edithidden: false } },
                 { name: "User.UserId", hidden: true, editable: true, editrules: { edithidden: false } },
-                { name: "User.FirstName", editable: true, searchoptions: { sopt: ['eq'] } },
-                { name: "User.LastName", editable: true, searchoptions: { sopt: ['eq'] } },
-                { name: "User.Email", editable: true, searchoptions: { sopt: ['eq'] } },
-                { name: "User.PhoneNumber", editable: true, searchoptions: { sopt: ['eq'] } },
+                { name: "User.FirstName", editable: true, editrules: { required: true }, searchoptions: { sopt: ['eq'] } },
+                { name: "User.LastName", editable: true, editrules: { required: true }, searchoptions: { sopt: ['eq'] } },
+                { name: "User.Email", editable: true, editrules: { required: true, email: true }, searchoptions: { sopt: ['eq'] } },
+                {
+                    name: "User.PhoneNumber", editable: true, editrules: {
+                        required: true,
+                        number: true,
+                        custom: true,
+                        custom_func: function (value, colname) {
+                            if (value.length !== 10) {
+                                return [false, colname + ": Phone number must be exactly 10 digits long."];
+                            }
+                            return [true, ""];
+                        }
+
+                    }, searchoptions: { sopt: ['eq'] }
+                },
                 { name: "FullAddress", editable: false, search: false },
-                { name: "User.IsActive", editable: false, search: false, type: 'checkbox', formatter: 'checkbox', align: "center", cellattr: function () { return 'style="display: flex; justify-content: center; align-items: center;"'; } },
+                { name: "User.IsActive", editable: false, editrules: { required: true }, search: false, type: 'checkbox', formatter: 'checkbox', align: "center", cellattr: function () { return 'style="display: flex; justify-content: center; align-items: center;"'; } },
                 { name: "User.Username", hidden: true, editable: true, editrules: { edithidden: true } },
-                { name: "User.Password", hidden: true, editable: true, editrules: { edithidden: true } },
-                { name: "User.Address.FlatNo", hidden: true, editable: true, editrules: { edithidden: true } }, // Hidden field for Flat No
-                { name: "User.Address.BuildingName", hidden: true, editable: true, editrules: { edithidden: true } }, // Hidden field for Building Name
-                { name: "User.Address.StreetName", hidden: true, editable: true, editrules: { edithidden: true } }, // Hidden field for Street Name
-                { name: "User.Address.City", hidden: true, editable: true, editrules: { edithidden: true } }, // Hidden field for City
-                { name: "User.Address.PinCode", hidden: true, editable: true, editrules: { edithidden: true } }, // Hidden field for Pin Code
-                { name: "User.Address.State", hidden: true, editable: true, editrules: { edithidden: true } }, // Hidden field for State
-                { name: "User.Address.Country", hidden: true, editable: true, editrules: { edithidden: true } } // Hidden field for Country
+                { name: "User.Password", hidden: true, edittype: 'password', editable: true, editrules: { edithidden: true } },
+                { name: "User.Address.FlatNo", hidden: true, editable: true, editrules: { edithidden: true, required: true } }, // Hidden field for Flat No
+                { name: "User.Address.BuildingName", hidden: true, editable: true, editrules: { edithidden: true, required: true } }, // Hidden field for Building Name
+                { name: "User.Address.StreetName", hidden: true, editable: true, editrules: { edithidden: true, required: true } }, // Hidden field for Street Name
+                { name: "User.Address.City", hidden: true, editable: true, editrules: { edithidden: true, required: true } }, // Hidden field for City
+                {
+                    name: "User.Address.PinCode", hidden: true, editable: true, editrules: {
+                        edithidden: true,
+                        required: true,
+                        number: true,
+                        custom: true,
+                        custom_func: function (value, colname) {
+                            if (value.length !== 6) {
+                                return [false, colname + ": Pincode must be exactly 6 digits long."];
+                            }
+                            return [true, ""];
+                        }
+                    }
+                }, // Hidden field for Pin Code
+                { name: "User.Address.State", hidden: true, editable: true, editrules: { edithidden: true, required: true } }, // Hidden field for State
+                { name: "User.Address.Country", hidden: true, editable: true, editrules: { edithidden: true, required: true } } // Hidden field for Country
             ],
             height: "275",
             width: "1300",

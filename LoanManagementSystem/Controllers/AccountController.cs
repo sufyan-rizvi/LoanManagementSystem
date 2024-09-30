@@ -59,18 +59,18 @@ namespace LoanManagementSystem.Controllers
             {
                 case "Admin":
                     Session["Admin"] = _accountService.GetAdminByUserId(user.UserId);
-                    FormsAuthentication.SetAuthCookie(user.FirstName, true);
+                    FormsAuthentication.SetAuthCookie(user.Username, true);
                     return RedirectToAction("Index", "Admin");
 
                 case "LoanOfficer":
                     Session["Officer"] = _accountService.GetOfficerByUserId(user.UserId);
-                    FormsAuthentication.SetAuthCookie(user.FirstName, true);
+                    FormsAuthentication.SetAuthCookie(user.Username, true);
                     return RedirectToAction("Welcome", "LoanOfficer");
 
                 default: // Assuming Customer role
                     var customer = _accountService.GetCustomerByUserId(user.UserId);
                     Session["Customer"] = customer;
-                    FormsAuthentication.SetAuthCookie(user.FirstName, true);
+                    FormsAuthentication.SetAuthCookie(user.Username, true);
                     return RedirectToAction("Index", "Customer");
             }
         }

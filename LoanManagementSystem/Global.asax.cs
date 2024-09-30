@@ -4,10 +4,10 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using Quartz.Impl;
-using Quartz;
+
 using AutoMapper;
 using LoanManagementSystem.Mappers;
+using LoanManagementSystem.Filters;
 
 namespace LoanManagementSystem
 {
@@ -18,7 +18,7 @@ namespace LoanManagementSystem
             UnityConfig.RegisterComponents();
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-            GlobalFilters.Filters.Add(new HandleErrorAttribute());
+            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             Mapper.Initialize(cfg =>
             {
                 cfg.AddProfile<MappingProfile>();
