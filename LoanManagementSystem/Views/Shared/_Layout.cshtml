@@ -20,11 +20,11 @@
 </head>
 <body>
     <!-- Navbar Section -->
-    <div class="navbar navbar-dark bg-black navbar-fixed-top" style="flex-direction: column; align-items: flex-start;">
+    <div class="navbar navbar-dark navbar-fixed-top" style="flex-direction: column; align-items: flex-start; background-color: #A02040">
         <!-- Bank Name Centered -->
         <div class="w-100 text-center">
-            <div class="p-1 display-2 text-light">
-                AKSYS LOANS
+            <div class="p-1 display-2 text-light" style="font-weight: 400;">
+                @Html.ActionLink("AKSYS LOANS", "Index", "Customer", null, new {@class = "text-light",style="text-decoration:none"})
             </div>
         </div>
         <!-- Navbar options and login/logout button -->
@@ -37,7 +37,7 @@
             {
                 <div></div> <!-- Empty div to keep layout intact if no NavbarOptions are present -->
             }
-            <div class="" style="margin-right: 20px; margin-top: 10px;">
+            <div style="margin-right: 20px; margin-top: 10px;">
                 @if (User.Identity.IsAuthenticated)
                 {
                     @Html.ActionLink("Logout", "Logout", "Account", null, new { @class = "btn text-light" })

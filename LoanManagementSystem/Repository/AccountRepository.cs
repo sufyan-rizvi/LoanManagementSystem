@@ -39,7 +39,7 @@ namespace LoanManagementSystem.Repository
         }
         public User GetByUsername(string username)
         {
-            return _session.Query<User>().SingleOrDefault(u => u.Username == username);
+            return _session.Query<User>().FirstOrDefault(u => u.Username == username);
         }
 
         public Customer GetCustomerByUserId(Guid id)

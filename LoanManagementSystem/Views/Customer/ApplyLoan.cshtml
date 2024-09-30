@@ -68,34 +68,46 @@
         </div>
 
         <div class="col">
-            <div class="form-group">
-                @Html.LabelFor(model => model.LoanApplication.Applicant.AadharNumber, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.LoanApplication.Applicant.AadharNumber, new { htmlAttributes = new { @class = "form-control", id = "laadhar", onchange = "CalculateEmi()", min = "1", step = "1", required = "required" } })
-                    @Html.ValidationMessageFor(model => model.LoanApplication.Applicant.AadharNumber, "", new { @class = "text-danger" })
+            @if (Model.LoanApplication.Applicant.AadharNumber == null)
+            {
+                <div class="form-group">
+                    @Html.LabelFor(model => model.LoanApplication.Applicant.AadharNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.LoanApplication.Applicant.AadharNumber, new { htmlAttributes = new { @class = "form-control", id = "laadhar", onchange = "CalculateEmi()", min = "1", step = "1", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.LoanApplication.Applicant.AadharNumber, "", new { @class = "text-danger" })
+                    </div>
                 </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.LoanApplication.Applicant.PANNumber, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.LoanApplication.Applicant.PANNumber, new { htmlAttributes = new { @class = "form-control", id = "lpan", onchange = "CalculateEmi()", min = "1", step = "1", required = "required" } })
-                    @Html.ValidationMessageFor(model => model.LoanApplication.Applicant.PANNumber, "", new { @class = "text-danger" })
+            }
+            else
+            {
+                <div></div>
+            }
+            @if (Model.LoanApplication.Applicant.PANNumber == null)
+            {
+                <div class="form-group">
+                    @Html.LabelFor(model => model.LoanApplication.Applicant.PANNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.LoanApplication.Applicant.PANNumber, new { htmlAttributes = new { @class = "form-control", id = "lpan", onchange = "CalculateEmi()", min = "1", step = "1", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.LoanApplication.Applicant.PANNumber, "", new { @class = "text-danger" })
+                    </div>
                 </div>
-            </div>
-
+            }
+            else
+            {
+                <div></div>
+            }
 
             <div class="form-group my-2">
                 <label style="width:200px" for="file">Select Aadhar Document:</label>
-                <input type="file" name="file" id="aadharFile" />
+                <input type="file" name="file" id="aadharFile" required />
             </div>
             <div class="my-2">
                 <label style="width:200px" for="file">Select PAN Document:</label>
-                <input type="file" name="file" id="panFile" />
+                <input type="file" name="file" id="panFile" required />
             </div>
             <div class="my-2">
                 <label style="width:200px" for="file">Select Photo:</label>
-                <input type="file" name="file" id="photoFile" />
+                <input type="file" name="file" id="photoFile" required />
             </div>
 
         </div>
@@ -193,14 +205,14 @@
                     LoanApplication: LoanApplicationData
                 },
                 success: () => {
-                   
+
 
                     $.ajax({
                         url: "/customer/uploaddoc",
                         type: "POST",
                         data: formData,
-                        processData: false, 
-                        contentType: false, 
+                        processData: false,
+                        contentType: false,
                         success: () => {
                             alert("Your documents has=ve been sent to a loan officer for approval!");
                         },

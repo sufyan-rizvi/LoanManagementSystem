@@ -14,6 +14,8 @@ namespace LoanManagementSystem.Service
         LoanOfficer GetOfficerByUserId(Guid id);
         Customer GetCustomerByUserId(Guid id);
         void AddCustomer(Customer customer);
+        bool CheckUserNameFound(string username);
+        bool CheckEmailFound(string email);
 
     }
 }
