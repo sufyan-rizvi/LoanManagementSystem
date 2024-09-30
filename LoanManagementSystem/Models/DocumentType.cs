@@ -7,7 +7,7 @@ namespace LoanManagementSystem.Models
 {
     public enum DocumentType
     {
-        Aadhar, PAN, Photo, VehicleDoc, HouseDoc, SharesDoc
+        Aadhar, PAN, Photo, VehicleDocument, HouseDocument, SharesDocument
     }
 
 }

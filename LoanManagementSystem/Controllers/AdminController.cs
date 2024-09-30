@@ -16,6 +16,8 @@ using NHibernate.Linq;
 
 using BC = BCrypt.Net.BCrypt;
 using System.Threading.Tasks;
+using AutoMapper;
+using LoanManagementSystem.DTOs;
 
 namespace LoanManagementSystem.Controllers
 {
@@ -175,7 +177,8 @@ namespace LoanManagementSystem.Controllers
         public JsonResult GetAllSchemes()
         {
             var schemes = _adminService.GetAllSchemes();
-            return Json(schemes, JsonRequestBehavior.AllowGet);
+            var dto = Mapper.Map<List<LoanSchemeDTO>>(schemes);
+            return Json(dto, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

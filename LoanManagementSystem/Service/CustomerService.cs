@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Web;
 using LoanManagementSystem.Models;
 using LoanManagementSystem.Repository;
@@ -35,6 +36,11 @@ namespace LoanManagementSystem.Service
         public void AddLoanApplication(LoanApplication application)
         {
             _customerRepo.AddloanDetail(application);
+        }
+
+        public LoanApplication GetApplicationById(Guid id)
+        {
+           return  _customerRepo.GetApplicationById(id);   
         }
     }
 }

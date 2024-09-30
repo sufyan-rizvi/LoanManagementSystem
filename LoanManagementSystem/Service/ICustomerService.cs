@@ -13,5 +13,6 @@ namespace LoanManagementSystem.Service
         LoanScheme GetSchemeById(Guid id);
         IList<LoanApplication> CustomerApplications(Guid id);
         void AddLoanApplication(LoanApplication application);
+        LoanApplication GetApplicationById(Guid id);
     }
 }

@@ -19,31 +19,45 @@
     <link href="~/Content/jquery.jqGrid/ui.jqgrid.css" rel="stylesheet" />
 </head>
 <body>
+    <!-- Navbar Section -->
     <div class="navbar navbar-dark bg-black navbar-fixed-top" style="flex-direction: column; align-items: flex-start;">
-
-        <div class="p-1 display-2 text-light">
-            FCHD BANK
+        <!-- Bank Name Centered -->
+        <div class="w-100 text-center">
+            <div class="p-1 display-2 text-light">
+                AKSYS LOANS
+            </div>
         </div>
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            @RenderSection("NavbarOptions", required: false)
-            @if (User.Identity.IsAuthenticated)
+        <!-- Navbar options and login/logout button -->
+        <div class="w-100 d-flex justify-content-between align-items-center">
+            @if (IsSectionDefined("NavbarOptions"))
             {
-                @Html.ActionLink("Logout", "Logout", "Account", null, new { style = "margin-left: 950px; margin-top: -10px", @class = "btn text-light" })
+                @RenderSection("NavbarOptions", required: false)
             }
+            else
+            {
+                <div></div> <!-- Empty div to keep layout intact if no NavbarOptions are present -->
+            }
+            <div class="" style="margin-right: 20px; margin-top: 10px;">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    @Html.ActionLink("Logout", "Logout", "Account", null, new { @class = "btn text-light" })
+                }
+                else
+                {
+                    @Html.ActionLink("Login", "Login", "Account", null, new { @class = "btn text-light" })
+                }
+            </div>
         </div>
-
-
     </div>
 
-    <div class="container body-content">
+    <!-- Body Content -->
+    <div class="container body-content" style="margin-top: 10px;">
+        <!-- Added margin-top to avoid content being under the navbar -->
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; AKSYS LOANS @DateTime.Now.Year </p>
         </footer>
     </div>
-
-
-
 </body>
 </html>

@@ -16,6 +16,8 @@ namespace LoanManagementSystem.Mappings
             Map(a => a.ApplicationDate);
             Map(a => a.PaymentStartDate);
             Map(a => a.LoanAmount);
+            Map(a => a.PaymentsMissed);
+            Map(a => a.PaymentsMade);
             Map(a => a.Tenure);
             Map(a => a.Status);
             References(a => a.Applicant).Column("CustomerId").Cascade.All();

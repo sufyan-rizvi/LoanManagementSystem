@@ -19,12 +19,12 @@ namespace LoanManagementSystem.Repository
 
         public IList<LoanScheme> GetAllSchemes()
         {
-            return _session.Query<LoanScheme>().ToList();
+            return _session.Query<LoanScheme>().Where(l=>l.IsActive).ToList();
         }
 
         public LoanScheme GetById(Guid id)
         {
-            return _session.Get<LoanScheme>(id);
+            return _session.Query<LoanScheme>().FirstOrDefault(l=>l.LoanSchemeId == id && l.IsActive);
         }
 
         public IList<LoanApplication> GetAllApplications(Guid id)
@@ -40,6 +40,11 @@ namespace LoanManagementSystem.Repository
                 _session.Merge(application);
                 txn.Commit();   
             }
+        }
+
+        public LoanApplication GetApplicationById(Guid id)
+        {
+            return _session.Query<LoanApplication>().FirstOrDefault(l => l.ApplicationId == id);
         }
     }
 }

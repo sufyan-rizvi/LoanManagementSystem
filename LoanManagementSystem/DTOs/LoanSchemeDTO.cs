@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Unity.Resolution;
+using LoanManagementSystem.Models;
 
-namespace LoanManagementSystem.Models
+namespace LoanManagementSystem.DTOs
 {
-    public class LoanScheme
+    public class LoanSchemeDTO
     {
         public virtual Guid LoanSchemeId { get; set; }
         public virtual string SchemeName { get; set; }
@@ -22,9 +22,5 @@ namespace LoanManagementSystem.Models
         public virtual string LongDescription { get; set; }
         public virtual string ShortDescription { get; set; }
         public virtual bool IsActive { get; set; }
-        [Newtonsoft.Json.JsonIgnore]
-        public virtual IList<LoanApplication> LoanApplications { get; set; }
-
-
     }
 }

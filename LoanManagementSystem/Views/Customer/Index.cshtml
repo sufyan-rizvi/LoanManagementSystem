@@ -78,25 +78,13 @@
                 @if (item.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment)
                 {
                     <td>
-                        <button>Pay Installment</button>
+                        <button class="btn btn-primary">Pay Installments</button>
                     </td>
                 }
                 else if (item.Status == LoanManagementSystem.Models.ApplicationStatus.CollateralPending)
                 {
                     <td>
-                        <button>Add Collateral Documents</button>
-                    </td>
-                }
-                else if (item.Status == LoanManagementSystem.Models.ApplicationStatus.Approved || item.Status == LoanManagementSystem.Models.ApplicationStatus.CollateralApproved)
-                {
-                    <td>
-                        <button>Add Bank Details</button>
-                    </td>
-                }
-                else if (item.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment)
-                {
-                    <td>
-                        <button>Add Bank Details</button>
+                       @Html.ActionLink("Add Collateral Documents", "AddCollateral", "Customer", null,new {@class= "btn btn-primary"})
                     </td>
                 }
                 else

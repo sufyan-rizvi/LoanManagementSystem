@@ -1,0 +1,44 @@
+﻿@model LoanManagementSystem.Models.LoanApplication
+
+@{
+    ViewBag.Title = "AddCollateral";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Collateral Documents</h2>
+<hr />
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor()
+
+        <div class="form-group my-2">
+            <label style="width:200px" for="file">Select Vehicle Document:</label>
+            <input type="file" name="file" id="aadharFile" />
+        </div>
+        <div class="my-2">
+            <label style="width:200px" for="file">Select House Document:</label>
+            <input type="file" name="file" id="panFile" />
+        </div>
+        <div class="my-2">
+            <label style="width:200px" for="file">Select Shares Document:</label>
+            <input type="file" name="file" id="photoFile" />
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

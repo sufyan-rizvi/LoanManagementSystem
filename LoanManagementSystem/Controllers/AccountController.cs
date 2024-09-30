@@ -19,17 +19,18 @@ namespace LoanManagementSystem.Controllers
         {
             _accountService = accountService;
         }
-        public ActionResult LoginUser()
+        public ActionResult Login()
         {
             return View();
         }
         [HttpPost]
-        public ActionResult LoginUser(LoginVM model)
+        public ActionResult Login(LoginVM model)
         {
             if (!ModelState.IsValid)
                 return View();
             var user = _accountService.GetUserByUsername(model.UserName);
-            if (user == null)
+
+            if (user == null || !user.IsActive)
                 throw new InvalidOperationException("Username/ password does not match");
             if (model.LoginType == "Employee")
             {
@@ -42,27 +43,24 @@ namespace LoanManagementSystem.Controllers
                     throw new InvalidOperationException("The username/ password does not match");
             }
 
-
-            //string hashedPassword = HashingService.HashPassword(model.Password);
-            bool isPasswordValid = BCrypt.Net.BCrypt.EnhancedVerify(model.Password, user.Password);
-            if (isPasswordValid)
+            if (BCrypt.Net.BCrypt.EnhancedVerify(model.Password, user.Password))
             {
                 if (user.Role.RoleName == "Admin")
                 {
                     Session["Admin"] = _accountService.GetAdminByUserId(user.UserId);
-                    FormsAuthentication.SetAuthCookie(model.UserName, true);
+                    FormsAuthentication.SetAuthCookie(user.FirstName, true);
                     return RedirectToAction("Index", "Admin");
                 }
                 else if (user.Role.RoleName == "LoanOfficer")
                 {
                     Session["Officer"] = _accountService.GetOfficerByUserId(user.UserId);
-                    FormsAuthentication.SetAuthCookie(model.UserName, true);
+                    FormsAuthentication.SetAuthCookie(user.FirstName, true);
                     return RedirectToAction("Welcome", "LoanOfficer");
                 }
                 else
                 {
                     Session["Customer"] = _accountService.GetCustomerByUserId(user.UserId);
-                    FormsAuthentication.SetAuthCookie(model.UserName, true);
+                    FormsAuthentication.SetAuthCookie(user.FirstName, true);
                     return RedirectToAction("Index", "Customer");
                 }
             }

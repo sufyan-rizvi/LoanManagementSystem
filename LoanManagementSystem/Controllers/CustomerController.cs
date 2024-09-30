@@ -39,10 +39,57 @@ namespace LoanManagementSystem.Controllers
             return View(loans);
         }
 
+        public ActionResult AddCollateral(Guid applicationId)
+        {
+            var application = _customerService.GetApplicationById(applicationId);
+            return View();
+        }
+        [HttpPost]
+        public ActionResult AddCollateral(List<HttpPostedFileBase> file)
+        {
+            if (file == null || file[1].ContentLength == 0)
+            {
+                ViewBag.Message = "Please select a file to upload.";
+                return View("ColateralDocIndex");
+            }
+
+            var result = _cloudinaryService.UploadImage(file[1]);
+
+            // Check if the result contains an error
+            if (result.Error != null)
+            {
+                ViewBag.Message = "Error: " + result.Error.Message;
+                return View("ColateralDocIndex");
+            }
+            for (var i = 0; i <= file.Count(); i++)
+            {
+                using (var session = NhibernateHelper.CreateSession())
+                {
+                    using (var transaction = session.BeginTransaction())
+                    {
+                        var collateralDocs = new CollateralDocuments()
+                        {
+
+                            DocumentType = (DocumentType)(i + 3),
+                            PublicId = result.PublicId,
+                            ImageUrl = result.SecureUrl.ToString(),
+
+                        };
+
+                        session.Save(collateralDocs);
+                        transaction.Commit();
+
+                    }
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
+
         public ActionResult ApplyLoan(Guid id)
         {
             var scheme = new LoanApplicationSchemeVM();
-            scheme.LoanScheme = _customerService.GetSchemeById(id);   
+            scheme.LoanScheme = _customerService.GetSchemeById(id);
             return View(scheme);
         }
 
@@ -50,12 +97,12 @@ namespace LoanManagementSystem.Controllers
         {
             var application = vm.LoanApplication;
             application.Scheme = _customerService.GetSchemeById(vm.LoanScheme.LoanSchemeId);
-            
+
 
             application.Applicant = (Customer)Session["Customer"];
-            
-            var officerList = _adminService.GetAllOfficers();            
-            Random number = new Random();            ;
+
+            var officerList = _adminService.GetAllOfficers();
+            Random number = new Random(); ;
             application.AssignedOfficer = officerList[number.Next(0, officerList.Count)];
 
             application.ApplicationDate = DateTime.Now;
@@ -106,73 +153,6 @@ namespace LoanManagementSystem.Controllers
 
             return View("UploadResult");
 
-            //if (file == null || file[1].ContentLength == 0)
-            //{
-            //    ViewBag.Message = "Please select a file to upload.";
-            //    return View("ApprovalDocIndex");
-            //}
-
-            //var result = _cloudinaryService.UploadImage(file[1]);
-
-            //// Check if the result contains an error
-            //if (result.Error != null)
-            //{
-            //    ViewBag.Message = "Error: " + result.Error.Message;
-            //    return View("ApprovalDocIndex");
-            //}
-
-
-            //// Proceed with the result if there is no error
-
-            //ViewBag.ImageUrl = result.SecureUrl.ToString();
-            //ViewBag.PublicId = result.PublicId;
-
-            //return View("UploadResult");
-        }
-
-        [HttpPost]
-        public ActionResult UploadCollateralDoc(List<HttpPostedFileBase> file)
-        {
-            if (file == null || file[1].ContentLength == 0)
-            {
-                ViewBag.Message = "Please select a file to upload.";
-                return View("ColateralDocIndex");
-            }
-
-            var result = _cloudinaryService.UploadImage(file[1]);
-
-            // Check if the result contains an error
-            if (result.Error != null)
-            {
-                ViewBag.Message = "Error: " + result.Error.Message;
-                return View("ColateralDocIndex");
-            }
-            for (var i = 1; i <= file.Count(); i++)
-            {
-                using (var session = NhibernateHelper.CreateSession())
-                {
-                    using (var transaction = session.BeginTransaction())
-                    {
-                        var collateralDocs = new CollateralDocuments()
-                        {
-
-                            DocumentType = (DocumentType)(i + 3),
-                            PublicId = result.PublicId,
-                            ImageUrl = result.SecureUrl.ToString(),
-
-                        };
-
-                        session.Save(collateralDocs);
-                        transaction.Commit();
-
-                    }
-                }
-            }
-            // Proceed with the result if there is no error
-            //ViewBag.ImageUrl = result.SecureUrl.ToString();
-            //ViewBag.PublicId = result.PublicId;
-
-            return View("UploadResult");
         }
         public ActionResult ShowImage(string publicId)
         {
