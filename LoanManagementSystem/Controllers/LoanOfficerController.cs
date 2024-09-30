@@ -52,8 +52,15 @@ namespace LoanManagementSystem.Controllers
                 {
                     return HttpNotFound();
                 }
-
-                loan.Status = ApplicationStatus.Approved;
+                if (loan.Scheme.SchemeType == SchemeType.Retail)
+                {
+                    loan.Status = ApplicationStatus.LoanRepayment;
+                }
+                else
+                {
+                    loan.Status = ApplicationStatus.AddCollateral;
+                }
+                
 
                 using (var txn = session.BeginTransaction())
                 {
@@ -133,7 +140,7 @@ namespace LoanManagementSystem.Controllers
                     return HttpNotFound();
                 }
 
-                collateral.Status = ApplicationStatus.CollateralApproved;
+                collateral.Status = ApplicationStatus.LoanRepayment;
 
                 using (var txn = session.BeginTransaction())
                 {
