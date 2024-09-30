@@ -399,6 +399,7 @@
     <Compile Include="Service\PaymentService.cs" />
     <Compile Include="ViewModels\LoanApplicationSchemeVM.cs" />
     <Compile Include="ViewModels\LoginVM.cs" />
+    <Compile Include="WebProviders\WebProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -457,7 +458,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="WebProvider\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

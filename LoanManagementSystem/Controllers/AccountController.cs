@@ -27,44 +27,52 @@ namespace LoanManagementSystem.Controllers
         public ActionResult Login(LoginVM model)
         {
             if (!ModelState.IsValid)
-                return View();
+            {
+                ModelState.AddModelError("", "Invalid login data.");
+                return View(model);
+            }
+
             var user = _accountService.GetUserByUsername(model.UserName);
-
             if (user == null || !user.IsActive)
-                throw new InvalidOperationException("Username/ password does not match");
-            if (model.LoginType == "Employee")
             {
-                if (user.Role.RoleName == "Customer")
-                    throw new InvalidOperationException("The username/ password does not match");
-            }
-            else
-            {
-                if (user.Role.RoleName == "Admin" || user.Role.RoleName == "LoanOfficer")
-                    throw new InvalidOperationException("The username/ password does not match");
+                ModelState.AddModelError("", "Username/Password don't match.");
+                return View(model);
             }
 
-            if (BCrypt.Net.BCrypt.EnhancedVerify(model.Password, user.Password))
+            // Validate role based on LoginType
+            if (model.LoginType == "Employee" && user.Role.RoleName == "Customer" ||
+                model.LoginType != "Employee" && (user.Role.RoleName == "Admin" || user.Role.RoleName == "LoanOfficer"))
             {
-                if (user.Role.RoleName == "Admin")
-                {
+                ModelState.AddModelError("", "Username/Password don't match.");
+                return View(model);
+            }
+
+            // Check password
+            if (!BCrypt.Net.BCrypt.EnhancedVerify(model.Password, user.Password))
+            {
+                ModelState.AddModelError("", "Username/Password don't match.");
+                return View(model);
+            }
+
+            // Role-specific redirects and session management
+            switch (user.Role.RoleName)
+            {
+                case "Admin":
                     Session["Admin"] = _accountService.GetAdminByUserId(user.UserId);
                     FormsAuthentication.SetAuthCookie(user.FirstName, true);
                     return RedirectToAction("Index", "Admin");
-                }
-                else if (user.Role.RoleName == "LoanOfficer")
-                {
+
+                case "LoanOfficer":
                     Session["Officer"] = _accountService.GetOfficerByUserId(user.UserId);
                     FormsAuthentication.SetAuthCookie(user.FirstName, true);
                     return RedirectToAction("Welcome", "LoanOfficer");
-                }
-                else
-                {
-                    Session["Customer"] = _accountService.GetCustomerByUserId(user.UserId);
+
+                default: // Assuming Customer role
+                    var customer = _accountService.GetCustomerByUserId(user.UserId);
+                    Session["Customer"] = customer;
                     FormsAuthentication.SetAuthCookie(user.FirstName, true);
                     return RedirectToAction("Index", "Customer");
-                }
             }
-            return View();
         }
 
 
@@ -75,14 +83,20 @@ namespace LoanManagementSystem.Controllers
         [HttpPost]
         public ActionResult Register(Customer customer)
         {
+            if (_accountService.CheckUserNameFound(customer.User.Username))
+                ModelState.AddModelError("", "Username already exists! Choose a new Username");
+            if (_accountService.CheckEmailFound(customer.User.Email))
+                ModelState.AddModelError("", "Email already exists! Choose a new Email");
+            if(!ModelState.IsValid)
+                return View();
             _accountService.AddCustomer(customer);
-            return RedirectToAction("Loginuser");
+            return RedirectToAction("Login");
 
         }
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
-            return RedirectToAction("Loginuser");
+            return RedirectToAction("Login");
         }
 
     }

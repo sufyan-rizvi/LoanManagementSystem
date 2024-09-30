@@ -11,6 +11,7 @@ using LoanManagementSystem.ViewModels;
 
 namespace LoanManagementSystem.Controllers
 {
+    [Authorize(Roles ="Customer")]
     public class CustomerController : Controller
     {
         private readonly CloudinaryService _cloudinaryService;
@@ -24,7 +25,7 @@ namespace LoanManagementSystem.Controllers
             _customerService = customerService;
             _adminService = adminService;
         }
-
+        [AllowAnonymous]
         public ActionResult Schemes()
         {
             using (var session = NhibernateHelper.CreateSession())
@@ -95,7 +96,10 @@ namespace LoanManagementSystem.Controllers
         public ActionResult ApplyLoan(Guid id)
         {
             var application = new LoanApplicationSchemeVM();
-            application.LoanApplication.Applicant = (Customer)Session["Customer"]; 
+            application.LoanApplication = new LoanApplication();
+
+            var customer = (Customer)Session["Customer"];
+            application.LoanApplication.Applicant = customer; 
             application.LoanScheme = _customerService.GetSchemeById(id);
             return View(application);
         }
@@ -127,7 +131,6 @@ namespace LoanManagementSystem.Controllers
                 
                 var result = _cloudinaryService.UploadImage(files[i]);
 
-                // Check if the result contains an error
                 if (result.Error != null)
                 {
                     throw new InvalidOperationException("Unable to Upload images at the moment!");

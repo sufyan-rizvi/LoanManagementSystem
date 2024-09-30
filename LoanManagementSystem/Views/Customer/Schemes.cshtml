@@ -25,13 +25,14 @@
                 <td></td>
                 <td>
                     <button class="btn btn-outline-primary" , onclick="showLongDescrip('@scheme.LoanSchemeId')">Know More</button>
+                    @Html.ActionLink("Apply Now!", "ApplyLoan", new { id = @scheme.LoanSchemeId }, new {@class="btn btn-outline-primary mx-3"})
                 </td>
 
             </tr>
 
             <tr id="@scheme.LoanSchemeId" style="display:none">
-                <td style="width:800px">@scheme.LongDescription</td>
-                <td >@Html.ActionLink("Apply Now!", "ApplyLoan", new {id=@scheme.LoanSchemeId})</td>
+                <td colspan="8">@scheme.LongDescription</td>
+                <td ></td>
             </tr>
         }
     </tbody>
