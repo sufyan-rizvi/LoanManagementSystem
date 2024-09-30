@@ -36,7 +36,6 @@ namespace LoanManagementSystem.Repository
         {
             using(var txn =  _session.BeginTransaction())
             {
-                application.Status = ApplicationStatus.PendingApproval;
                 _session.Merge(application);
                 txn.Commit();   
             }

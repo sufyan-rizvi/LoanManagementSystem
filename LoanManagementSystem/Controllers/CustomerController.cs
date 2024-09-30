@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using LoanManagementSystem.Data;
@@ -42,18 +43,21 @@ namespace LoanManagementSystem.Controllers
         public ActionResult AddCollateral(Guid applicationId)
         {
             var application = _customerService.GetApplicationById(applicationId);
-            return View();
+            return View(application);
         }
+
         [HttpPost]
-        public ActionResult AddCollateral(List<HttpPostedFileBase> file)
+        public ActionResult AddCollateral(LoanApplication application, List<HttpPostedFileBase> files)
         {
-            if (file == null || file[1].ContentLength == 0)
+            
+            if (files == null || files[1].ContentLength == 0)
             {
                 ViewBag.Message = "Please select a file to upload.";
-                return View("ColateralDocIndex");
+                return View();
             }
-
-            var result = _cloudinaryService.UploadImage(file[1]);
+            var existingApplication = _customerService.GetApplicationById(application.ApplicationId);
+            var customer = existingApplication.Applicant;
+            var result = _cloudinaryService.UploadImage(files[1]);
 
             // Check if the result contains an error
             if (result.Error != null)
@@ -61,7 +65,7 @@ namespace LoanManagementSystem.Controllers
                 ViewBag.Message = "Error: " + result.Error.Message;
                 return View("ColateralDocIndex");
             }
-            for (var i = 0; i <= file.Count(); i++)
+            for (var i = 0; i < files.Count(); i++)
             {
                 using (var session = NhibernateHelper.CreateSession())
                 {
@@ -73,7 +77,7 @@ namespace LoanManagementSystem.Controllers
                             DocumentType = (DocumentType)(i + 3),
                             PublicId = result.PublicId,
                             ImageUrl = result.SecureUrl.ToString(),
-
+                            Customer = customer
                         };
 
                         session.Save(collateralDocs);
@@ -82,15 +86,18 @@ namespace LoanManagementSystem.Controllers
                     }
                 }
             }
+            existingApplication.Status = ApplicationStatus.CollateralApproved;
+            _customerService.AddLoanApplication(existingApplication);
 
             return RedirectToAction("Index");
         }
 
         public ActionResult ApplyLoan(Guid id)
         {
-            var scheme = new LoanApplicationSchemeVM();
-            scheme.LoanScheme = _customerService.GetSchemeById(id);
-            return View(scheme);
+            var application = new LoanApplicationSchemeVM();
+            application.LoanApplication.Applicant = (Customer)Session["Customer"]; 
+            application.LoanScheme = _customerService.GetSchemeById(id);
+            return View(application);
         }
 
         public JsonResult AddLoanDetails(LoanApplicationSchemeVM vm)
@@ -100,6 +107,7 @@ namespace LoanManagementSystem.Controllers
 
 
             application.Applicant = (Customer)Session["Customer"];
+            application.Status = ApplicationStatus.PendingApproval;
 
             var officerList = _adminService.GetAllOfficers();
             Random number = new Random(); ;
@@ -116,19 +124,13 @@ namespace LoanManagementSystem.Controllers
         {
             for (var i = 0; i < files.Count(); i++)
             {
-                if (files == null || files[i].ContentLength == 0)
-                {
-                    ViewBag.Message = "Please select a file to upload.";
-                    return View("ApprovalDocIndex");
-                }
-
+                
                 var result = _cloudinaryService.UploadImage(files[i]);
 
                 // Check if the result contains an error
                 if (result.Error != null)
                 {
-                    ViewBag.Message = "Error: " + result.Error.Message;
-                    return View("ApprovalDocIndex");
+                    throw new InvalidOperationException("Unable to Upload images at the moment!");
                 }
 
                 using (var session = NhibernateHelper.CreateSession())
@@ -141,7 +143,7 @@ namespace LoanManagementSystem.Controllers
                             DocumentType = (DocumentType)i,
                             PublicId = result.PublicId,
                             ImageUrl = result.SecureUrl.ToString(),
-
+                            Customer = (Customer)Session["Customer"]
                         };
 
                         session.Save(approvalDocs);
@@ -150,14 +152,14 @@ namespace LoanManagementSystem.Controllers
                     }
                 }
             }
-
-            return View("UploadResult");
+            return Json("Great Success!");
+            
 
         }
-        public ActionResult ShowImage(string publicId)
-        {
-            string cloudinaryUrl = $"https://res.cloudinary.com/{System.Configuration.ConfigurationManager.AppSettings["CloudinaryCloudName"]}/image/upload/{publicId}";
-            return Redirect(cloudinaryUrl);
-        }
+        //public ActionResult ShowImage(string publicId)
+        //{
+        //    string cloudinaryUrl = $"https://res.cloudinary.com/{System.Configuration.ConfigurationManager.AppSettings["CloudinaryCloudName"]}/image/upload/{publicId}";
+        //    return Redirect(cloudinaryUrl);
+        //}
     }
 }
