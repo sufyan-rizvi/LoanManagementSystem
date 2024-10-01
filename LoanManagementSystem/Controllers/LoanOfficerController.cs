@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using AutoMapper;
 using LoanManagementSystem.Data;
 using LoanManagementSystem.Models;
+using NHibernate.Linq;
 
 namespace LoanManagementSystem.Controllers
 {
@@ -25,8 +26,9 @@ namespace LoanManagementSystem.Controllers
         {
             using (var session = NhibernateHelper.CreateSession())
             {
-                var pendingLoans = session.Query<LoanApplication>().Where(l => l.Status ==
+                var pendingLoans = session.Query<LoanApplication>().Fetch(l => l.Applicant).ThenFetch(a => a.User).Where(l => l.Status ==
                 ApplicationStatus.PendingApproval).ToList();
+
                 var dto = Mapper.Map<List<LoanApplication>>(pendingLoans);
                 return View(dto);
             }
