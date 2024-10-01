@@ -7,7 +7,7 @@ using System.Runtime.Remoting.Messaging;
 using System.Web;
 using System.Web.Mvc;
 using LoanManagementSystem.Data;
-using LoanManagementSystem.Jobs;
+//using LoanManagementSystem.Jobs;
 using LoanManagementSystem.Models;
 using LoanManagementSystem.Repository;
 using LoanManagementSystem.Service;
