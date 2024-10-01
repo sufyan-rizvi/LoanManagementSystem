@@ -10,7 +10,7 @@ namespace LoanManagementSystem.Models
     {
         public virtual Guid UserId { get; set; }
         [Required]
-        [Display(Name ="Username")]
+        [Display(Name = "Username")]
         public virtual string Username { get; set; }
         [Required]
         [Display(Name = "Password")]
@@ -20,7 +20,7 @@ namespace LoanManagementSystem.Models
         [Display(Name = "Email")]
         public virtual string Email { get; set; }
         [Required]
-        [Display(Name ="First Name")]
+        [Display(Name = "First Name")]
         public virtual string FirstName { get; set; }
         [Required]
         [Display(Name = "Last Name")]
@@ -28,13 +28,16 @@ namespace LoanManagementSystem.Models
         [Required]
         [Display(Name = "Phone Number")]
         public virtual string PhoneNumber { get; set; }
+        [Required]
+        [Range(18,99)]
+        public virtual int Age { get; set; }
         public virtual bool IsActive { get; set; }
         public virtual Address Address { get; set; }
-        public virtual Role Role { get; set; }           
+        public virtual Role Role { get; set; }
         public virtual IList<Admin> Admins { get; set; }
         public virtual IList<LoanOfficer> LoanOfficers { get; set; }
         public virtual IList<Customer> Customers { get; set; }
-        
+
 
 
 

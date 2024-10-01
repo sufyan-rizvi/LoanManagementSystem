@@ -18,9 +18,7 @@ namespace LoanManagementSystem.Models
         public virtual int Tenure { get; set; }//monthly  
         public virtual int PaymentsMissed { get; set; } = 0;
         public virtual int PaymentsMade { get; set; } = 0;
-        public virtual bool IsNonPerforming {  get; set; }
         public virtual double EMIAmount { get; set; }
-        public virtual bool IsActive { get; set; }
         public virtual ApplicationStatus Status { get; set; } 
         public virtual Customer Applicant { get; set; }
         public virtual LoanOfficer AssignedOfficer { get; set; }
