@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using AutoMapper;
 using LoanManagementSystem.Data;
 using LoanManagementSystem.Models;
 
@@ -26,7 +27,8 @@ namespace LoanManagementSystem.Controllers
             {
                 var pendingLoans = session.Query<LoanApplication>().Where(l => l.Status ==
                 ApplicationStatus.PendingApproval).ToList();
-                return View(pendingLoans);
+                var dto = Mapper.Map<List<LoanApplication>>(pendingLoans);
+                return View(dto);
             }
         }
         //Show Rejistration Documents to the Loan Officesr
