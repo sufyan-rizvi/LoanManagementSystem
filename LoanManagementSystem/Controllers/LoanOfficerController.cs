@@ -14,7 +14,12 @@ namespace LoanManagementSystem.Controllers
     //[Authorize(Roles = "LoanOfficer")]
     public class LoanOfficerController : Controller
     {
-        
+        private readonly LoanOfficerService _loanOfficerService;
+        public LoanOfficerController(LoanOfficerService loanOfficerService)
+        {
+            _loanOfficerService = loanOfficerService;
+        }
+
         // Action method for displaying the welcome page
         public ActionResult Welcome()
         {
@@ -25,83 +30,32 @@ namespace LoanManagementSystem.Controllers
         // Action method for displaying pending loan approvals
         public ActionResult LoanApproval()
         {
-            using (var session = NhibernateHelper.CreateSession())
-            {
-                var pendingLoans = session.Query<LoanApplication>().Fetch(l => l.Applicant).ThenFetch(a => a.User).Where(l => l.Status ==
-                ApplicationStatus.PendingApproval).ToList();
-
-                var dto = Mapper.Map<List<LoanApplication>>(pendingLoans);
-                return View(dto);
-            }
+            return View(_loanOfficerService.GetDocuments());
+           
         }
         //Show Rejistration Documents to the Loan Officesr
         public ActionResult GetLoanDocuments(Guid id)
         {
             TempData["registerApplicationId"] = id;
-            using (var session = NhibernateHelper.CreateSession())
-            {
-                var loanApplication = session.Get<LoanApplication>(id);
-                var documents = session.Query<RegistrationDocuments>().Where(r => r.Customer.CustId == 
-                loanApplication.Applicant.CustId).ToList();
-                return View(documents);
-            }
+            return View(_loanOfficerService.GetAppDocuments(id));
+            
         }
         public ActionResult ApproveLoan()
         {
 
             var id = TempData.Peek("registerApplicationId");
-            using (var session = NhibernateHelper.CreateSession())
-            {
-                var loan = session.Get<LoanApplication>(id);
-                if (loan == null)
-                {
-                    return HttpNotFound();
-                }
-                if (loan.Scheme.SchemeType == SchemeType.Retail)
-                {
-                    loan.Status = ApplicationStatus.LoanRepayment;
-                    loan.PaymentStartDate = DateTime.Now;
-                }
-                else
-                {
-                    loan.Status = ApplicationStatus.AddCollateral;
-                }
-                
-
-                using (var txn = session.BeginTransaction())
-                {
-                    session.Update(loan);
-                    txn.Commit();
-                }
-
-                TempData["SuccessMessage"] = $"Loan {loan.ApplicationId} has been approved.";
-                return RedirectToAction("LoanApproval");
-            }
+            _loanOfficerService.RegApproveLoan((Guid)id);
+            return RedirectToAction("LoanApproval");
+           
         }
 
         // Action method for rejecting a loan
         public ActionResult RejectLoan()
         {
             var id = TempData.Peek("registerApplicationId");
-            using (var session = NhibernateHelper.CreateSession())
-            {
-                var loan = session.Get<LoanApplication>(id);
-                if (loan == null)
-                {
-                    return HttpNotFound();
-                }
-
-                loan.Status = ApplicationStatus.Rejected;
-
-                using (var txn = session.BeginTransaction())
-                {
-                    session.Update(loan);
-                    txn.Commit();
-                }
-
-                TempData["SuccessMessage"] = $"Loan {loan.ApplicationId} has been rejected.";
-                return RedirectToAction("LoanApproval");
-            }
+            _loanOfficerService.RejectApproveLoan((Guid)id);
+            return RedirectToAction("LoanApproval");
+            
         }
 
 
@@ -115,74 +69,33 @@ namespace LoanManagementSystem.Controllers
         // Action method for displaying pending collateral approvals
         public ActionResult CollateralApproval()
         {
-            using (var session = NhibernateHelper.CreateSession())
-            {
-                var pendingCollaterals = session.Query<LoanApplication>().Where(c => c.Status == 
-                ApplicationStatus.CollateralPending).ToList();
-                return View(pendingCollaterals);
-            }
+            return View(_loanOfficerService.GetCollateralDocuments());
+            
         }
         //Show Collateral Documents to the Loan Officesr
         public ActionResult GetCollateralDocuments(Guid id)
         {
             TempData["collateralApplicationId"] = id;
-            using (var session = NhibernateHelper.CreateSession())
-            {
-                var loanApplication = session.Get<LoanApplication>(id);
-                var documents = session.Query<CollateralDocuments>().Where(r => r.Customer.CustId == 
-                loanApplication.Applicant.CustId).ToList();
-                return View(documents);
-            }
+            return View(_loanOfficerService.GetToShowCollateralDocuments(id));
+            
+            
         }
         // Action method for approving a collateral
         public ActionResult ApproveCollateral()
         {
             var id = TempData.Peek("collateralApplicationId");
-            using (var session = NhibernateHelper.CreateSession())
-            {
-                var collateral = session.Get<LoanApplication>(id);
-                if (collateral == null)
-                {
-                    return HttpNotFound();
-                }
-
-                collateral.Status = ApplicationStatus.LoanRepayment;
-                collateral.PaymentStartDate = DateTime.Now;
-
-                using (var txn = session.BeginTransaction())
-                {
-                    session.Update(collateral);
-                    txn.Commit();
-                }
-
-                TempData["SuccessMessage"] = $"Collateral {collateral.ApplicationId} for Loan  has been approved.";
-                return RedirectToAction("CollateralApproval");
-            }
+            _loanOfficerService.ApproveCollateralDocuments((Guid)id);
+            return RedirectToAction("CollateralApproval");
+            
         }
 
         // Action method for rejecting a collateral
         public ActionResult RejectCollateral()
         {
             var id = TempData.Peek("collateralApplicationId");
-            using (var session = NhibernateHelper.CreateSession())
-            {
-                var collateral = session.Get<LoanApplication>(id);
-                if (collateral == null)
-                {
-                    return HttpNotFound();
-                }
-
-                collateral.Status =ApplicationStatus.Rejected;
-
-                using (var txn = session.BeginTransaction())
-                {
-                    session.Update(collateral);
-                    txn.Commit();
-                }
-
-                TempData["SuccessMessage"] = $"Collateral {collateral.ApplicationId} for Loan has been rejected.";
-                return RedirectToAction("CollateralApproval");
-            }
+            _loanOfficerService.RejectCollateralDocuments((Guid)id);
+            return RedirectToAction("CollateralApproval");
+            
         }
         
     }

@@ -404,8 +404,10 @@
     <Compile Include="Repository\IAccountRepository.cs" />
     <Compile Include="Repository\IAdminRepository.cs" />
     <Compile Include="Repository\ICustomerRepository.cs" />
+    <Compile Include="Repository\ILoanOfficerRepository.cs" />
     <Compile Include="Repository\IPaymentRepository.cs" />
     <Compile Include="Repository\CustomerRepository.cs" />
+    <Compile Include="Repository\LoanOfficerRepository.cs" />
     <Compile Include="Repository\PaymentRepository.cs" />
     <Compile Include="Service\AccountService.cs" />
     <Compile Include="Service\AdminService.cs" />
@@ -413,8 +415,10 @@
     <Compile Include="Service\IAccountService.cs" />
     <Compile Include="Service\IAdminService.cs" />
     <Compile Include="Service\ICustomerService.cs" />
+    <Compile Include="Service\ILoanOfficerService.cs" />
     <Compile Include="Service\IPaymentService.cs" />
     <Compile Include="Service\CustomerService.cs" />
+    <Compile Include="Service\LoanOfficerService.cs" />
     <Compile Include="Service\PaymentService.cs" />
     <Compile Include="ViewModels\LoanApplicationSchemeVM.cs" />
     <Compile Include="ViewModels\LoginVM.cs" />
