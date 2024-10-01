@@ -159,10 +159,10 @@ namespace LoanManagementSystem.Controllers
             
 
         }
-        //public ActionResult ShowImage(string publicId)
-        //{
-        //    string cloudinaryUrl = $"https://res.cloudinary.com/{System.Configuration.ConfigurationManager.AppSettings["CloudinaryCloudName"]}/image/upload/{publicId}";
-        //    return Redirect(cloudinaryUrl);
-        //}
+        public ActionResult ShowImage(string publicId)
+        {
+            string cloudinaryUrl = $"https://res.cloudinary.com/{System.Configuration.ConfigurationManager.AppSettings["CloudinaryCloudName"]}/image/upload/{publicId}";
+            return Redirect(cloudinaryUrl);
+        }
     }
 }

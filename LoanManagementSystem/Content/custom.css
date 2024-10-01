@@ -1,0 +1,123 @@
+﻿/* General Body Styling */
+body {
+    background-color: #f4f4f9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+/* Logo styles */
+.logo {
+    height: 90px; /* Adjust height as needed */
+    margin-right: 10px; /* Space between logo and title */
+}
+
+
+/* Header Styling */
+header {
+    background-color: #FF5F6D;
+    background: linear-gradient(to right, #FF5F6D, #FFC371); /* Light red gradient */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-size: 2.5rem;
+    font-weight: 500;
+}
+
+.nav-link {
+    color: white;
+    font-size: 1.2rem;
+    margin-right: 20px;
+}
+
+    .nav-link:hover {
+        color: #FFC371;
+    }
+
+/* Buttons */
+.btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.btn-light {
+    background-color: #ffffff;
+    color: #A02040;
+    border: none;
+}
+
+    .btn-light:hover {
+        background-color: #f7f7f7;
+        color: #FF5F6D;
+    }
+
+.btn-outline-light {
+    border-color: #ffffff;
+    color: #ffffff;
+}
+
+    .btn-outline-light:hover {
+        background-color: #ffffff;
+        color: #FF5F6D;
+    }
+
+/* Flexbox-based layout to stick footer to bottom */
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.page-wrapper {
+    flex: 1;
+}
+
+/* Footer */
+footer {
+    background-color: #FF5F6D;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: white;
+    padding: 20px 0;
+    width: 100%;
+}
+
+    footer h5 {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+    }
+
+    footer p, footer a {
+        font-size: 0.9rem;
+        color: #f0f0f0;
+    }
+
+        footer a:hover {
+            color: #FFC371;
+        }
+
+    footer i {
+        font-size: 1.5rem;
+    }
+
+/* Ensure content and footer position correctly on small content pages */
+.container.body-content {
+    min-height: 80vh;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 2rem;
+    }
+
+    footer .col-md-4 {
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar-brand {
+        font-size: 1.8rem;
+    }
+}
