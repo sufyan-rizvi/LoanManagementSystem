@@ -8,8 +8,8 @@
 
 <form id="payment-form" action="/Payment/ProcessPayment" method="POST">
     <div class="form-group">
-        <label for="amount">Enter Amount (in INR):</label>
-        <input type="number" id="amount" name="amount" class="form-control" value="@Model.EMIAmount" required />
+        <label for="amount">Enter Amount (in $):</label>
+        <input type="number" id="amount" name="amount" class="form-control" readonly value="@Model.EMIAmount" required />
     </div>
     <input type="hidden" id="rzp_payment_id" name="rzp_payment_id" />
     <input type="hidden" id="rzp_order_id" name="rzp_order_id" />
@@ -35,7 +35,7 @@
                 var options = {
                     "key": "@System.Configuration.ConfigurationManager.AppSettings["RazorpayKey"]",
                     "amount": data.amount, // Amount is in paise
-                    "currency": "INR",
+                    "currency": "Dollar",
                     "name": "Test Payment",
                     "description": "Testing Razorpay Payment",
                     "image": "https://yourlogo.com/logo.png",

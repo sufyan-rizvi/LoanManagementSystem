@@ -13,11 +13,10 @@ namespace LoanManagementSystem.Mappings
         {
             Table("Repayments");
             Id(r => r.RepaymentId).GeneratedBy.GuidComb();
-            Map(r => r.StartDate);
-            Map(r => r.EndDate);
-            //Map(r => r.NextPaymentDate);
-            //Map(r => r.Amount);
-            //References(r => r.Customer).Column("CustomerId").Cascade.All();
+            Map(r => r.PaymentDate);
+            Map(r => r.Amount);
+            Map(r => r.TransactionId);
+            Map(r => r.IsApproved);
             References(r => r.Application).Column("LoanApplicationId").Cascade.All();
             
         }
