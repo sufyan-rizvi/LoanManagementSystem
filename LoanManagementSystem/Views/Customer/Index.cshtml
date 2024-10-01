@@ -64,6 +64,7 @@
                     <td>N/A</td>
                     <td>N/A</td>
                 }
+
                 <td>
                     @Html.DisplayFor(modelItem => item.PaymentsMissed)
                 </td>
@@ -72,11 +73,11 @@
                 </td>
                 @if (item.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment)
                 {
-                    if (DateTime.Now >= item.NextPaymentDate && DateTime.Now <= item.NextPaymentDate.AddDays(5))
+                    if (DateTime.Now >= item.NextPaymentDate || DateTime.Now <= item.NextPaymentDate.AddDays(5))
                     {
                         // Render the link if the condition is met
                         <td>
-                            @Html.ActionLink("Pay Now!", "Index", "Payment", null, new { @class = "btn btn-primary" })
+                            @Html.ActionLink("Pay Now!", "Index", "Payment", new {applicationId = item.ApplicationId}, new { @class = "btn btn-primary" })
                         </td>
                     }
                     else
@@ -109,13 +110,14 @@
 
 <style>
     .disabled-button {
-        pointer-events: none; /* Prevent any mouse events */
-        opacity: 0.6; /* Make the button appear disabled */
-        cursor: not-allowed; /* Show a not-allowed cursor */
+        pointer-events: none;
+        opacity: 0.6;
+        cursor: not-allowed;
     }
-    .disabled-button:hover{
-        cursor:not-allowed
-    }
+
+        .disabled-button:hover {
+            cursor: not-allowed
+        }
 
     .btn {
         transition: opacity 0.3s; /* Smooth transition */

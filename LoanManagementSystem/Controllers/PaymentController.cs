@@ -4,6 +4,8 @@ using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using LoanManagementSystem.Data;
+using LoanManagementSystem.Models;
 using Razorpay.Api;
 
 
@@ -16,8 +18,9 @@ namespace LoanManagementSystem.Controllers
         private string _secret = ConfigurationManager.AppSettings["RazorpaySecret"];
 
         // GET: Payment
-        public ActionResult Index()
+        public ActionResult Index(string applicationId)
         {
+            Session["applicationId"] = new Guid($"{applicationId}");
             return View();
         }
 
@@ -27,6 +30,7 @@ namespace LoanManagementSystem.Controllers
         {
             try
             {
+                Session["amount"] = amount;
                 var client = new RazorpayClient(_key, _secret);
 
                 // Convert the amount to paise (smallest currency unit)
@@ -36,7 +40,7 @@ namespace LoanManagementSystem.Controllers
                 Dictionary<string, object> options = new Dictionary<string, object>
                 {
                     { "amount", amountInPaise }, // Amount in paise
-                    { "currency", "INR" },
+                    { "currency", "Dollar" },
                     { "receipt", "order_rcptid_11" }
                 };
 
@@ -57,6 +61,7 @@ namespace LoanManagementSystem.Controllers
         {
             try
             {
+                Session["rzp_order_id"] = rzp_order_id;
                 var client = new RazorpayClient(_key, _secret);
 
                 // Create the parameters for payment verification
@@ -82,12 +87,56 @@ namespace LoanManagementSystem.Controllers
 
         public ActionResult Success()
         {
+            using (var s = NhibernateHelper.CreateSession())
+            {
+                using (var txn = s.BeginTransaction())
+                {
+                    var payment = new Repayment
+                    {
+                        PaymentDate = DateTime.Now,
+                        Amount = (double)Session["amount"],
+                        TransactionId = (string)Session["rzp_order_id"],
+                        IsApproved = true
+                    };
+                    s.Save(payment);
+                    txn.Commit();
+                }
+
+            }
+
             return View();
         }
 
+
+
         public ActionResult Error()
         {
+            using (var s = NhibernateHelper.CreateSession())
+            {
+                using (var txn = s.BeginTransaction())
+                {
+                    var payment = new Repayment
+                    {
+                        PaymentDate = DateTime.Now,
+                        Amount = (double)Session["amount"],
+                        TransactionId = (string)Session["rzp_order_id"],
+                        IsApproved = false
+                    };
+                    s.Save(payment);
+                    txn.Commit();
+                }
+
+            }
+
             return View();
         }
+
+        public ActionResult AddRepayment()
+        {
+            var applicationId = (Guid)Session["applicationId"];
+            return Json("YAY");
+        }
+
+
     }
 }
