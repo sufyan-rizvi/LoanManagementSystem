@@ -365,3 +365,4 @@ FodyWeavers.xsd
 
 /LoanManagementSystem/Data/NhibernateHelper.cs
 /LoanManagementSystem/Jobs/RepaymentEmailSendingJob.cs
+/LoanManagementSystem/Models/Startup.cs
