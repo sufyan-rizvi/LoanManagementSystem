@@ -60,6 +60,7 @@ namespace LoanManagementSystem.Controllers
                 if (loan.Scheme.SchemeType == SchemeType.Retail)
                 {
                     loan.Status = ApplicationStatus.LoanRepayment;
+                    loan.PaymentStartDate = DateTime.Now;
                 }
                 else
                 {
@@ -146,6 +147,7 @@ namespace LoanManagementSystem.Controllers
                 }
 
                 collateral.Status = ApplicationStatus.LoanRepayment;
+                collateral.PaymentStartDate = DateTime.Now;
 
                 using (var txn = session.BeginTransaction())
                 {
