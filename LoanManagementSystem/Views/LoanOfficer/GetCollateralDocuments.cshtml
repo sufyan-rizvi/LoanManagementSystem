@@ -30,10 +30,12 @@
             @Html.DisplayFor(modelItem => item.CollateralId)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.ImageUrl)
+            <img src="@item.ImageUrl" alt="Uploaded Image" />
+            @*@Html.DisplayFor(modelItem => item.ImageUrl)*@
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.PublicId)
+            <a href="@Url.Action("ShowImage", "Customer", new { publicId = item.PublicId })">Click to show full image</a>
+            @*@Html.DisplayFor(modelItem => item.PublicId)*@
         </td>
         <td>
             @Html.ActionLink("Approve", "ApproveCollateral", new { /* id=item.PrimaryKey */ }) |

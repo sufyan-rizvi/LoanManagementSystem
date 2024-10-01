@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using AutoMapper;
 using LoanManagementSystem.Data;
 using LoanManagementSystem.Models;
+using LoanManagementSystem.Service;
 using NHibernate.Linq;
 
 namespace LoanManagementSystem.Controllers
@@ -181,6 +182,7 @@ namespace LoanManagementSystem.Controllers
                 return RedirectToAction("CollateralApproval");
             }
         }
+        
     }
 
 }

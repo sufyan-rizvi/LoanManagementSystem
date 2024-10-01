@@ -1,4 +1,4 @@
-﻿@model LoanManagementSystem.ViewModels.LoginVM
+﻿@*@model LoanManagementSystem.ViewModels.LoginVM
 
     @{
         ViewBag.Title = "LoginUser";
@@ -76,7 +76,228 @@
             $('#asUserLoginBtn').addClass("btn-info text-dark")
             $("#userRegister").show()
         })
-    </script>
+    </script>*@
 
 
 
+
+@model LoanManagementSystem.ViewModels.LoginVM
+
+@{
+    ViewBag.Title = "LoginUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="login-page" >
+    <div class="login-container">
+        <!-- Left Section: Image and Welcome Text -->
+        <div class="login-image-section" >
+            <img src="~/Content/Images/loginImage.png" alt="Login Image" class="login-image" />
+            <div class="welcome-text">
+                <h2>Welcome to the Loan Management System</h2>
+                <p>Manage your loans with ease. Login to your account to access features tailored for you.</p>
+            </div>
+        </div>
+
+        <!-- Right Section: Login Form -->
+        <div class="login-form-section">
+            <h2 class="text-center">Login</h2>
+            <hr />
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger text-center" })
+
+                    <div class="btn-group login-toggle">
+                        <button type="button" id="asUserLoginBtn" class="btn btn-outline-info">Customer</button>
+                        <button type="button" id="asEmployeeLoginBtn" class="btn btn-outline-info">Employee</button>
+                    </div>
+
+                    @Html.HiddenFor(model => model.LoginType, new { id = "LoginType" })
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label" })
+                        <div class="input-container">
+                            @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label" })
+                        <div class="input-container">
+                            @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group text-center">
+                        <input type="submit" value="Login" class="btn btn-primary login-btn" />
+                        @Html.ActionLink("New Customer? Register", "Register", null, new { id = "userRegister", @class = "register-link", style = "display:none" })
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#asUserLoginBtn').click(function () {
+        $('#LoginType').val('Customer');
+        $("#userRegister").show();
+        $('#asEmployeeLoginBtn').removeClass("btn-info");
+        $('#asUserLoginBtn').addClass("btn-info text-dark");
+    });
+
+    $('#asEmployeeLoginBtn').click(function () {
+        $('#LoginType').val('Employee');
+        $("#userRegister").hide();
+        $('#asUserLoginBtn').removeClass("btn-info");
+        $('#asEmployeeLoginBtn').addClass("btn-info text-dark");
+    });
+
+    $(document).ready(() => {
+        $('#LoginType').val('Customer');
+        $('#asUserLoginBtn').addClass("btn-info text-dark");
+        $("#userRegister").show();
+    });
+</script>
+
+<style>
+    .login-page {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #f4f4f9;
+    }
+
+    .login-container {
+        display: flex;
+        width: 900px;
+        background-color: white;
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    /* Left section (image and text) */
+    .login-image-section {
+        width: 50%;
+        /*        background-color: #f7f7f7;*/
+        background-image: url('~/Content/Images/loginImage.png');
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .login-image {
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 20px;
+    }
+
+    .welcome-text {
+        text-align: center;
+        color: #333;
+    }
+
+    .welcome-text h2 {
+        margin-bottom: 10px;
+        font-size: 24px;
+    }
+
+    .welcome-text p {
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    /* Right section (form) */
+    .login-form-section {
+        width: 50%;
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .form-horizontal {
+        width: 100%;
+    }
+
+    .btn-group.login-toggle {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .btn-outline-info {
+        width: 48%;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .control-label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    .input-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-control {
+        border-radius: 5px;
+        padding: 10px;
+        border: 1px solid #ced4da;
+    }
+
+    .text-danger {
+        margin-top: 5px;
+        font-size: 0.9em;
+    }
+
+    .login-btn {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .register-link {
+        display: block;
+        margin-top: 15px;
+        text-align: center;
+        color: #007bff;
+    }
+
+    .register-link:hover {
+        text-decoration: underline;
+    }
+
+    @*@media (max-width: 768px) {
+        .login-container {
+            flex-direction: column;
+            width: 100%;
+        }*@
+
+        .login-image-section, .login-form-section {
+            width: 100%;
+        }
+
+        .btn-outline-info {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+    }
+</style>
