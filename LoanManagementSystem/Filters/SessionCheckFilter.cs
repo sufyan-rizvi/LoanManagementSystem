@@ -14,6 +14,7 @@ namespace LoanManagementSystem.Filters
     {
         "/Customer/Schemes",  // Allow login page
         "/Account/Register",  
+        "/Account/logout ",  
         "/Account/Login"// Allow home page
         // Add more URLs as needed
     };

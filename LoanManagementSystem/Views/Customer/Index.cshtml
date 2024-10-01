@@ -72,9 +72,20 @@
                 </td>
                 @if (item.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment)
                 {
-                    <td>
-                        @Html.ActionLink("Pay Now!", "Index", "Payment", null, new { @class = "btn btn-primary" })
-                    </td>
+                    if (DateTime.Now >= item.NextPaymentDate && DateTime.Now <= item.NextPaymentDate.AddDays(5))
+                    {
+                        // Render the link if the condition is met
+                        <td>
+                            @Html.ActionLink("Pay Now!", "Index", "Payment", null, new { @class = "btn btn-primary" })
+                        </td>
+                    }
+                    else
+                    {
+                        // Render a disabled button if the condition is not met
+                        <td>
+                            <button class="btn btn-primary" disabled>Pay Now!</button>
+                        </td>
+                    }
                 }
                 else if (item.Status == LoanManagementSystem.Models.ApplicationStatus.CollateralPending)
                 {
@@ -95,3 +106,39 @@
         @Html.ActionLink("Apply Now!", "schemes")
     </p>
 </div>
+
+<style>
+    .disabled-button {
+        pointer-events: none; /* Prevent any mouse events */
+        opacity: 0.6; /* Make the button appear disabled */
+        cursor: not-allowed; /* Show a not-allowed cursor */
+    }
+    .disabled-button:hover{
+        cursor:not-allowed
+    }
+
+    .btn {
+        transition: opacity 0.3s; /* Smooth transition */
+    }
+
+        .btn:hover {
+            cursor: pointer; /* Default cursor for enabled buttons */
+        }
+</style>
+
+<script>
+    const button = document.getElementById('applyButton');
+
+    button.addEventListener('mouseover', function () {
+        button.classList.add('disabled-button');
+    });
+
+    button.addEventListener('mouseleave', function () {
+        button.classList.remove('disabled-button');
+    });
+
+    button.addEventListener('click', function (event) {
+        if (button.classList.contains('disabled-button')) {
+            event.preventDefault(); // Prevent click action if the button is disabled
+        }
+    });</script>
