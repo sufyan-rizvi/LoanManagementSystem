@@ -19,10 +19,10 @@ namespace LoanManagementSystem.Controllers
 
         public async Task<ActionResult> RunSchedulerMethod()
         {
-             //SendEmail();
+            //SendEmail();
             return Json("Great Success!");
         }
-        private static void SendEmail()
+        private async static void SendEmail()
         {
             SmtpClient client = new SmtpClient("smtp.gmail.com");
 
