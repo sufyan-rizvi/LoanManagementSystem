@@ -121,16 +121,17 @@
         $("#grid").jqGrid({
             url: "/admin/GetData",
             datatype: "json",
-            colNames: ["Id", "UserId", "First Name", "Last Name", "Email", "Phone Number", "Address", "Active Status", "Username", "Password", "FlatNo", "Building Name", "Street Name", "City", "Pincode", "State", "Country"],
+            colNames: ["Id", "UserId", "First Name", "Last Name", "Email", "Phone Number", "Age", "Address", "Active Status", "Username", "Password", "FlatNo", "Building Name", "Street Name", "City", "Pincode", "State", "Country"],
             colModel: [
                 { name: "OfficerId", key: true, hidden: true, editable: true, editrules: { edithidden: false } },
                 { name: "User.UserId", hidden: true, editable: true, editrules: { edithidden: false } },
-                { name: "User.FirstName", editable: true, editrules: { required: true }, searchoptions: { sopt: ['eq'] } },
-                { name: "User.LastName", editable: true, editrules: { required: true }, searchoptions: { sopt: ['eq'] } },
-                { name: "User.Email", editable: true, editrules: { required: true, email: true }, searchoptions: { sopt: ['eq'] } },
+                { name: "User.FirstName", editable: true, width: 100, editrules: { required: true }, searchoptions: { sopt: ['eq'] }, align: "center" },
+                { name: "User.LastName", editable: true, width: 100, editrules: { required: true }, searchoptions: { sopt: ['eq'] }, align: "center" },
+                { name: "User.Email", editable: true, width: 150, editrules: { required: true, email: true }, searchoptions: { sopt: ['eq'] }, align: "center" },
                 {
                     name: "User.PhoneNumber", editable: true, editrules: {
                         required: true,
+                        width: 100,
                         number: true,
                         custom: true,
                         custom_func: function (value, colname) {
@@ -140,12 +141,35 @@
                             return [true, ""];
                         }
 
-                    }, searchoptions: { sopt: ['eq'] }
+                    }, searchoptions: { sopt: ['eq'] }, align: "center"
                 },
-                { name: "FullAddress", editable: false, search: false },
-                { name: "User.IsActive", editable: false, editrules: { required: true }, search: false, type: 'checkbox', formatter: 'checkbox', align: "center", cellattr: function () { return 'style="display: flex; justify-content: center; align-items: center;"'; } },
-                { name: "User.Username", hidden: true, editable: true, editrules: { edithidden: true } },
-                { name: "User.Password", hidden: true, edittype: 'password', editable: true, editrules: { edithidden: true } },
+                {
+                    name: 'User.Age',
+                    number: true,
+                    width: 50,
+                    editable: true,
+                    editrules: {
+                        required: true,
+                        number: true,
+                        custom: true,
+                        custom_func: function (value, colname) {
+                            // Check if the value is a valid number and within a reasonable age range (0-120)
+                            if (!/^\d+$/.test(value) || value < 18 || value > 99) {
+                                return [false, colname + ": Age must be a number between 18 and 99."];
+                            }
+                            return [true, ""];
+                        }
+                    },
+                    search: true,
+                    searchoptions: {
+                        sopt: ['eq']
+                    },
+                    align: "center"
+                },
+                { name: "FullAddress", editable: false, width: 450, search: false, align: "center" },
+                { name: "User.IsActive", editable: false, width: 75, editrules: { required: true }, search: false, type: 'checkbox', formatter: 'checkbox', align: "center" },
+                { name: "User.Username", hidden: true, editable: true, editrules: { edithidden: true, required: true } },
+                { name: "User.Password", hidden: true, edittype: 'password', editable: true, editrules: { edithidden: true, required: true } },
                 { name: "User.Address.FlatNo", hidden: true, editable: true, editrules: { edithidden: true, required: true } }, // Hidden field for Flat No
                 { name: "User.Address.BuildingName", hidden: true, editable: true, editrules: { edithidden: true, required: true } }, // Hidden field for Building Name
                 { name: "User.Address.StreetName", hidden: true, editable: true, editrules: { edithidden: true, required: true } }, // Hidden field for Street Name
@@ -217,6 +241,7 @@
 
                         // Remove existing Username and Password fields if they are present
                         addForm.find("#tr_User\\.Username").css("display", "");
+                        addForm.find("#tr_User\\.Age").css("display", "");
                         addForm.find("#tr_User\\.Password").css("display", "");
                     },
                     afterSubmit: (response, postdata) => {

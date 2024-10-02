@@ -105,7 +105,9 @@ namespace LoanManagementSystem.Controllers
                         PaymentDate = DateTime.Now,
                         Amount = Convert.ToDouble(Session["amount"]),
                         TransactionId = (string)Session["rzp_order_id"],
-                        IsApproved = true
+                        IsApproved = true,
+                        Application = (LoanApplication)Session["application"]
+
                     };
                     s.Save(payment);
                     txn.Commit();
@@ -150,17 +152,20 @@ namespace LoanManagementSystem.Controllers
                     application.PaymentsMade += 1;
                     if(application.PaymentsMade > application.Tenure) 
                         application.Status = ApplicationStatus.LoanClosed;
+
                     var months = DateTime.Now.Month - application.PaymentStartDate.Month;
                     var missedPayments = months - application.PaymentsMade;
                     application.PaymentsMissed = missedPayments;
                     if (missedPayments >= 3)
                         application.Status = ApplicationStatus.NPA;
 
+                    application.NextPaymentDate = application.NextPaymentDate.AddMonths(1);
+
                     s.Merge(application);
                     txn.Commit();
                 }
             }
-            return Json("YAY");
+            return Json("YAY",JsonRequestBehavior.AllowGet);
         }
 
 

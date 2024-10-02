@@ -16,7 +16,7 @@ namespace LoanManagementSystem.Models
         {
             JobStorage.Current = new SqlServerStorage(@"Data Source=DESKTOP-646UVFV\SQLEXPRESS;Initial Catalog=LoanDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;");
             SchedulerController obSchedulerController = new SchedulerController();
-            RecurringJob.AddOrUpdate(() => obSchedulerController.RunSchedulerMethod(), Cron.Minutely);
+            RecurringJob.AddOrUpdate(() => obSchedulerController.RunSchedulerMethod(), Cron.Monthly);
             app.UseHangfireServer();
             
         }

@@ -52,7 +52,8 @@ namespace LoanManagementSystem.Repository
                 if (loan.Scheme.SchemeType == SchemeType.Retail)
                 {
                     loan.Status = ApplicationStatus.LoanRepayment;
-                    loan.PaymentStartDate = DateTime.Now;
+                    loan.PaymentStartDate = DateTime.Now.AddMonths(1);
+                    loan.NextPaymentDate = DateTime.Now.AddMonths(1);
                 }
                 else
                 {
@@ -120,7 +121,8 @@ namespace LoanManagementSystem.Repository
                 }
 
                 collateral.Status = ApplicationStatus.LoanRepayment;
-                collateral.PaymentStartDate = DateTime.Now;
+                collateral.PaymentStartDate = DateTime.Now.AddMonths(1);
+                collateral.NextPaymentDate = DateTime.Now.AddMonths(1);
 
                 using (var txn = session.BeginTransaction())
                 {

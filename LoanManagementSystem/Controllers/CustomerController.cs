@@ -11,7 +11,7 @@ using LoanManagementSystem.ViewModels;
 
 namespace LoanManagementSystem.Controllers
 {
-    [Authorize(Roles ="Customer")]
+    [Authorize(Roles = "Customer")]
     public class CustomerController : Controller
     {
         private readonly CloudinaryService _cloudinaryService;
@@ -113,7 +113,7 @@ namespace LoanManagementSystem.Controllers
             application.Applicant = (Customer)Session["Customer"];
             application.Status = ApplicationStatus.PendingApproval;
 
-            var officerList = _adminService.GetAllOfficers();
+            var officerList = _adminService.GetAllActiveOfficers();
             Random number = new Random(); ;
             application.AssignedOfficer = officerList[number.Next(0, officerList.Count)];
 
