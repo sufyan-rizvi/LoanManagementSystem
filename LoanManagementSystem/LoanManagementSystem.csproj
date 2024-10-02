@@ -363,6 +363,7 @@
     <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\SchedulerController.cs" />
     <Compile Include="Data\NhibernateHelper.cs" />
+    <Compile Include="DTOs\LoanApplicationMonthWise.cs" />
     <Compile Include="DTOs\LoanSchemeDTO.cs" />
     <Compile Include="Filters\FilterConfig.cs" />
     <Compile Include="Filters\SessionCheckFilter.cs" />

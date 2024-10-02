@@ -17,35 +17,140 @@ using BC = BCrypt.Net.BCrypt;
 using System.Threading.Tasks;
 using AutoMapper;
 using LoanManagementSystem.DTOs;
+using NHibernate.Transform;
+using NHibernate;
 
 namespace LoanManagementSystem.Controllers
 {
     public class AdminController : Controller
     {
         private readonly IAdminService _adminService;
-        public AdminController(IAdminService adminService)
+        private readonly ICustomerService _customerService;
+        public AdminController(IAdminService adminService, ICustomerService customerService)
         {
             _adminService = adminService;
+            _customerService = customerService;
         }
         public ActionResult Analytics()
         {
-            //bhai jii we will send these data from our DataBase accordingly
-            var loanApplications = new List<int> { 12, 19, 3, 5, 2 };  // Example data
-            var loanAmounts = new List<int> { 5000, 10000, 7500, 12000, 9000 };  // Data for line chart
-            var months = new List<string> { "January", "February", "March", "April", "May" };  // X-axis labels
-                                                                                               // Data for NPA (example: percentage of NPAs each month)
-            var npaPercentages = new List<int> { 5, 7, 6, 8, 10 };
+            using (var session = NhibernateHelper.CreateSession())
+            {
+                var result = session.CreateQuery(@"
+        select 
+            month(ApplicationDate) as Month, 
+            year(ApplicationDate) as Year, 
+            count(*) as ApplicationCount 
+        from LoanApplication 
+        group by 
+            month(ApplicationDate), 
+            year(ApplicationDate)
+        order by 
+            Year, Month")
+                    .SetResultTransformer(Transformers.AliasToBean<LoanApplicationMonthWise>())
+                    .List<LoanApplicationMonthWise>();
+
+                var loanApplications = new Int64[12];
+                foreach (var item in result)
+                {
+                    // Assuming item.Month is 1 for January, 2 for February, etc.
+                    loanApplications[item.Month - 1] = item.ApplicationCount; // -1 to adjust for zero-based indexing
+                }
+
+                //bhai jii we will send these data from our DataBase accordingly
+                // Example data
+
+                var months = new List<string>
+{
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+};  // X-axis labels
+    // Data for NPA (example: percentage of NPAs each month)
+
+                var npaResult = session.CreateQuery(@"
+        select 
+            month(ApplicationDate) as Month, 
+            year(ApplicationDate) as Year, 
+            count(*) as ApplicationCount 
+        from LoanApplication 
+        where Status = :status
+        group by 
+            month(ApplicationDate), 
+            year(ApplicationDate)
+        order by 
+            Year, Month")
+        .SetParameter("status", ApplicationStatus.NPA) // Set the status parameter
+        .SetResultTransformer(Transformers.AliasToBean<LoanApplicationMonthWise>())
+        .List<LoanApplicationMonthWise>();
 
 
-            ViewBag.LoanApplications = loanApplications;
-            ViewBag.LoanAmounts = loanAmounts;
-            ViewBag.Months = months;
-            ViewBag.NPAPercentages = npaPercentages;
+                var npaPercentages = new Int64[12];
+                foreach (var item in npaResult)
+                {
+                    // Assuming item.Month is 1 for January, 2 for February, etc.
+                    npaPercentages[item.Month - 1] = item.ApplicationCount; // -1 to adjust for zero-based indexing
+                }
+
+
+                var amountResult = session.CreateQuery(@"
+        select 
+            month(ApplicationDate) as Month, 
+            year(ApplicationDate) as Year, 
+            count(*) as ApplicationCount, 
+            sum(LoanAmount) as TotalLoanAmount
+        from LoanApplication 
+        where Status = :status
+        group by 
+            month(ApplicationDate), 
+            year(ApplicationDate)
+        order by 
+            Year, Month")
+        .SetParameter("status", ApplicationStatus.NPA)
+        .SetResultTransformer(Transformers.AliasToBean<LoanApplicationMonthWise>())
+        .List<LoanApplicationMonthWise>();
+
+
+
+                var loanAmounts = new Int64[12];  // Data for line chart
+
+                foreach (var item in amountResult)
+                {
+                    // Assuming item.Month is 1 for January, 2 for February, etc.
+                    loanAmounts[item.Month - 1] = (Int64)item.TotalLoanAmount; // -1 to adjust for zero-based indexing
+                }
+
+                int officerCount = _adminService.GetAllActiveOfficers().Count();
+                int customerCount = session.Query<Customer>().Count();
+                int adminCount = session.Query<Admin>().Count();
 
 
 
 
-            return View();
+
+
+
+                ViewBag.OfficerCount = officerCount;
+                ViewBag.CustomerCount = customerCount;
+                ViewBag.AdminCount = adminCount;
+                ViewBag.LoanApplications = loanApplications;
+                ViewBag.LoanAmounts = loanAmounts;
+                ViewBag.Months = months;
+                ViewBag.NPAPercentages = npaPercentages;
+
+
+
+
+                return View();
+            }
         }
 
         public ActionResult Index()
