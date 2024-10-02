@@ -8,6 +8,7 @@ using LoanManagementSystem.Data;
 using LoanManagementSystem.Models;
 using LoanManagementSystem.Service;
 using LoanManagementSystem.ViewModels;
+using Newtonsoft.Json;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace LoanManagementSystem.Controllers
@@ -51,7 +52,7 @@ namespace LoanManagementSystem.Controllers
         [HttpPost]
         public ActionResult AddCollateral(LoanApplication application, List<HttpPostedFileBase> files)
         {
-            
+
             if (files == null || files[1].ContentLength == 0)
             {
                 ViewBag.Message = "Please select a file to upload.";
@@ -99,16 +100,49 @@ namespace LoanManagementSystem.Controllers
             application.LoanApplication = new LoanApplication();
 
             var customer = (Customer)Session["Customer"];
-            application.LoanApplication.Applicant = customer; 
+            application.LoanApplication.Applicant = customer;
+            ViewData["loanaapl"] = application.LoanApplication;
             application.LoanScheme = _customerService.GetSchemeById(id);
             return View(application);
         }
 
-        public JsonResult AddLoanDetails(LoanApplicationSchemeVM vm, List<HttpPostedFileBase> files)
+        public JsonResult AddLoanDetails(FormCollection form)
         {
-            var application = vm.LoanApplication;
-            application.Scheme = _customerService.GetSchemeById(vm.LoanScheme.LoanSchemeId);
 
+            string loanApplicationJson = form["LoanApplication"];
+            string loanSchemeJson = form["LoanScheme"];
+
+            var application = JsonConvert.DeserializeObject<LoanApplication>(loanApplicationJson);
+            var LoanScheme = JsonConvert.DeserializeObject<LoanScheme>(loanSchemeJson);
+
+            var files = Request.Files;
+
+            
+            application.Scheme = _customerService.GetSchemeById(LoanScheme.LoanSchemeId);
+            application.RegistrationDocuments = new List<RegistrationDocuments>();
+
+            for (var i = 0; i < files.Count; i++)
+            {
+
+                var result = _cloudinaryService.UploadImage(files[i]);
+
+                if (result.Error != null)
+                {
+                    throw new InvalidOperationException("Unable to Upload images at the moment!");
+                }
+                
+                var approvalDocs = new RegistrationDocuments()
+                {
+
+                    DocumentType = (DocumentType)i,
+                    PublicId = result.PublicId,
+                    ImageUrl = result.SecureUrl.ToString(),
+                    Application = application
+
+
+                };
+                application.RegistrationDocuments.Add(approvalDocs);
+            }
 
             application.Applicant = (Customer)Session["Customer"];
             application.Status = ApplicationStatus.PendingApproval;
@@ -129,7 +163,7 @@ namespace LoanManagementSystem.Controllers
             //var existingApplication = _customerService.GetApplicationById(application.ApplicationId);
             for (var i = 0; i < files.Count(); i++)
             {
-                
+
                 var result = _cloudinaryService.UploadImage(files[i]);
 
                 if (result.Error != null)
@@ -157,7 +191,7 @@ namespace LoanManagementSystem.Controllers
                 }
             }
             return Json("Great Success!");
-            
+
 
         }
         public ActionResult ShowImage(string publicId)

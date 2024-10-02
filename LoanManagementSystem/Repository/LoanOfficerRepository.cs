@@ -32,8 +32,7 @@ namespace LoanManagementSystem.Repository
         }
         public List<RegistrationDocuments> GetAppDocuments(Guid id)
         {
-            var loanApplication = _session.Query<LoanApplication>().FetchMany(a => a.RegistrationDocuments).FirstOrDefault(l => l.ApplicationId == id);
-            var documents = loanApplication.RegistrationDocuments.ToList();
+            var documents = _session.Query<RegistrationDocuments>().Where(l => l.Application.ApplicationId == id).ToList();
 
             return documents;
         }
@@ -101,9 +100,8 @@ namespace LoanManagementSystem.Repository
         {
             using (var session = NhibernateHelper.CreateSession())
             {
-                var loanApplication = session.Get<LoanApplication>(id);
-                var documents = session.Query<CollateralDocuments>().Where(r => r.Application.ApplicationId ==
-                loanApplication.ApplicationId).ToList();
+
+                var documents = session.Query<CollateralDocuments>().Where(r => r.Application.ApplicationId == id).ToList();
                 return documents;
             }
         }

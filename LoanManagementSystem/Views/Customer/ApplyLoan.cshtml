@@ -202,7 +202,17 @@
                     PANNumber: $("#lpan").val(), // Assuming this should be the PAN input ID
                 }
             };
-            console.log(LoanApplicationData)
+
+            var LoanSchemeData =  {
+                LoanSchemeId: $("#lsid").val()
+        }
+
+            formData.append('LoanApplication', JSON.stringify(LoanApplicationData));
+
+            // Append LoanSchemeData as JSON string to FormData
+            formData.append('LoanScheme', JSON.stringify(LoanSchemeData));
+
+            console.log(formData)
 
 
 
@@ -210,18 +220,9 @@
             $.ajax({
                 url: "/customer/addloandetails",
                 type: "POST",
-                data: {
-                    vm: {
-                        LoanScheme: {
-                            LoanSchemeId: $("#lsid").val()
-                        },
-                        LoanApplication: LoanApplicationData
-                    },
-                    files: {
-                        formData
-                    }
-                },
-
+                data: formData,
+                contentType: false,   // Important to set false for sending FormData
+                processData: false, 
 
                 success: () => {
                     alert("Your documents have been sent to a loan officer for approval!");
