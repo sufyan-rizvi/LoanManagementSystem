@@ -14,7 +14,7 @@ namespace LoanManagementSystem.Service
         LoanOfficer ToggleOfficerDelete(Guid id);
         void EditOfficer(LoanOfficer officer);
         LoanOfficer GetOfficerById(Guid id);
-
+        IList<LoanOfficer> GetAllActiveOfficers();
         IList<LoanScheme> GetAllSchemes();
         void AddScheme(LoanScheme scheme);
         LoanScheme GetSchemeById(Guid id);

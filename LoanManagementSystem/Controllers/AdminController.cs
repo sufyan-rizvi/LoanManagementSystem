@@ -76,6 +76,10 @@ namespace LoanManagementSystem.Controllers
             {
                 detailList = detailList.Where(q => q.User.FirstName == searchString).ToList();
             }
+            else if (_search && searchField == "User.Age" && searchOper == "eq")
+            {
+                detailList = detailList.Where(q => q.User.Age.ToString() == searchString).ToList();
+            }
 
 
 
@@ -106,6 +110,10 @@ namespace LoanManagementSystem.Controllers
                     detailList = sord == "asc" ? detailList.OrderBy(p => p.User.LastName).ToList()
                         : detailList.OrderByDescending(p => p.User.LastName).ToList();
                     break;
+                case "User.Age":
+                    detailList = sord == "asc" ? detailList.OrderBy(p => p.User.Age).ToList()
+                        : detailList.OrderByDescending(p => p.User.Age).ToList();
+                    break;
 
                 default:
                     break;
@@ -131,6 +139,7 @@ namespace LoanManagementSystem.Controllers
                         p.User.LastName,
                         p.User.Email,
                         p.User.PhoneNumber,
+                        p.User.Age.ToString(),
                         p.User.Address.FlatNo + ", " + p.User.Address.BuildingName + ", " + p.User.Address.StreetName + ", " + p.User.Address.City + " - " +
                         p.User.Address.PinCode + ", " + p.User.Address.State + ", " + p.User.Address.Country,
                         p.User.IsActive.ToString(),
@@ -154,6 +163,7 @@ namespace LoanManagementSystem.Controllers
 
         public ActionResult Add(LoanOfficer officer)
         {
+            officer.User.Age = Convert.ToInt32(officer.User.Age);
             _adminService.AddOfficer(officer);
             return Json(new { success = true, message = "Officer added successfully" });
         }
@@ -169,6 +179,7 @@ namespace LoanManagementSystem.Controllers
 
         public ActionResult Edit(LoanOfficer officer)
         {
+            officer.User.Age = Convert.ToInt32(officer.User.Age);
             _adminService.EditOfficer(officer);
             return Json(new { success = true, message = "Officer details updated!" });
         }

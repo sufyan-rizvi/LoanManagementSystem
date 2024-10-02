@@ -87,10 +87,10 @@
     ViewBag.Title = "LoginUser";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="login-page" >
+<div class="login-page">
     <div class="login-container">
         <!-- Left Section: Image and Welcome Text -->
-        <div class="login-image-section" >
+        <div class="login-image-section">
             <img src="~/Content/Images/loginImage.png" alt="Login Image" class="login-image" />
             <div class="welcome-text">
                 <h2>Welcome to the Loan Management System</h2>
@@ -208,15 +208,15 @@
         color: #333;
     }
 
-    .welcome-text h2 {
-        margin-bottom: 10px;
-        font-size: 24px;
-    }
+        .welcome-text h2 {
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
 
-    .welcome-text p {
-        font-size: 16px;
-        line-height: 1.6;
-    }
+        .welcome-text p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
 
     /* Right section (form) */
     .login-form-section {
@@ -281,23 +281,18 @@
         color: #007bff;
     }
 
-    .register-link:hover {
-        text-decoration: underline;
+        .register-link:hover {
+            text-decoration: underline;
+        }
+
+
+
+    .login-image-section, .login-form-section {
+        width: 100%;
     }
 
-    @*@media (max-width: 768px) {
-        .login-container {
-            flex-direction: column;
-            width: 100%;
-        }*@
-
-        .login-image-section, .login-form-section {
-            width: 100%;
-        }
-
-        .btn-outline-info {
-            width: 100%;
-            margin-bottom: 10px;
-        }
+    .btn-outline-info {
+        width: 100%;
+        margin-bottom: 10px;
     }
 </style>

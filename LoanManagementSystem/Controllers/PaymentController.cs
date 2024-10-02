@@ -20,8 +20,16 @@ namespace LoanManagementSystem.Controllers
         // GET: Payment
         public ActionResult Index(string applicationId)
         {
-            Session["applicationId"] = new Guid($"{applicationId}");
-            return View();
+            
+
+            using (var s = NhibernateHelper.CreateSession())
+            {
+                var application = s.Query<LoanApplication>().FirstOrDefault(l => l.ApplicationId == new Guid(applicationId));
+                Session["application"] = application;
+                return View(application);
+
+            }
+                
         }
 
         // Create Razorpay Order
@@ -34,20 +42,20 @@ namespace LoanManagementSystem.Controllers
                 var client = new RazorpayClient(_key, _secret);
 
                 // Convert the amount to paise (smallest currency unit)
-                int amountInPaise = Convert.ToInt32(Convert.ToDecimal(amount) * 100);
+                int amountInCents = Convert.ToInt32(Convert.ToDecimal(amount) * 100);
 
                 // Create an order in Razorpay for the amount entered by the user
                 Dictionary<string, object> options = new Dictionary<string, object>
                 {
-                    { "amount", amountInPaise }, // Amount in paise
-                    { "currency", "Dollar" },
+                    { "amount", amountInCents }, // Amount in paise
+                    { "currency", "INR" },
                     { "receipt", "order_rcptid_11" }
                 };
 
                 Order order = client.Order.Create(options);
 
                 // Return the order ID and amount to the client-side
-                return Json(new { orderId = order["id"].ToString(), amount = amountInPaise }, JsonRequestBehavior.AllowGet);
+                return Json(new { orderId = order["id"].ToString(), amount = amountInCents }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -87,6 +95,7 @@ namespace LoanManagementSystem.Controllers
 
         public ActionResult Success()
         {
+            
             using (var s = NhibernateHelper.CreateSession())
             {
                 using (var txn = s.BeginTransaction())
@@ -94,9 +103,11 @@ namespace LoanManagementSystem.Controllers
                     var payment = new Repayment
                     {
                         PaymentDate = DateTime.Now,
-                        Amount = (double)Session["amount"],
+                        Amount = Convert.ToDouble(Session["amount"]),
                         TransactionId = (string)Session["rzp_order_id"],
-                        IsApproved = true
+                        IsApproved = true,
+                        Application = (LoanApplication)Session["application"]
+
                     };
                     s.Save(payment);
                     txn.Commit();
@@ -127,14 +138,34 @@ namespace LoanManagementSystem.Controllers
                 }
 
             }
-
             return View();
         }
 
-        public ActionResult AddRepayment()
+        public ActionResult UpdateApplicationAfterPayment()
         {
-            var applicationId = (Guid)Session["applicationId"];
-            return Json("YAY");
+            
+            using(var s =  NhibernateHelper.CreateSession())
+            {
+                using (var txn = s.BeginTransaction())
+                {
+                    var application = (LoanApplication)Session["application"];
+                    application.PaymentsMade += 1;
+                    if(application.PaymentsMade > application.Tenure) 
+                        application.Status = ApplicationStatus.LoanClosed;
+
+                    var months = DateTime.Now.Month - application.PaymentStartDate.Month;
+                    var missedPayments = months - application.PaymentsMade;
+                    application.PaymentsMissed = missedPayments;
+                    if (missedPayments >= 3)
+                        application.Status = ApplicationStatus.NPA;
+
+                    application.NextPaymentDate = application.NextPaymentDate.AddMonths(1);
+
+                    s.Merge(application);
+                    txn.Commit();
+                }
+            }
+            return Json("YAY",JsonRequestBehavior.AllowGet);
         }
 
 

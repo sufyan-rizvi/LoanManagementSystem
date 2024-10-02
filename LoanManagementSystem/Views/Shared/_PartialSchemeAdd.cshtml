@@ -86,12 +86,13 @@
 
                 alert("Scheme Added successfully!")
                 loadItems();
+                $("form").submit()
                 $("#addscheme").hide()
                 $("#schemelist").show()
             },
             error: (err) => {
                 console.log(err)
-                alert("There was a error in adding the Contact!")
+                alert("There was a error in adding the Scheme!")
             }
 
         })

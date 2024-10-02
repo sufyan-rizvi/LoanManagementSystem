@@ -15,6 +15,7 @@ namespace LoanManagementSystem.Repository
         void AddOfficer(LoanOfficer officer);
         void UpdateOfficer(LoanOfficer officer);
         void DeleteOfficer(LoanOfficer officer);
+        IList<LoanOfficer> GetAllActiveOfficers();
         IList<LoanOfficer> GetAllOfficers();
         LoanScheme GetSchemeById(Guid id);
         IList<LoanScheme> GetAllSchemes();

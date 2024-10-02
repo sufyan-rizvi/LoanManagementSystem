@@ -20,7 +20,6 @@ namespace LoanManagementSystem.Mappings
             Map(a => a.EMIAmount);
             Map(a => a.PaymentsMissed);
             Map(a => a.PaymentsMade);
-            Map(a => a.IsActive);
             Map(a => a.Tenure);
             Map(a => a.Status);
             References(a => a.Applicant).Column("CustomerId").Cascade.All();

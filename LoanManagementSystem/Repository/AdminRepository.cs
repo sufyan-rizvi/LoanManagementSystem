@@ -55,6 +55,11 @@ namespace LoanManagementSystem.Repository
         }
         public IList<LoanOfficer> GetAllOfficers()
         {
+            return _session.Query<LoanOfficer>().Fetch(l => l.User).ThenFetch(u => u.Address).ToList();
+        }
+
+        public IList<LoanOfficer> GetAllActiveOfficers()
+        {
             return _session.Query<LoanOfficer>().Fetch(l => l.User).ThenFetch(u => u.Address).Where(l=>l.User.IsActive).ToList();
         }
 

@@ -78,6 +78,11 @@ namespace LoanManagementSystem.Service
             return _adminRepo.GetAllOfficers();
         }
 
+        public IList<LoanOfficer> GetAllActiveOfficers()
+        {
+            return _adminRepo.GetAllActiveOfficers();
+        }
+
         public IList<LoanScheme> GetAllSchemes()
         {
             return _adminRepo.GetAllSchemes();

@@ -20,6 +20,7 @@ namespace LoanManagementSystem.Mappings
             Map(u => u.LastName);
             Map(u => u.PhoneNumber);
             Map(u => u.IsActive);
+            Map(u => u.Age);
             HasOne(u => u.Role).PropertyRef(u=>u.User).Cascade.All();
             HasOne(u=>u.Address).PropertyRef(u=>u.User).Cascade.All();
             HasMany(u => u.Admins).Inverse().Cascade.All();
