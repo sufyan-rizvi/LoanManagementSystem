@@ -72,6 +72,11 @@
                         @Html.DisplayFor(modelItem => item.NextPaymentDate)
                     </td>
                 }
+                else if (item.Status == LoanManagementSystem.Models.ApplicationStatus.NPA)
+                {
+                    <td>@item.PaymentStartDate</td>
+                    <td>N/A</td>
+                }
                 else
                 {
                     <td>N/A</td>
@@ -110,13 +115,13 @@
 
                 else if (item.Status == LoanManagementSystem.Models.ApplicationStatus.CollateralPending)
                 {
-                    < td >
+                    <td>
                     @Html.ActionLink("Add Collateral Documents", "AddCollateral", "Customer", null, new { @class = "btn btn-primary" })
-                    </ td >
+                    </td>
                 }
                 else
                 {
-                    < td ></ td >
+                    <td></td>
                 }
 
                 <td>@DateTime.Now</td>

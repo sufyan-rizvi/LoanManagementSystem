@@ -17,7 +17,7 @@ namespace LoanManagementSystem.Repository
 
         public LoanOfficerRepository(ISession session)
         {
-            _session = session;   
+            _session = session;
         }
 
         public List<LoanApplication> GetAllDocuments()
@@ -25,20 +25,17 @@ namespace LoanManagementSystem.Repository
             var pendingLoans = _session.Query<LoanApplication>().Fetch(l => l.Applicant).ThenFetch(a => a.User).Where(l => l.Status ==
                 ApplicationStatus.PendingApproval).ToList();
 
-                var dto = Mapper.Map<List<LoanApplication>>(pendingLoans);
-                return dto;
+            var dto = Mapper.Map<List<LoanApplication>>(pendingLoans);
+            return dto;
 
-            
+
         }
         public List<RegistrationDocuments> GetAppDocuments(Guid id)
         {
-            using (var session = NhibernateHelper.CreateSession())
-            {
-                var loanApplication = session.Get<LoanApplication>(id);
-                var documents = session.Query<RegistrationDocuments>().Where(r => r.Customer.CustId ==
-                loanApplication.Applicant.CustId).ToList();
-                return documents;
-            }
+            var loanApplication = _session.Query<LoanApplication>().FetchMany(a => a.RegistrationDocuments).FirstOrDefault(l => l.ApplicationId == id);
+            var documents = loanApplication.RegistrationDocuments.ToList();
+
+            return documents;
         }
         public void RegApproveLoan(Guid id)
         {
@@ -47,7 +44,7 @@ namespace LoanManagementSystem.Repository
                 var loan = session.Get<LoanApplication>(id);
                 if (loan == null)
                 {
-                    return ;
+                    return;
                 }
                 if (loan.Scheme.SchemeType == SchemeType.Retail)
                 {
@@ -67,7 +64,7 @@ namespace LoanManagementSystem.Repository
                     txn.Commit();
                 }
 
-                
+
             }
         }
         public void RejectApproveLoan(Guid id)
@@ -77,7 +74,7 @@ namespace LoanManagementSystem.Repository
                 var loan = session.Get<LoanApplication>(id);
                 if (loan == null)
                 {
-                    return ;
+                    return;
                 }
 
                 loan.Status = ApplicationStatus.Rejected;
@@ -88,7 +85,7 @@ namespace LoanManagementSystem.Repository
                     txn.Commit();
                 }
 
-                
+
             }
         }
         public List<LoanApplication> GetCollateralDocuments()
@@ -105,8 +102,8 @@ namespace LoanManagementSystem.Repository
             using (var session = NhibernateHelper.CreateSession())
             {
                 var loanApplication = session.Get<LoanApplication>(id);
-                var documents = session.Query<CollateralDocuments>().Where(r => r.Customer.CustId ==
-                loanApplication.Applicant.CustId).ToList();
+                var documents = session.Query<CollateralDocuments>().Where(r => r.Application.ApplicationId ==
+                loanApplication.ApplicationId).ToList();
                 return documents;
             }
         }
@@ -117,7 +114,7 @@ namespace LoanManagementSystem.Repository
                 var collateral = session.Get<LoanApplication>(id);
                 if (collateral == null)
                 {
-                    return ;
+                    return;
                 }
 
                 collateral.Status = ApplicationStatus.LoanRepayment;
@@ -130,7 +127,7 @@ namespace LoanManagementSystem.Repository
                     txn.Commit();
                 }
 
-                
+
             }
         }
         public void RejectCollateralDocuments(Guid id)
@@ -140,7 +137,7 @@ namespace LoanManagementSystem.Repository
                 var collateral = session.Get<LoanApplication>(id);
                 if (collateral == null)
                 {
-                    return ;
+                    return;
                 }
 
                 collateral.Status = ApplicationStatus.Rejected;
@@ -151,7 +148,7 @@ namespace LoanManagementSystem.Repository
                     txn.Commit();
                 }
 
-                
+
             }
         }
 

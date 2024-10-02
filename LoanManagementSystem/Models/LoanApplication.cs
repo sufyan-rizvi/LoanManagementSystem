@@ -30,6 +30,8 @@ namespace LoanManagementSystem.Models
         public virtual LoanOfficer AssignedOfficer { get; set; }
         public virtual LoanScheme Scheme { get; set; }
         public virtual IList<Repayment> Repayments { get; set; }
+        public virtual IList<RegistrationDocuments> RegistrationDocuments { get; set; }
+        public virtual IList<CollateralDocuments> CollateralDocuments { get; set; }
         
     }
 }

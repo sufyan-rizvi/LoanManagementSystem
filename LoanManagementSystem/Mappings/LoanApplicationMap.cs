@@ -26,7 +26,9 @@ namespace LoanManagementSystem.Mappings
             References(a => a.AssignedOfficer).Column("LoanOfficerId").Cascade.All();
             References(a => a.Scheme).Column("LoanSchemeId").Cascade.All();
             HasMany(l=>l.Repayments).Inverse().Cascade.All();
-            
+            HasMany(c => c.RegistrationDocuments).Inverse().Cascade.All();//check cascade all.. if loan officer deleted, distribute his work among other officers
+            HasMany(c => c.CollateralDocuments).Inverse().Cascade.All();
+
 
         }
     }

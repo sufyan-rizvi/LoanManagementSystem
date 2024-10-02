@@ -150,14 +150,9 @@ namespace LoanManagementSystem.Controllers
                 {
                     var application = (LoanApplication)Session["application"];
                     application.PaymentsMade += 1;
-                    if(application.PaymentsMade > application.Tenure) 
+                    if(application.PaymentsMade >= application.Tenure) 
                         application.Status = ApplicationStatus.LoanClosed;
 
-                    var months = DateTime.Now.Month - application.PaymentStartDate.Month;
-                    var missedPayments = months - application.PaymentsMade;
-                    application.PaymentsMissed = missedPayments;
-                    if (missedPayments >= 3)
-                        application.Status = ApplicationStatus.NPA;
 
                     application.NextPaymentDate = application.NextPaymentDate.AddMonths(1);
 

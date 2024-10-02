@@ -15,7 +15,7 @@ namespace LoanManagementSystem.Repository
         public CustomerRepository(ISession session)
         {
             _session = session;
-        }
+        }        
 
         public IList<LoanScheme> GetAllSchemes()
         {
@@ -45,5 +45,11 @@ namespace LoanManagementSystem.Repository
         {
             return _session.Query<LoanApplication>().FirstOrDefault(l => l.ApplicationId == id);
         }
+
+        public IList<LoanApplication> GetAllApplications()
+        {
+            return _session.Query<LoanApplication>().FetchMany(l=>l.Repayments).ToList();
+        }
+
     }
 }

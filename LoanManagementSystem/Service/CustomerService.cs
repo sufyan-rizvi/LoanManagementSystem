@@ -42,5 +42,10 @@ namespace LoanManagementSystem.Service
         {
            return  _customerRepo.GetApplicationById(id);   
         }
+
+        public IList<LoanApplication> GetAllLoanApplications()
+        {
+            return _customerRepo.GetAllApplications();
+        }
     }
 }

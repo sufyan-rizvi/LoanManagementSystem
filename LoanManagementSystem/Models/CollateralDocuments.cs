@@ -14,6 +14,6 @@ namespace LoanManagementSystem.Models
         public virtual string ImageUrl { get; set; }  //Used to show uploaded image
         [Display(Name = "View")]
         public virtual string PublicId { get; set; }   //used to show full image on click on link from cloudinary
-        public virtual Customer Customer { get; set; }
+        public virtual LoanApplication Application { get; set; }
     }
 }

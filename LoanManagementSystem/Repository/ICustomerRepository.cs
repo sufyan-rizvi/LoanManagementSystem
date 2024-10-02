@@ -14,5 +14,6 @@ namespace LoanManagementSystem.Repository
         IList<LoanApplication> GetAllApplications(Guid id);
         void AddloanDetail(LoanApplication application);
         LoanApplication GetApplicationById(Guid id);
+        IList<LoanApplication> GetAllApplications();
     }
 }

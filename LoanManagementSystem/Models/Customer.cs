@@ -19,8 +19,6 @@ namespace LoanManagementSystem.Models
         public virtual User User { get; set; }
         public virtual IList<LoanApplication> LoanApplications { get; set; }
         public virtual BankAccountDetails BankAccountDetails { get; set; }
-        public virtual IList<RegistrationDocuments> RegistrationDocuments { get; set; }
-        public virtual IList<CollateralDocuments> CollateralDocuments { get; set; }
         public virtual IList<Repayment> Repayments { get; set; }
 
 

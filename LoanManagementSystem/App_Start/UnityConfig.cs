@@ -11,9 +11,10 @@ namespace LoanManagementSystem
 {
     public static class UnityConfig
     {
-        public static void RegisterComponents()
-        {
-            var container = new UnityContainer();
+        public static UnityContainer container { get; private set; }
+        public static void RegisterComponents()        {
+            container = new UnityContainer();
+
             container.RegisterType<ISession>(new InjectionFactory(c => NhibernateHelper.CreateSession()));
             container.RegisterType<IAdminService, AdminService>();
             container.RegisterType<IAdminRepository, AdminRepository>();

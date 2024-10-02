@@ -52,7 +52,7 @@
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(m=>m.LoanApplication.Tenure, htmlAttributes: new { @class = "control-label col-md-2", style = "width:400px" })
+                    @Html.LabelFor(m => m.LoanApplication.Tenure, htmlAttributes: new { @class = "control-label col-md-2", style = "width:400px" })
                     <div class="col-md-10">
                         @Html.EditorFor(model => model.LoanApplication.Tenure, new { htmlAttributes = new { @class = "form-control", id = "lten", onchange = "CalculateEmi()", placeholder = "Tenure in months", min = "1", step = "1", required = "required" } })
                         @Html.ValidationMessageFor(model => model.LoanApplication.Tenure, "", new { @class = "text-danger" })
@@ -187,51 +187,62 @@
             event.preventDefault()
 
             $("#loadingOverlay").show();  // Show the loading overlay
+            var formData = new FormData();
+            formData.append("files", $("#aadharFile")[0].files[0], $("#aadharFile")[0].files[0].name);
+            formData.append("files", $("#panFile")[0].files[0], $("#panFile")[0].files[0].name); // PAN
+            formData.append("files", $("#photoFile")[0].files[0], $("#photoFile")[0].files[0].name);
 
             var LoanApplicationData = {
                 LoanAmount: $("#lamt").val().replace(/[^0-9.-]+/g, ''), // Ensure numeric value
                 Tenure: $("#lten").val(),
                 EMIAmount: $("#takeemi").val(),
+
                 Applicant: {
                     AadharNumber: $("#laadhar").val(), // Assuming this should be the Aadhar input ID
                     PANNumber: $("#lpan").val(), // Assuming this should be the PAN input ID
                 }
             };
+            console.log(LoanApplicationData)
 
-            var formData = new FormData();
-            formData.append("files", $("#aadharFile")[0].files[0], $("#aadharFile")[0].files[0].name);
-            formData.append("files", $("#panFile")[0].files[0], $("#panFile")[0].files[0].name); // PAN
-            formData.append("files", $("#photoFile")[0].files[0], $("#photoFile")[0].files[0].name);
+
 
 
             $.ajax({
                 url: "/customer/addloandetails",
                 type: "POST",
                 data: {
-                    LoanScheme: {
-                        LoanSchemeId: $("#lsid").val()
-                    },
-                    LoanApplication: LoanApplicationData
-                },
-                success: () => {
-
-
-                    $.ajax({
-                        url: "/customer/uploaddoc",
-                        type: "POST",
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        success: () => {
-                            $("#loadingOverlay").hide(500);
-                            alert("Your documents have been sent to a loan officer for approval!");
-                            window.location.href = "https://localhost:44330/Customer/index"
-
+                    vm: {
+                        LoanScheme: {
+                            LoanSchemeId: $("#lsid").val()
                         },
-                        error: (err) => {
-                            console.log("Error uploading documents:", err);
-                        }
-                    });
+                        LoanApplication: LoanApplicationData
+                    },
+                    files: {
+                        formData
+                    }
+                },
+
+
+                success: () => {
+                    alert("Your documents have been sent to a loan officer for approval!");
+                    window.location.href = "https://localhost:44330/Customer/index"
+
+                    //$.ajax({
+                    //    url: "/customer/uploaddoc",
+                    //    type: "POST",
+                    //    data: formData,
+                    //    processData: false,
+                    //    contentType: false,
+                    //    success: () => {
+                    //        $("#loadingOverlay").hide(500);
+                    //        alert("Your documents have been sent to a loan officer for approval!");
+                    //        window.location.href = "https://localhost:44330/Customer/index"
+
+                    //    },
+                    //    error: (err) => {
+                    //        console.log("Error uploading documents:", err);
+                    //    }
+                    //});
                 },
                 error: (err) => {
                     console.log("Error sending loan application data:", err);

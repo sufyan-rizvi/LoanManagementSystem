@@ -8,6 +8,7 @@ using LoanManagementSystem.Data;
 using LoanManagementSystem.Models;
 using LoanManagementSystem.Service;
 using LoanManagementSystem.ViewModels;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace LoanManagementSystem.Controllers
 {
@@ -57,7 +58,6 @@ namespace LoanManagementSystem.Controllers
                 return View();
             }
             var existingApplication = _customerService.GetApplicationById(application.ApplicationId);
-            var customer = existingApplication.Applicant;
             var result = _cloudinaryService.UploadImage(files[1]);
 
             // Check if the result contains an error
@@ -78,7 +78,7 @@ namespace LoanManagementSystem.Controllers
                             DocumentType = (DocumentType)(i + 3),
                             PublicId = result.PublicId,
                             ImageUrl = result.SecureUrl.ToString(),
-                            Customer = customer
+                            Application = existingApplication
                         };
 
                         session.Save(collateralDocs);
@@ -104,7 +104,7 @@ namespace LoanManagementSystem.Controllers
             return View(application);
         }
 
-        public JsonResult AddLoanDetails(LoanApplicationSchemeVM vm)
+        public JsonResult AddLoanDetails(LoanApplicationSchemeVM vm, List<HttpPostedFileBase> files)
         {
             var application = vm.LoanApplication;
             application.Scheme = _customerService.GetSchemeById(vm.LoanScheme.LoanSchemeId);
@@ -126,6 +126,7 @@ namespace LoanManagementSystem.Controllers
         [HttpPost]
         public ActionResult UploadDoc(List<HttpPostedFileBase> files)
         {
+            //var existingApplication = _customerService.GetApplicationById(application.ApplicationId);
             for (var i = 0; i < files.Count(); i++)
             {
                 
@@ -140,16 +141,16 @@ namespace LoanManagementSystem.Controllers
                 {
                     using (var transaction = session.BeginTransaction())
                     {
-                        var approvalDocs = new RegistrationDocuments()
-                        {
+                        //var approvalDocs = new RegistrationDocuments()
+                        //{
 
-                            DocumentType = (DocumentType)i,
-                            PublicId = result.PublicId,
-                            ImageUrl = result.SecureUrl.ToString(),
-                            Customer = (Customer)Session["Customer"]
-                        };
+                        //    DocumentType = (DocumentType)i,
+                        //    PublicId = result.PublicId,
+                        //    ImageUrl = result.SecureUrl.ToString(),
+                        //    Customer = (Customer)Session["Customer"]
+                        //};
 
-                        session.Save(approvalDocs);
+                        //session.Save(approvalDocs);
                         transaction.Commit();
 
                     }
