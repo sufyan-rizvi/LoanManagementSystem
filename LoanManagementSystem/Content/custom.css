@@ -12,8 +12,8 @@ body {
 
 /* Header Styling */
 header {
-    background-color: #FF5F6D;
-    background: linear-gradient(to right, #FF5F6D, #FFC371); /* Light red gradient */
+    background-color: #B51920;
+    background: #B51920; /* Light red gradient */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -75,7 +75,7 @@ html, body {
 
 /* Footer */
 footer {
-    background-color: #FF5F6D;
+    background-color: #B51920;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     color: white;
     padding: 20px 0;
