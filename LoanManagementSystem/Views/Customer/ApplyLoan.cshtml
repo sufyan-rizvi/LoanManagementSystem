@@ -12,7 +12,7 @@
     <img src="~/Content/Loader.gif" />
     <h2>Loading...</h2>
 </div>
-<form id="loanApplicationForm" enctype="multipart/form-data"  onsubmit="return validateFiles()">
+<form id="loanApplicationForm" enctype="multipart/form-data" onsubmit="return validateFiles()">
     <div class="container">
         <div class="row">
             <div class="col">
@@ -78,7 +78,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.LoanApplication.Applicant.AadharNumber, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.EditorFor(model => model.LoanApplication.Applicant.AadharNumber, new { htmlAttributes = new { @class = "form-control", id = "laadhar", onchange = "CalculateEmi()", min = "1", step = "1", required = "required" } })
+                            @Html.EditorFor(model => model.LoanApplication.Applicant.AadharNumber, new { htmlAttributes = new { @class = "form-control", id = "laadhar", min = "1", step = "1", required = "required" } })
                             @Html.ValidationMessageFor(model => model.LoanApplication.Applicant.AadharNumber, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -92,7 +92,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.LoanApplication.Applicant.PANNumber, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.EditorFor(model => model.LoanApplication.Applicant.PANNumber, new { htmlAttributes = new { @class = "form-control", id = "lpan", onchange = "CalculateEmi()", required = "required" } })
+                            @Html.EditorFor(model => model.LoanApplication.Applicant.PANNumber, new { htmlAttributes = new { @class = "form-control", id = "lpan", required = "required" } })
                             @Html.ValidationMessageFor(model => model.LoanApplication.Applicant.PANNumber, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -104,18 +104,24 @@
 
                 <div class="form-group my-2">
                     <label style="width:200px" for="file">Select Aadhar Document:</label>
-                    <input type="file" name="aadharFile" id="aadharFile" accept=".jpeg,.jpg,.png" required />
-                    <span class="text-danger" id="aadharError" style="display:none;">Please upload a valid Aadhar document (JPEG/PNG).</span>
+                    <input type="file" name="aadharFile" id="aadharFile" accept="image/*" required />
+                    <div>
+                        <span class="text-danger" id="aadharError" style="display:none;">Please upload a valid Aadhar document (JPEG/PNG).</span>
+                    </div>
                 </div>
                 <div class="my-2">
                     <label style="width:200px" for="file">Select PAN Document:</label>
-                    <input type="file" name="panFile" id="panFile" accept=".jpeg,.jpg,.png" required />
-                    <span class="text-danger" id="panError" style="display:none;">Please upload a valid PAN document (JPEG/PNG).</span>
+                    <input type="file" name="panFile" id="panFile" accept="image/*" required />
+                    <div>
+                        <span class="text-danger" id="panError" style="display:none;">Please upload a valid PAN document (JPEG/PNG).</span>
+                    </div>
                 </div>
                 <div class="my-2">
                     <label style="width:200px" for="file">Select Photo:</label>
-                    <<input type="file" name="photoFile" id="photoFile" accept=".jpeg,.jpg,.png" required />
-                    <span class="text-danger" id="photoError" style="display:none;">Please upload a valid photo (JPEG/PNG).</span>
+                    <input type="file" name="photoFile" id="photoFile" accept="image/*" required />
+                    <div>
+                        <span class="text-danger" id="photoError" style="display:none;">Please upload a valid photo (JPEG/PNG).</span>
+                    </div>
                 </div>
 
             </div>
@@ -133,73 +139,78 @@
 
 <script>
     function CalculateEmi() {
+
         var tenure = $("#lten").val();
         var amount = $("#lamt").val().replace(/[^0-9.-]+/g, ''); // Strip non-numeric characters
         tenure = tenure === "" || isNaN(tenure) ? 0 : parseInt(tenure);
         amount = amount === "" || isNaN(amount) ? 0 : parseFloat(amount);
 
-        var interest = parseInt($("#interestrate").val()) / 12 / 100 // Example fixed interest rate
+        $.ajax({
+            url: "/customer/CalculateEMIForView",
+            type: "GET",
+            data:{
+                'scheme.LoanSchemeId': `@Model.LoanScheme.LoanSchemeId`,
+                'application.LoanAmount': amount,
+                'application.Tenure': tenure
+            },
+        success: (postdata) =>
+        {
+            let emi = parseFloat(postdata)
 
-        var emi = (amount * interest * Math.pow(1 + interest, tenure)) /
-            (Math.pow(1 + interest, tenure) - 1);
-        if (isNaN(emi) || !isFinite(emi)) {
-            emi = 0;
-        } else {
-            emil = emi.toLocaleString('en-US', {
+
+            let currency = emi.toLocaleString('en-US', {
                 style: 'currency',
                 currency: 'INR'
             });
-        }
-        console.log(emi)
-        // Display EMI in the span with id="emiamt"
-        if (emi > 0) {
-            $("#emi").show()
-            $("#emiamt").empty();
-            $("#emiamt").html(`${emil}/month`);
-            $("#takeemi").val(emi.toFixed(2))
 
-        }
+
+                $("#emi").show()
+            $("#emiamt").empty();
+            $("#emiamt").html(`${currency}/month`);
+
+
+            },
+            error: (err) => {
+                console.log(err)
+            }
+
+        })
+
     }
 
     $(document).ready(function () {
-        function validateFiles() {
+        var allowedExtensions = ["jpg", "jpeg", "png"];
+        function validateFileInput(inputElement, errorElement) {
+            var hasInvalidFiles = false;
 
-            let isValid = true;
+            $.each(inputElement[0].files, function (index, file) {
+                var fileExtension = file.name.split('.').pop().toLowerCase();
+                // Check if the file extension is valid
+                if (!allowedExtensions.includes(fileExtension)) {
+                    hasInvalidFiles = true;
+                }
+            });
 
-            // Reset error messages
-            document.getElementById('aadharError').style.display = 'none';
-            document.getElementById('panError').style.display = 'none';
-            document.getElementById('photoError').style.display = 'none';
-
-            // Validate Aadhar File
-            const aadharFile = document.getElementById('aadharFile').files[0];
-            if (!aadharFile || !validateFileExtension(aadharFile)) {
-                document.getElementById('aadharError').style.display = 'block';
-                isValid = false;
+            // Show or hide the error message based on validation
+            if (hasInvalidFiles) {
+                inputElement.val(""); // Clear the input
+                $(errorElement).show(); // Show error message
+            } else {
+                $(errorElement).hide(); // Hide error message if valid
             }
-
-            // Validate PAN File
-            const panFile = document.getElementById('panFile').files[0];
-            if (!panFile || !validateFileExtension(panFile)) {
-                document.getElementById('panError').style.display = 'block';
-                isValid = false;
-            }
-
-            // Validate Photo File
-            const photoFile = document.getElementById('photoFile').files[0];
-            if (!photoFile || !validateFileExtension(photoFile)) {
-                document.getElementById('photoError').style.display = 'block';
-                isValid = false;
-            }
-
-            return isValid; // Only submit the form if all validations pass
         }
 
-        function validateFileExtension(file) {
-            const validExtensions = ['image/jpeg', 'image/png'];
-            return validExtensions.includes(file.type);
-        }
+        $("#aadharFile").change(function () {
+            validateFileInput($(this), "#aadharError");
+        });
 
+        $("#panFile").change( function () {
+            validateFileInput($(this), "#panError");
+        });
+
+        $("#photoFile").change( function () {
+            validateFileInput($(this), "#photoError");
+        });
 
 
         var vllll = $("#lamt").val()
@@ -211,28 +222,28 @@
         $('#lten').on('blur', function () {
             validateInput(this);
         });
-        function validateInput(input) {
-            var value = parseFloat($(input).val());
-            var min = parseFloat($(input).attr('min'));
-            var step = parseFloat($(input).attr('step'));
+        //function validateInput(input) {
+        //    var value = parseFloat($(input).val());
+        //    var min = parseFloat($(input).attr('min'));
+        //    var step = parseFloat($(input).attr('step'));
 
-            if (isNaN(value) || value < min) {
-                // Show validation error
-                $(input).addClass('is-invalid');
-                $(input).siblings('.text-danger').text('Value must be at least ' + min + '.');
-            } else {
-                // Clear validation error
-                $(input).removeClass('is-invalid');
-                $(input).siblings('.text-danger').text('');
-            }
-        }
+        //    if (isNaN(value) || value < min) {
+        //        // Show validation error
+        //        $(input).addClass('is-invalid');
+        //        $(input).siblings('.text-danger').text('Value must be at least ' + min + '.');
+        //    } else {
+        //        // Clear validation error
+        //        $(input).removeClass('is-invalid');
+        //        $(input).siblings('.text-danger').text('');
+        //    }
+        //}
 
 
         $("#detailCreate").click(() => {
             event.preventDefault()
 
             if (!$("form").valid()) {
-                // If the form is not valid, return early
+
                 return;
             }
 
@@ -245,7 +256,6 @@
             var LoanApplicationData = {
                 LoanAmount: $("#lamt").val().replace(/[^0-9.-]+/g, ''), // Ensure numeric value
                 Tenure: $("#lten").val(),
-                EMIAmount: $("#takeemi").val(),
 
                 Applicant: {
                     AadharNumber: $("#laadhar").val(), // Assuming this should be the Aadhar input ID

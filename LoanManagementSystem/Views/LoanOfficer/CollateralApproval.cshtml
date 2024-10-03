@@ -21,7 +21,16 @@
     }
 }
 
-<h2>Pending Collateral Approvals</h2>
+
+
+@if (Model.Count() == 0)
+{
+    <h1>No Documents to Approve</h1>
+}
+else
+{
+
+    <h2>Pending Collateral Approvals</h2>
 
 <table class="table">
     <thead>

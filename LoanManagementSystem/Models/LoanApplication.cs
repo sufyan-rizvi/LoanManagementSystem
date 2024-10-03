@@ -15,7 +15,7 @@ namespace LoanManagementSystem.Models
         public virtual DateTime ApplicationDate { get; set; }
 
         [Required(ErrorMessage = "Payment Start Date is required.")]
-        [Display(Name = "Start Date")]
+        [Display(Name = "Payment Start Date")]
         public virtual DateTime PaymentStartDate { get; set; }
 
         [Required(ErrorMessage = "Next Payment Date is required.")]

@@ -12,7 +12,7 @@ namespace LoanManagementSystem.Models
 
         [Required(ErrorMessage = "Username is required.")]
         [Display(Name = "Username")]
-        
+
         public virtual string Username { get; set; }
 
         [Required(ErrorMessage = "Password is required.")]
@@ -23,7 +23,7 @@ namespace LoanManagementSystem.Models
         [Required(ErrorMessage = "Email is required.")]
         [EmailAddress(ErrorMessage = "Invalid Email Address.")]
         [Display(Name = "Email")]
-        
+
         public virtual string Email { get; set; }
 
         [Required(ErrorMessage = "First Name is required.")]
@@ -46,8 +46,8 @@ namespace LoanManagementSystem.Models
         public virtual bool IsActive { get; set; }
         public virtual Address Address { get; set; }
         public virtual Role Role { get; set; }
-        public virtual IList<Admin> Admins { get; set; }
-        public virtual IList<LoanOfficer> LoanOfficers { get; set; }
-        public virtual IList<Customer> Customers { get; set; }
+        public virtual Admin Admin { get; set; }
+        public virtual LoanOfficer LoanOfficer { get; set; }
+        public virtual Customer Customer { get; set; }
     }
 }
