@@ -42,41 +42,17 @@ else
             </tr>
         </thead>
         <tbody>
+
             @foreach (var loan in Model)
             {
-                <tr>
-            <th>Applicant Name</th>
-            <th>Loan Amount</th>
-            <th>Status</th>
-            <th>Documents</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var loan in Model)
-        {
-            <tr class="table">
+                <tr class="table">
 
                     <td>@loan.Applicant.User.FirstName</td>
                     <td>@loan.Scheme.SchemeName</td>
                     <td>@loan.LoanAmount</td>
                     <td>@loan.Tenure</td>
                     <td>@loan.Applicant.User.Age</td>
-                    <td>@loan.Status</td>
-                    <td>
-                        @Html.ActionLink("Verify", "GetLoanDocuments", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-success" })
-
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-
-@Html.ActionLink("Back", "Welcome", "LoanOfficer", null, new { @class = "btn btn-primary", style = "width:100px" })
-
-                <td>@loan.Applicant.User.FirstName</td>
-                <td>@loan.LoanAmount</td>
-                <td class="
+                    <td class="
     @(loan.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment ? "status-active" ://
     loan.Status == LoanManagementSystem.Models.ApplicationStatus.CollateralPending ? "status-collateral" ://
     loan.Status == LoanManagementSystem.Models.ApplicationStatus.AddCollateral ? "status-collateral" ://
@@ -85,18 +61,24 @@ else
     loan.Status == LoanManagementSystem.Models.ApplicationStatus.LoanClosed ? "status-active" ://
     loan.Status == LoanManagementSystem.Models.ApplicationStatus.NPA ? "status-reject":
     loan.Status == LoanManagementSystem.Models.ApplicationStatus.Rejected ? "status-reject":"")">
-                    <button disabled>@GetEnumDisplayName(loan.Status)</button>
+                        <button disabled>@GetEnumDisplayName(loan.Status)</button>
 
-                </td>
-                <td>
-                    @Html.ActionLink("Verify", "GetLoanDocuments", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-success" })
-                    @*@Html.ActionLink("Approve", "ApproveLoan", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-success" })
-                        @Html.ActionLink("Reject", "RejectLoan", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-danger" })*@
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                    </td>
+                    <td>
+                        @Html.ActionLink("Verify", "GetLoanDocuments", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-success" })
+                        @*@Html.ActionLink("Approve", "ApproveLoan", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-success" })
+                            @Html.ActionLink("Reject", "RejectLoan", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-danger" })*@
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+
+
+
 
 <style>
     .table td, .table th {
