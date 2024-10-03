@@ -5,38 +5,49 @@
 }
 @model IEnumerable<LoanManagementSystem.Models.LoanScheme>
 
-<h2 class="my-2">Available Loan Schemes</h2>
+<div class="row">
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <div class="col">
+            @Html.Action("EMIcal", "Customer")
+        </div>
+    }
+<div class="col" style="margin: 10px auto; background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); ">
+    <h2 class="my-2">Available Loan Schemes</h2>
 
-<table class="table table-borderless table-striped">
-    <thead>
-        <tr>
-            <th>Scheme Name</th>
-            <th>Scheme Type</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var scheme in Model)
-        {
+    <table class="table table-borderless table-striped">
+        <thead>
             <tr>
-                <th>@scheme.SchemeName</th>
-                <td>@scheme.SchemeType</td>
-                <td>@scheme.ShortDescription</td>
-                <td></td>
-                <td>
-                    <button class="btn btn-outline-primary" , onclick="showLongDescrip('@scheme.LoanSchemeId')">Know More</button>
-                    @Html.ActionLink("Apply Now!", "ApplyLoan", new { id = @scheme.LoanSchemeId }, new {@class="btn btn-outline-primary mx-3"})
-                </td>
-
+                <th>Scheme Name</th>
+                <th>Scheme Type</th>
+                <th></th>
             </tr>
+        </thead>
+        <tbody>
+            @foreach (var scheme in Model)
+            {
+                <tr>
+                    <th>@scheme.SchemeName</th>
+                    <td>@scheme.SchemeType</td>
+                    <td>@scheme.ShortDescription</td>
+                    <td></td>
+                    <td>
+                        <button class="btn btn-outline-primary" , onclick="showLongDescrip('@scheme.LoanSchemeId')">Know More</button>
+                        @Html.ActionLink("Apply Now!", "ApplyLoan", new { id = @scheme.LoanSchemeId }, new { @class = "btn btn-outline-primary mx-3" })
+                    </td>
 
-            <tr id="@scheme.LoanSchemeId" style="display:none">
-                <td colspan="8">@scheme.LongDescription</td>
-                <td ></td>
-            </tr>
-        }
-    </tbody>
-</table>
+                </tr>
+
+                <tr id="@scheme.LoanSchemeId" style="display:none">
+                    <td colspan="8">@scheme.LongDescription</td>
+                    <td></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+</div>
+
 
 
 <script>

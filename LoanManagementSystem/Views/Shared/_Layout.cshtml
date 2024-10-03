@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var currentUrl = HttpContext.Current.Request.Url.AbsolutePath;
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -24,48 +28,51 @@
 </head>
 <body>
     <!-- Wrapper for flexbox layout -->
-    <div class="page-wrapper d-flex flex-column min-vh-100">
+    <div class="page-wrapper d-flex flex-column min-vh-100 ">
         <!-- Header Section -->
         <header class=" text-light py-3 shadow">
-            <div class=" container d-flex justify-content-between align-items-center">
-                <!-- Logo Section -->
-                <div class="col">
-                    <a href="@Url.Action("Index", "Customer")" style="text-decoration: none;">
-                        <img src="~/Content/Images/logo.png" alt="AKSYS Loans" class="logo" />
-                    </a>
-                </div>
-                <div class="col-10">
-                    <div class="row">
+            <div class=" d-flex justify-content-between align-items-center">
+                <!-- Logo Section (Left) -->
 
-                        <a class=" navbar-brand " href="@Url.Action("Index", "Customer")" style="text-decoration: none; margin-left:250px;">
-                            AKSYS LOANS
-                        </a>
-                    </div>
-                    <div class="row ">
-                        <nav class="d-flex align-items-center justify-content-between">
-                            <ul class="nav">
-                                @if (IsSectionDefined("NavbarOptions"))
+                <a href="@Url.Action("Index", "Customer")" style="text-decoration: none;">
+                    <img src="~/Content/Images/asixLogo.png" alt="AKSYS Loans" class="logo" />
+                </a>
+
+                <!-- Title and Navbar Section (Center) -->
+                <!-- Title Section -->
+
+                <a class="navbar-brand d-block" href="@Url.Action("Index", "Customer")" style="text-decoration: none;">
+                    AKSYS LOANS
+                </a>
+
+                <!-- Navbar Section -->
+                <nav class="d-flex justify-content-center align-items-center mt-2">
+                    <ul class="nav">
+                        @if (IsSectionDefined("NavbarOptions"))
+                        {
+                            @RenderSection("NavbarOptions", required: false)
+                        }
+                        <li class="nav-item m-lg-auto">
+                            @if (currentUrl == "/Account/Login")
+                            {
+
+                            }
+                            else
+                            {
+                                if (User.Identity.IsAuthenticated)
                                 {
-                                    @RenderSection("NavbarOptions", required: false)
+                                    <a class="btn btn-outline-light mx-2" href="@Url.Action("Logout", "Account")">Logout</a>
                                 }
-                                <li class="nav-item" style="margin-left:150px;">
-                                    @if (User.Identity.IsAuthenticated)
-                                    {
-                                        <a class="btn btn-outline-light mx-2" href="@Url.Action("Logout", "Account")">Logout</a>
-                                    }
-                                    else
-                                    {
-                                        <a class="btn btn-light mx-2" href="@Url.Action("Login", "Account")">Login</a>
-                                    }
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
+                                else
+                                {
+                                    <a class="btn btn-light mx-2" href="@Url.Action("Login", "Account")">Login</a>
+                                }
+                            }
 
-                    
-                </div>
-                    
-            
+                        </li>
+                    </ul>
+                </nav>
+
             </div>
         </header>
 
@@ -87,7 +94,7 @@
                         <h5>Quick Links</h5>
                         <ul class="list-unstyled">
                             <li><a href="@Url.Action("Index", "Home")" class="text-light">Home</a></li>
-                            <li><a href="@Url.Action("LoanSchemes", "Customer")" class="text-light">Loan Schemes</a></li>
+                            <li><a href="@Url.Action("Schemes", "Customer")" class="text-light">Loan Schemes</a></li>
                             <li><a href="@Url.Action("Contact", "Home")" class="text-light">Contact Us</a></li>
                         </ul>
                     </div>

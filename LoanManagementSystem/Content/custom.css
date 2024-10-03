@@ -1,5 +1,8 @@
 ﻿/* General Body Styling */
 body {
+    min-height: 100vh; /* Minimum height will be 100% of the viewport height */
+    /*display: flex;
+    flex-direction: column;*/ /* If you want to make sure footer stays at the bottom */
     background-color: #f4f4f9;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -13,7 +16,6 @@ body {
 /* Header Styling */
 header {
     background-color: #B51920;
-    background: #B51920; /* Light red gradient */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -75,8 +77,7 @@ html, body {
 
 /* Footer */
 footer {
-    background-color: #B51920;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: gray;
     color: white;
     padding: 20px 0;
     width: 100%;
@@ -102,7 +103,7 @@ footer {
 
 /* Ensure content and footer position correctly on small content pages */
 .container.body-content {
-    min-height: 80vh;
+    min-height: 100vh;
 }
 
 /* Responsive Adjustments */

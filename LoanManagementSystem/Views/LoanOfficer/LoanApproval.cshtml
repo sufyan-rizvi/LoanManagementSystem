@@ -15,7 +15,7 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Loan ID</th>
+            
             <th>Applicant Name</th>
             <th>Loan Amount</th>
             <th>Status</th>
@@ -26,7 +26,7 @@
         @foreach (var loan in Model)
         {
             <tr>
-                <td>@loan.ApplicationId</td>
+               
                 <td>@loan.Applicant.User.FirstName</td>
                 <td>@loan.LoanAmount</td>
                 <td>@loan.Status</td>
