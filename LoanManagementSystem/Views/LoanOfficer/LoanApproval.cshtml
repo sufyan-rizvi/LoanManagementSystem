@@ -15,7 +15,7 @@
 <table class="table">
     <thead>
         <tr>
-            
+
             <th>Applicant Name</th>
             <th>Loan Amount</th>
             <th>Status</th>
@@ -26,18 +26,22 @@
         @foreach (var loan in Model)
         {
             <tr>
-               
+
                 <td>@loan.Applicant.User.FirstName</td>
                 <td>@loan.LoanAmount</td>
                 <td>@loan.Status</td>
                 <td>
                     @Html.ActionLink("Verify", "GetLoanDocuments", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-success" })
                     @*@Html.ActionLink("Approve", "ApproveLoan", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-success" })
-        @Html.ActionLink("Reject", "RejectLoan", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-danger" })*@
+                        @Html.ActionLink("Reject", "RejectLoan", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-danger" })*@
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+@Html.ActionLink("Back", "Welcome", "LoanOfficer",null, new {@class="btn btn-primary" ,style="width:100px"})
+
+
 
 

@@ -34,12 +34,13 @@
                 <td>
                     @Html.ActionLink("Verify", "GetCollateralDocuments", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-success" })
                     @*@Html.ActionLink("Approve", "ApproveCollateral", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-success" })
-        @Html.ActionLink("Reject", "RejectCollateral", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-danger" })*@
+                        @Html.ActionLink("Reject", "RejectCollateral", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-danger" })*@
                 </td>
             </tr>
         }
     </tbody>
 </table>
+@Html.ActionLink("Back", "Welcome", "LoanOfficer", null, new { @class = "btn btn-primary", style = "width:100px" })
 
 
 

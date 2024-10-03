@@ -241,6 +241,7 @@
     <Content Include="Content\emiScript.js" />
     <Content Include="Content\emiStyle.css" />
     <Content Include="Content\Images\asixLogo.png" />
+    <Content Include="Content\Images\axisCircleLogo.png" />
     <Content Include="Content\Images\loginImage.png" />
     <Content Include="Content\Images\logo.png" />
     <Content Include="Content\jquery.jqGrid\ellipsis-xbl.xml" />
