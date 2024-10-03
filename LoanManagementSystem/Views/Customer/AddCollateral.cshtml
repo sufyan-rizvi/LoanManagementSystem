@@ -24,18 +24,24 @@
 
         <div class="form-group my-2">
             <label style="width:200px" for="file">Select Vehicle Document:</label>
-            <input type="file" name="files" id="vehicledoc" required />
-            
+            <input type="file" name="files" id="vehicledoc" accept="image/*" required />
+            <div>
+                <span class="text-danger" id="vehicleError" style="display:none;">Please upload a valid Vehicle document (JPEG/PNG).</span>
+            </div>
         </div>
         <div class="my-2">
             <label style="width:200px" for="file">Select House Document:</label>
-            <input type="file" name="files" id="housedoc" required />
-
+            <input type="file" name="files" id="housedoc" required accept="image/*" />
+            <div>
+                <span class="text-danger" id="houseError" style="display:none;">Please upload a valid House document (JPEG/PNG).</span>
+            </div>
         </div>
         <div class="my-2">
             <label style="width:200px" for="file">Select Shares Document:</label>
-            <input type="file" name="files" id="sharesdoc" required />
-
+            <input type="file" name="files" id="sharedoc" required accept="image/*" />
+            <div>
+                <span class="text-danger" id="shareError" style="display:none;">Please upload a valid Share Certificate (JPEG/PNG).</span>
+            </div>
         </div>
 
         <div class="form-group">
@@ -49,32 +55,36 @@
 
 <script>
     $(document).ready(function () {
-        $("#validateBtn").click(function () {
+        var allowedExtensions = ["jpg", "jpeg", "png"];
+        function validateFileInput(inputElement, errorElement) {
+            var hasInvalidFiles = false;
 
-            if (!$("form").valid()) {
-                // If the form is not valid, return early
-                return;
-            }
-
-
-            var files = $("#collateralForm input[type='file']");
-            var valid = false;
-
-            // Check if each file input has a file selected
-            files.each(function () {
-                if ($(this).get(0).files.length !== 0) {
-                    valid = true; // Set valid to false if any file input is empty
-                    $("#errorMessage").append("<p>Please select a file for " + $(this).attr("id") + ".</p>");
+            $.each(inputElement[0].files, function (index, file) {
+                var fileExtension = file.name.split('.').pop().toLowerCase();
+                // Check if the file extension is valid
+                if (!allowedExtensions.includes(fileExtension)) {
+                    hasInvalidFiles = true;
                 }
             });
-            console.log(valid)
-            // Show or hide error messages based on validation result
-            if (valid) {
-                $("#errorMessage").hide();
-                alert("All files are valid!");
-                $("#collateralForm").submit();
+
+            // Show or hide the error message based on validation
+            if (hasInvalidFiles) {
+                inputElement.val(""); // Clear the input
+                $(errorElement).show(); // Show error message
             } else {
-                $("#errorMessage").show();
+                $(errorElement).hide(); // Hide error message if valid
             }
+        }
+
+        $("#vehicledoc").change(function () {
+            validateFileInput($(this), "#vehicleError");
+        });
+
+        $("#housedoc").change(function () {
+            validateFileInput($(this), "#houseError");
+        });
+
+        $("#sharedoc").change(function () {
+            validateFileInput($(this), "#shareError");
         });
     });</script>
