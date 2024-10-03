@@ -1,47 +1,47 @@
 ﻿@model IEnumerable<LoanManagementSystem.Models.RegistrationDocuments>
 
 @{
-    ViewBag.Title = "GetLoanDocuments";
+    ViewBag.Title = "Get Loan Documents";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>GetLoanDocuments</h2>
+<h2>Get Loan Documents</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Approve", "ApproveLoan", new { /* id=item.PrimaryKey */ }, new {@class="btn btn-success"}) |
+    @Html.ActionLink("Reject", "RejectLoan", new { /* id=item.PrimaryKey */ }, new { @class = "btn btn-danger" })
 </p>
 <table class="table">
     <tr>
-       
+
         <th>
             @Html.DisplayNameFor(model => model.ImageUrl)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.PublicId)
         </th>
-        <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-       
-        <td>
-            
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>
+
                 <img src="@item.ImageUrl" alt="Uploaded Image" style="width:100px;height:100px;" />
-            
-            @*@Html.DisplayFor(modelItem => item.ImageUrl)*@
-        </td>
-        <td>
-            
-                <a href="@Url.Action("ShowImage", "Customer", new { publicId = item.PublicId })">Click to show full image</a>
-            
-            @*@Html.DisplayFor(modelItem => item.PublicId)*@
-        </td>
-        <td>
-            @Html.ActionLink("Approve", "ApproveLoan", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Reject", "RejectLoan", new { /* id=item.PrimaryKey */ })
-        </td>
-    </tr>
-}
 
+                @*@Html.DisplayFor(modelItem => item.ImageUrl)*@
+            </td>
+            <td>
+
+                <a style="text-decoration:none; color:black" href="@Url.Action("ShowImage", "Customer", new { publicId = item.PublicId })">show image</a>
+
+
+            </td>
+            
+
+        </tr>
+    }
+   
 </table>
+
