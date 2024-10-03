@@ -32,6 +32,8 @@ namespace LoanManagementSystem.Controllers
         {
             return View();
         }
+
+        [AllowAnonymous]
         public ActionResult Schemes()
         {
             using (var session = NhibernateHelper.CreateSession())

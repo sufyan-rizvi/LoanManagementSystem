@@ -17,121 +17,128 @@
 }
 
 
-<div style="display:@(Model.Count() == 0 ? "" : "none")">
-    <h1 class="my-2">You have no Loan Applications</h1>
-    @Html.ActionLink("Apply Now!", "schemes")
-</div>
-<div style="display:@(Model.Count() == 0 ? "none" : "")">
-    <h1 class="my-2">My Loans</h1>
 
 
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Scheme.SchemeName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EMIAmount)
-            </th>
+    <div style="display:@(Model.Count() == 0 ? "" : "none")">
+        <h1 class="my-2">You have no Loan Applications</h1>
+        @Html.ActionLink("Apply Now!", "schemes")
+    </div>
+    <div style="display:@(Model.Count() == 0 ? "none" : "")">
+        <h1 class="my-2">My Loans</h1>
 
-            <th>
-                @Html.DisplayNameFor(model => model.ApplicationDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PaymentStartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NextPaymentDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PaymentsMissed)
-            </th>
-            <th>@Html.DisplayNameFor(m => m.Status)</th>
-            <th>Options</th>
-        </tr>
 
-        @foreach (var item in Model)
-        {
-
+        <table class="table">
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Scheme.SchemeName)
-                </td>
-                <td>
-                    @(item.EMIAmount.ToString("C", new System.Globalization.CultureInfo("en-IN")))
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ApplicationDate)
-                </td>
-                @if (item.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment)
-                {
+                <th>
+                    @Html.DisplayNameFor(model => model.Scheme.SchemeName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EMIAmount)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.ApplicationDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PaymentStartDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NextPaymentDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PaymentsMissed)
+                </th>
+                <th>@Html.DisplayNameFor(m => m.Status)</th>
+                <th>Options</th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+
+                <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.PaymentStartDate)
+                        @Html.DisplayFor(modelItem => item.Scheme.SchemeName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.NextPaymentDate)
+                        @(item.EMIAmount.ToString("C", new System.Globalization.CultureInfo("en-IN")))
                     </td>
-                }
-                else if (item.Status == LoanManagementSystem.Models.ApplicationStatus.NPA)
-                {
-                    <td>@item.PaymentStartDate</td>
-                    <td>N/A</td>
-                }
-                else
-                {
-                    <td>N/A</td>
-                    <td>N/A</td>
-                }
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.PaymentsMissed)
-                </td>
-                <td class="
-                    @(item.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment ? "status-active" : item.Status == LoanManagementSystem.Models.ApplicationStatus.CollateralPending ? "status-collateral" : item.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment ? "status-repayment" : item.Status == LoanManagementSystem.Models.ApplicationStatus.PendingApproval ? "status-pending" : "")">
-                    @GetEnumDisplayName(item.Status)
-                </td>
-                @if (item.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment)
-                {
-                    bool isWithinPaymentDateRange = DateTime.Now >= item.NextPaymentDate && DateTime.Now <= item.NextPaymentDate.AddDays(5);
-                    bool paymentAlreadyDone = item.Repayments.Any() && item.Repayments.Last(r => r.IsApproved).PaymentDate >= item.NextPaymentDate.AddMonths(-1) &&
-                        item.Repayments.Last(r => r.IsApproved).PaymentDate >= item.NextPaymentDate.AddMonths(-1).AddDays(5);
-
-
-                    if (isWithinPaymentDateRange && !paymentAlreadyDone)
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ApplicationDate)
+                    </td>
+                    @if (item.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment)
                     {
                         <td>
+                            @Html.DisplayFor(modelItem => item.PaymentStartDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NextPaymentDate)
+                        </td>
+                    }
+                    else if (item.Status == LoanManagementSystem.Models.ApplicationStatus.NPA)
+                    {
+                        <td>@item.PaymentStartDate</td>
+                        <td>N/A</td>
+                    }
+                    else
+                    {
+                        <td>N/A</td>
+                        <td>N/A</td>
+                    }
 
-                            @Html.ActionLink("Pay Now!", "Index", "Payment", new { applicationId = item.ApplicationId }, new { @class = "btn btn-primary" })
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PaymentsMissed)
+                    </td>
+                    <td class="
+                    @(item.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment ? "status-active" : item.Status == LoanManagementSystem.Models.ApplicationStatus.CollateralPending ? "status-collateral" : item.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment ? "status-repayment" : item.Status == LoanManagementSystem.Models.ApplicationStatus.PendingApproval ? "status-pending" : "")">
+                        <div style="margin-left:10px">@GetEnumDisplayName(item.Status)</div>
+                    </td>
+                    @if (item.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment)
+                    {
+                        bool isWithinPaymentDateRange = DateTime.Now >= item.NextPaymentDate && DateTime.Now <= item.NextPaymentDate.AddDays(5);
+                        bool paymentAlreadyDone = item.Repayments.Any() && item.Repayments.Last(r => r.IsApproved).PaymentDate >= item.NextPaymentDate.AddMonths(-1) &&
+                            item.Repayments.Last(r => r.IsApproved).PaymentDate >= item.NextPaymentDate.AddMonths(-1).AddDays(5);
+
+
+                        if (isWithinPaymentDateRange && !paymentAlreadyDone)
+                        {
+                            <td>
+
+                                @Html.ActionLink("Pay Now!", "Index", "Payment", new { applicationId = item.ApplicationId }, new { @class = "btn btn-primary" })
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+
+                                <button class="btn btn-primary" disabled>Pay Now!</button>
+                            </td>
+                        }
+                    }
+
+                    else if (item.Status == LoanManagementSystem.Models.ApplicationStatus.AddCollateral)
+                    {
+                        <td>
+                            @Html.ActionLink("Add Collateral Documents", "AddCollateral", "Customer", new { applicationId = item.ApplicationId }, new { @class = "btn btn-primary" })
                         </td>
                     }
                     else
                     {
-                        <td>
-
-                            <button class="btn btn-primary" disabled>Pay Now!</button>
-                        </td>
+                        <td></td>
                     }
-                }
+                </tr>
+            }
 
-                else if (item.Status == LoanManagementSystem.Models.ApplicationStatus.AddCollateral)
-                {
-                    <td>
-                    @Html.ActionLink("Add Collateral Documents", "AddCollateral", "Customer", new { applicationId=item.ApplicationId}, new { @class = "btn btn-primary" })
-                    </td>
-                }
-                else
-                {
-                    <td></td>
-                }
-            </tr>
-        }
+        </table>
+        <p>
+            <span class="text-primary"> Want Another Loan? Get instant Approval!</span>
+            @Html.ActionLink("Apply Now!", "schemes")
+        </p>
+    </div>
 
-    </table>
-    <p>
-        <span class="text-primary"> Want Another Loan? Get instant Approval!</span>
-        @Html.ActionLink("Apply Now!", "schemes")
-    </p>
-</div>
+
+
+
+
 
 <style>
     .disabled-button {

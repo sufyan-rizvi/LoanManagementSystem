@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var currentUrl = HttpContext.Current.Request.Url.AbsolutePath;
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -22,7 +26,7 @@
 
 
 </head>
-<body >
+<body>
     <!-- Wrapper for flexbox layout -->
     <div class="page-wrapper d-flex flex-column min-vh-100 ">
         <!-- Header Section -->
@@ -49,14 +53,22 @@
                             @RenderSection("NavbarOptions", required: false)
                         }
                         <li class="nav-item m-lg-auto">
-                            @if (User.Identity.IsAuthenticated)
+                            @if (currentUrl == "/Account/Login")
                             {
-                                <a class="btn btn-outline-light mx-2" href="@Url.Action("Logout", "Account")">Logout</a>
+
                             }
                             else
                             {
-                                <a class="btn btn-light mx-2" href="@Url.Action("Login", "Account")">Login</a>
+                                if (User.Identity.IsAuthenticated)
+                                {
+                                    <a class="btn btn-outline-light mx-2" href="@Url.Action("Logout", "Account")">Logout</a>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-light mx-2" href="@Url.Action("Login", "Account")">Login</a>
+                                }
                             }
+
                         </li>
                     </ul>
                 </nav>
@@ -82,7 +94,7 @@
                         <h5>Quick Links</h5>
                         <ul class="list-unstyled">
                             <li><a href="@Url.Action("Index", "Home")" class="text-light">Home</a></li>
-                            <li><a href="@Url.Action("LoanSchemes", "Customer")" class="text-light">Loan Schemes</a></li>
+                            <li><a href="@Url.Action("Schemes", "Customer")" class="text-light">Loan Schemes</a></li>
                             <li><a href="@Url.Action("Contact", "Home")" class="text-light">Contact Us</a></li>
                         </ul>
                     </div>
