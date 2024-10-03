@@ -31,6 +31,18 @@ namespace LoanManagementSystem.Controllers
         public ActionResult EMIcal()
         {
             return View();
+        }   
+        public ActionResult CalculateEMIForView(LoanScheme scheme, LoanApplication application)
+        {
+            var interestRate = _adminService.GetSchemeById(scheme.LoanSchemeId).InterestRate /12/100;
+            var tenure = application.Tenure;
+            var amount = application.LoanAmount;
+
+            var factor = (double)Math.Pow((double)(1 + interestRate), tenure);
+            var emi = amount * interestRate * factor / (factor - 1);
+
+            return Json(Math.Max(0, emi), JsonRequestBehavior.AllowGet);
+
         }
 
         [AllowAnonymous]
@@ -125,6 +137,13 @@ namespace LoanManagementSystem.Controllers
 
             
             application.Scheme = _customerService.GetSchemeById(LoanScheme.LoanSchemeId);
+            var interestRate = application.Scheme.InterestRate / 12 / 100;
+            var factor = (double)Math.Pow((double)(1 + interestRate), application.Tenure);
+            application.EMIAmount = Math.Round(application.LoanAmount * interestRate * factor / (factor - 1), 2);
+            
+
+            
+
             application.RegistrationDocuments = new List<RegistrationDocuments>();
 
             for (var i = 0; i < files.Count; i++)

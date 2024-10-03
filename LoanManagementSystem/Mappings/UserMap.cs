@@ -23,9 +23,9 @@ namespace LoanManagementSystem.Mappings
             Map(u => u.Age);
             HasOne(u => u.Role).PropertyRef(u=>u.User).Cascade.All();
             HasOne(u=>u.Address).PropertyRef(u=>u.User).Cascade.All();
-            HasMany(u => u.Admins).Inverse().Cascade.All();
-            HasMany(u => u.LoanOfficers).Inverse().Cascade.All();
-            HasMany(u => u.Customers).Inverse().Cascade.All();
+            HasOne(u => u.Admin).PropertyRef(u=>u.User).Cascade.All();
+            HasOne(u => u.LoanOfficer).PropertyRef(u => u.User).Cascade.All();
+            HasOne(u => u.Customer).PropertyRef(u => u.User).Cascade.All();
         }
     }
 }

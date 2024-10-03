@@ -10,37 +10,61 @@
     ViewBag.Title = "Pending Loan Approvals";
 }
 
-<h2>Pending Loan Approvals</h2>
 
-<table class="table">
-    <thead>
-        <tr>
-
-            <th>Applicant Name</th>
-            <th>Loan Amount</th>
-            <th>Status</th>
-            <th>Documents</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var loan in Model)
-        {
+@if (Model.Count() == 0)
+{
+    <h1>No Documents to Approve</h1>
+}
+else
+{
+    <h2>Pending Loan Approvals</h2>
+    <table class="table">
+        <thead>
             <tr>
 
-                <td>@loan.Applicant.User.FirstName</td>
-                <td>@loan.LoanAmount</td>
-                <td>@loan.Status</td>
-                <td>
-                    @Html.ActionLink("Verify", "GetLoanDocuments", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-success" })
-                    @*@Html.ActionLink("Approve", "ApproveLoan", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-success" })
-                        @Html.ActionLink("Reject", "RejectLoan", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-danger" })*@
-                </td>
+                <th>Applicant Name</th>
+                <th>Scheme Name</th>
+                <th>Loan Amount</th>
+                <th>Tenure(in months)</th>
+                <th>Age</th>
+                <th>Status</th>
+                <th>Documents</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var loan in Model)
+            {
+                <tr>
 
-@Html.ActionLink("Back", "Welcome", "LoanOfficer",null, new {@class="btn btn-primary" ,style="width:100px"})
+                    <td>@loan.Applicant.User.FirstName</td>
+                    <td>@loan.Scheme.SchemeName</td>
+                    <td>@loan.LoanAmount</td>
+                    <td>@loan.Tenure</td>
+                    <td>@loan.Applicant.User.Age</td>
+                    <td>@loan.Status</td>
+                    <td>
+                        @Html.ActionLink("Verify", "GetLoanDocuments", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-success" })
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@Html.ActionLink("Back", "Welcome", "LoanOfficer", null, new { @class = "btn btn-primary", style = "width:100px" })
+
+
+<style>
+    .table td, .table th {
+        text-align: center; /* Horizontally center text */
+        vertical-align: middle; /* Vertically center text */
+        white-space: nowrap;
+        padding: 10px 15px;
+        width: 200px;
+        height: 50px;
+    }
+</style>
 
 
 
