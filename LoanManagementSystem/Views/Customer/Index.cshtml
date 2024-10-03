@@ -63,20 +63,20 @@
                         @(item.EMIAmount.ToString("C", new System.Globalization.CultureInfo("en-IN")))
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.ApplicationDate)
+                        @item.ApplicationDate.ToString("dd-MM-yyy")
                     </td>
                     @if (item.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment)
                     {
                         <td>
-                            @Html.DisplayFor(modelItem => item.PaymentStartDate)
+                            @item.PaymentStartDate.ToString("dd-MM-yyy")
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.NextPaymentDate)
+                            @item.NextPaymentDate.ToString("dd-MM-yyy")
                         </td>
                     }
                     else if (item.Status == LoanManagementSystem.Models.ApplicationStatus.NPA)
                     {
-                        <td>@item.PaymentStartDate</td>
+                        <td>@item.PaymentStartDate.ToString("dd-MM-yyy")</td>
                         <td>N/A</td>
                     }
                     else

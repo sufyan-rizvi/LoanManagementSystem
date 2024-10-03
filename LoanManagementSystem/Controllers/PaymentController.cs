@@ -11,6 +11,7 @@ using Razorpay.Api;
 
 namespace LoanManagementSystem.Controllers
 {
+    [Authorize(Roles ="Customer")]
     public class PaymentController : Controller
     {
         // GET: RazorPayment

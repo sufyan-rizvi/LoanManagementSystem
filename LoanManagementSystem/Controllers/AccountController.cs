@@ -12,6 +12,7 @@ using LoanManagementSystem.Service;
 
 namespace LoanManagementSystem.Controllers
 {
+    [AllowAnonymous]
     public class AccountController : Controller
     {
         private readonly IAccountService _accountService;
