@@ -89,8 +89,9 @@
                         @Html.DisplayFor(modelItem => item.PaymentsMissed)
                     </td>
                     <td class="
-                    @(item.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment ? "status-active" : item.Status == LoanManagementSystem.Models.ApplicationStatus.CollateralPending ? "status-collateral" : item.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment ? "status-repayment" : item.Status == LoanManagementSystem.Models.ApplicationStatus.PendingApproval ? "status-pending" : "")">
-                        <div style="margin-left:10px">@GetEnumDisplayName(item.Status)</div>
+                    @(item.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment ? "status-active" : item.Status == LoanManagementSystem.Models.ApplicationStatus.CollateralPending ? "status-collateral" : item.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment ? "status-repayment" : item.Status == LoanManagementSystem.Models.ApplicationStatus.PendingApproval ? "status-pending" : item.Status == LoanManagementSystem.Models.ApplicationStatus.Rejected ? "status-reject":"")">
+                        <button disabled >@GetEnumDisplayName(item.Status)</button>
+                        
                     </td>
                     @if (item.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment)
                     {
@@ -171,32 +172,68 @@
 
 
     table .status-active {
-        background-color: #28a745; /* Green */
+        
+        padding: 10px;
+    }
+    table .status-repayment button {
+        border: none;
+        padding: 10px;
         color: white;
-        border-radius: 100px; /* Semi-circular edges */
-        padding-left: -5px; /* Padding just around the text */
-        display: inline-block;
+        background-color: green;
+        border-radius: 20px;
+        border-right-color: none;
     }
 
     table .status-collateral {
-        background-color: #007bff; /* Blue */
-        color: white;
-        border-radius: 100px; /* Half of height for semi-circles */
-        padding: 10px; /* Remove padding to fit the button height */
+        
+        padding: 10px;
     }
+        table .status-collateral button {
+            border: none;
+            padding: 10px;
+            color: black;
+            background-color: #ffc107;
+            border-radius: 20px;
+            border-right-color: none;
+        }
 
     table .status-repayment {
-        background-color: #dc3545; /* Red */
-        color: white;
-        border-radius: 100px; /* Half of height for semi-circles */
-        padding: 10px; /* Remove padding to fit the button height */
+        
+        padding: 10px;
     }
+        table .status-repayment button {
+            border: none;
+            padding: 10px;
+            color: white;
+            background-color: green;
+            border-radius: 20px;
+            border-right-color: none;
+        }
 
     table .status-pending {
-        background-color: #ffc107; /* Yellow */
-        color: black;
-        border-radius: 100px; /* Half of height for semi-circles */
+        
+
         padding: 10px; /* Remove padding to fit the button height */
+    }
+        table .status-pending button {
+            border: none;
+            padding: 10px;
+            color: black;
+            background-color: #ffc107;
+            border-radius: 20px;
+            border-right-color: none;
+        }
+
+    table .status-reject {
+        padding: 10px; /* Remove padding to fit the button height */
+    }
+    table .status-reject button {
+        border: none;
+        padding: 10px;
+        color: white;
+        background-color: #A6133C;
+        border-radius: 20px;
+        border-right-color: none;
     }
 </style>
 
