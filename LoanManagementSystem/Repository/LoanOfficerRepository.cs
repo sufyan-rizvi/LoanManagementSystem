@@ -27,8 +27,6 @@ namespace LoanManagementSystem.Repository
 
             var dto = Mapper.Map<List<LoanApplication>>(pendingLoans);
             return dto;
-
-
         }
         public List<RegistrationDocuments> GetAppDocuments(Guid id)
         {
@@ -91,7 +89,7 @@ namespace LoanManagementSystem.Repository
         {
             using (var session = NhibernateHelper.CreateSession())
             {
-                var pendingCollaterals = session.Query<LoanApplication>().Where(c => c.Status ==
+                var pendingCollaterals = session.Query<LoanApplication>().Fetch(l=>l.Applicant).ThenFetch(l=>l.User).Where(c => c.Status ==
                 ApplicationStatus.CollateralPending).ToList();
                 return pendingCollaterals;
             }

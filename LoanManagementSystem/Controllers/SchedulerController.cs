@@ -33,6 +33,30 @@ namespace LoanManagementSystem.Controllers
             return Json("Great Success!");
         }
 
+        private async static Task PaymentDateMissed()
+        {
+            using (var s = NhibernateHelper.CreateSession())
+            {
+                var applications = _customerService.GetAllLoanApplications().Where(l => l.Status == ApplicationStatus.LoanRepayment);
+
+                foreach (var application in applications)
+                {
+                    if(DateTime.Now > application.NextPaymentDate.AddDays(5))
+                    {
+                        if (!application.Repayments.Any())
+                        {
+                            application.NextPaymentDate = application.NextPaymentDate.AddMonths(1);
+                        }
+                        else if(application.Repayments.Any() && !application.Repayments.Last().IsApproved)
+                        {
+                            application.NextPaymentDate = application.NextPaymentDate.AddMonths(1);
+                        }
+                    }
+                }
+
+            }
+
+        }
         private async static Task CheckNPA()
         {
             using (var s = NhibernateHelper.CreateSession())
@@ -41,7 +65,7 @@ namespace LoanManagementSystem.Controllers
                 {
                     try
                     {
-                        var applications = _customerService.GetAllLoanApplications().Where(l=>l.Status == ApplicationStatus.LoanRepayment);
+                        var applications = _customerService.GetAllLoanApplications().Where(l => l.Status == ApplicationStatus.LoanRepayment);
 
                         foreach (var application in applications)
                         {
@@ -81,11 +105,15 @@ namespace LoanManagementSystem.Controllers
             {
                 bool isWithinPaymentDateRange = DateTime.Now >= l.NextPaymentDate.AddDays(-1) && DateTime.Now <= l.NextPaymentDate.AddDays(4);
 
-                var lastApprovedRepayment = l.Repayments.LastOrDefault(r => r.IsApproved);
+                var lastApprovedRepayment = l.Repayments
+            .Where(r => r.IsApproved)
+            .OrderByDescending(r => r.PaymentDate)
+            .FirstOrDefault();
                 bool paymentAlreadyDone = lastApprovedRepayment != null && lastApprovedRepayment.PaymentDate >= l.NextPaymentDate.AddMonths(-1) &&
                                           lastApprovedRepayment.PaymentDate <= l.NextPaymentDate.AddMonths(-1).AddDays(5);
 
-                return isWithinPaymentDateRange && !paymentAlreadyDone && l.Status == ApplicationStatus.LoanRepayment;
+                return l.Status == ApplicationStatus.LoanRepayment &&
+           (isWithinPaymentDateRange && !paymentAlreadyDone);
             }
             ).ToList();
 

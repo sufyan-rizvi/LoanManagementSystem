@@ -26,10 +26,12 @@ namespace LoanManagementSystem.Controllers
     {
         private readonly IAdminService _adminService;
         private readonly ICustomerService _customerService;
-        public AdminController(IAdminService adminService, ICustomerService customerService)
+        private readonly IAccountService _accountService;
+        public AdminController(IAdminService adminService, ICustomerService customerService, IAccountService accountService)
         {
             _adminService = adminService;
             _customerService = customerService;
+            _accountService = accountService;
         }
         public ActionResult Analytics()
         {
@@ -269,7 +271,13 @@ namespace LoanManagementSystem.Controllers
         public ActionResult Add(LoanOfficer officer)
         {
             officer.User.Age = Convert.ToInt32(officer.User.Age);
-            _adminService.AddOfficer(officer);
+            if(_accountService.CheckUserNameFound(officer.User.Username))
+                return Json(new { success = false, message = "Officer with same username exists!" });
+
+            if (_accountService.CheckEmailFound(officer.User.Email))
+                return Json(new { success = false, message = "Officer with same email exists!" });
+
+            _adminService.AddOfficer(officer);            
             return Json(new { success = true, message = "Officer added successfully" });
         }
 
@@ -285,6 +293,12 @@ namespace LoanManagementSystem.Controllers
         public ActionResult Edit(LoanOfficer officer)
         {
             officer.User.Age = Convert.ToInt32(officer.User.Age);
+            if (_accountService.CheckUserNameFound(officer.User.Username))
+                return Json(new { success = false, message = "Officer with same username exists!" });
+
+            if (_accountService.CheckEmailFound(officer.User.Email))
+                return Json(new { success = false, message = "Officer with same email exists!" });
+
             _adminService.EditOfficer(officer);
             return Json(new { success = true, message = "Officer details updated!" });
         }

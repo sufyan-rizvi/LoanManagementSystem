@@ -51,6 +51,12 @@
     $(document).ready(function () {
         $("#validateBtn").click(function () {
 
+            if (!$("form").valid()) {
+                // If the form is not valid, return early
+                return;
+            }
+
+
             var files = $("#collateralForm input[type='file']");
             var valid = false;
 

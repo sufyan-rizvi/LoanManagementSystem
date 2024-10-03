@@ -88,7 +88,7 @@ namespace LoanManagementSystem.Controllers
                     }
                 }
             }
-            existingApplication.Status = ApplicationStatus.CollateralApproved;
+            existingApplication.Status = ApplicationStatus.CollateralPending;
             _customerService.AddLoanApplication(existingApplication);
 
             return RedirectToAction("Index");
@@ -157,43 +157,7 @@ namespace LoanManagementSystem.Controllers
             return Json("Nice");
         }
 
-        [HttpPost]
-        public ActionResult UploadDoc(List<HttpPostedFileBase> files)
-        {
-            //var existingApplication = _customerService.GetApplicationById(application.ApplicationId);
-            for (var i = 0; i < files.Count(); i++)
-            {
-
-                var result = _cloudinaryService.UploadImage(files[i]);
-
-                if (result.Error != null)
-                {
-                    throw new InvalidOperationException("Unable to Upload images at the moment!");
-                }
-
-                using (var session = NhibernateHelper.CreateSession())
-                {
-                    using (var transaction = session.BeginTransaction())
-                    {
-                        //var approvalDocs = new RegistrationDocuments()
-                        //{
-
-                        //    DocumentType = (DocumentType)i,
-                        //    PublicId = result.PublicId,
-                        //    ImageUrl = result.SecureUrl.ToString(),
-                        //    Customer = (Customer)Session["Customer"]
-                        //};
-
-                        //session.Save(approvalDocs);
-                        transaction.Commit();
-
-                    }
-                }
-            }
-            return Json("Great Success!");
-
-
-        }
+                
         public ActionResult ShowImage(string publicId)
         {
             string cloudinaryUrl = $"https://res.cloudinary.com/{System.Configuration.ConfigurationManager.AppSettings["CloudinaryCloudName"]}/image/upload/{publicId}";

@@ -60,13 +60,6 @@ namespace LoanManagementSystem.Controllers
         }
 
 
-
-
-
-
-
-
-
         // Action method for displaying pending collateral approvals
         public ActionResult CollateralApproval()
         {

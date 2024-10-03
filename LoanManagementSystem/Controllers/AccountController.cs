@@ -81,8 +81,10 @@ namespace LoanManagementSystem.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Register(Customer customer)
+        public ActionResult Register(User User)
         {
+            var customer = new Customer();
+            customer.User = User;
             if (_accountService.CheckUserNameFound(customer.User.Username))
                 ModelState.AddModelError("", "Username already exists! Choose a new Username");
             if (_accountService.CheckEmailFound(customer.User.Email))

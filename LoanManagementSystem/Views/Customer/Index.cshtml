@@ -113,18 +113,16 @@
                     }
                 }
 
-                else if (item.Status == LoanManagementSystem.Models.ApplicationStatus.CollateralPending)
+                else if (item.Status == LoanManagementSystem.Models.ApplicationStatus.AddCollateral)
                 {
                     <td>
-                    @Html.ActionLink("Add Collateral Documents", "AddCollateral", "Customer", null, new { @class = "btn btn-primary" })
+                    @Html.ActionLink("Add Collateral Documents", "AddCollateral", "Customer", new { applicationId=item.ApplicationId}, new { @class = "btn btn-primary" })
                     </td>
                 }
                 else
                 {
                     <td></td>
                 }
-
-                <td>@DateTime.Now</td>
             </tr>
         }
 

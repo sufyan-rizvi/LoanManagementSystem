@@ -12,117 +12,122 @@
     <img src="~/Content/Loader.gif" />
     <h2>Loading...</h2>
 </div>
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <div class="form-horizontal">
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                @Html.HiddenFor(model => model.LoanScheme.LoanSchemeId, new { id = "lsid" })
+<form id="loanApplicationForm" enctype="multipart/form-data"  onsubmit="return validateFiles()">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.LoanScheme.LoanSchemeId, new { id = "lsid" })
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.LoanScheme.SchemeName, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.LoanScheme.SchemeName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        @Html.ValidationMessageFor(model => model.LoanScheme.SchemeName, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.LoanScheme.SchemeName, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.LoanScheme.SchemeName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            @Html.ValidationMessageFor(model => model.LoanScheme.SchemeName, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.LoanScheme.SchemeType, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.LoanScheme.SchemeType, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        @Html.ValidationMessageFor(model => model.LoanScheme.SchemeType, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.LoanScheme.SchemeType, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.LoanScheme.SchemeType, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            @Html.ValidationMessageFor(model => model.LoanScheme.SchemeType, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.LoanScheme.InterestRate, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        <input class="form-control" id="interestrate" name="LoanApplication.LoanAmount" type="text" value="@Model.LoanScheme.InterestRate" readonly="readonly" onblur="check" />
-                        @Html.ValidationMessageFor(model => model.LoanScheme.InterestRate, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.LoanScheme.InterestRate, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <input class="form-control" id="interestrate" name="LoanApplication.LoanAmount" type="text" value="@Model.LoanScheme.InterestRate" readonly="readonly" onblur="check" />
+                            @Html.ValidationMessageFor(model => model.LoanScheme.InterestRate, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.LoanApplication.LoanAmount, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.LoanApplication.LoanAmount, new { htmlAttributes = new { @class = "form-control", id = "lamt", onchange = "CalculateEmi()", min = "1", step = "1", required = "required" } })
-                        @Html.ValidationMessageFor(model => model.LoanApplication.LoanAmount, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.LoanApplication.LoanAmount, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.LoanApplication.LoanAmount, new { htmlAttributes = new { @class = "form-control", id = "lamt", onchange = "CalculateEmi()", min = "1", step = "1", required = "required" } })
+                            @Html.ValidationMessageFor(model => model.LoanApplication.LoanAmount, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(m => m.LoanApplication.Tenure, htmlAttributes: new { @class = "control-label col-md-2", style = "width:400px" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.LoanApplication.Tenure, new { htmlAttributes = new { @class = "form-control", id = "lten", onchange = "CalculateEmi()", placeholder = "Tenure in months", min = "1", step = "1", required = "required" } })
-                        @Html.ValidationMessageFor(model => model.LoanApplication.Tenure, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.LoanApplication.Tenure, htmlAttributes: new { @class = "control-label col-md-2", style = "width:400px" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.LoanApplication.Tenure, new { htmlAttributes = new { @class = "form-control", id = "lten", onchange = "CalculateEmi()", placeholder = "Tenure in months", min = "1", step = "1", required = "required" } })
+                            @Html.ValidationMessageFor(model => model.LoanApplication.Tenure, "", new { @class = "text-danger" })
+                        </div>
                     </div>
+
+                    <div class="form-group">
+                        @Html.Label("Your installment works out to be:   ", new { @class = "fw-bold my-3 text-primary", id = "emi", style = "display:none" })
+
+                        <span id="emiamt"></span>
+                        <span id="takeemi" style="display:none"></span>
+
+                    </div>
+
+
                 </div>
+            </div>
 
-                <div class="form-group">
-                    @Html.Label("Your installment works out to be:   ", new { @class = "fw-bold my-3 text-primary", id = "emi", style = "display:none" })
+            <div class="col">
+                @if (Model.LoanApplication.Applicant.AadharNumber == null)
+                {
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.LoanApplication.Applicant.AadharNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.LoanApplication.Applicant.AadharNumber, new { htmlAttributes = new { @class = "form-control", id = "laadhar", onchange = "CalculateEmi()", min = "1", step = "1", required = "required" } })
+                            @Html.ValidationMessageFor(model => model.LoanApplication.Applicant.AadharNumber, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div></div>
+                }
+                @if (Model.LoanApplication.Applicant.PANNumber == null)
+                {
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.LoanApplication.Applicant.PANNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.LoanApplication.Applicant.PANNumber, new { htmlAttributes = new { @class = "form-control", id = "lpan", onchange = "CalculateEmi()", required = "required" } })
+                            @Html.ValidationMessageFor(model => model.LoanApplication.Applicant.PANNumber, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div></div>
+                }
 
-                    <span id="emiamt"></span>
-                    <span id="takeemi" style="display:none"></span>
-
+                <div class="form-group my-2">
+                    <label style="width:200px" for="file">Select Aadhar Document:</label>
+                    <input type="file" name="aadharFile" id="aadharFile" accept=".jpeg,.jpg,.png" required />
+                    <span class="text-danger" id="aadharError" style="display:none;">Please upload a valid Aadhar document (JPEG/PNG).</span>
                 </div>
-
+                <div class="my-2">
+                    <label style="width:200px" for="file">Select PAN Document:</label>
+                    <input type="file" name="panFile" id="panFile" accept=".jpeg,.jpg,.png" required />
+                    <span class="text-danger" id="panError" style="display:none;">Please upload a valid PAN document (JPEG/PNG).</span>
+                </div>
+                <div class="my-2">
+                    <label style="width:200px" for="file">Select Photo:</label>
+                    <<input type="file" name="photoFile" id="photoFile" accept=".jpeg,.jpg,.png" required />
+                    <span class="text-danger" id="photoError" style="display:none;">Please upload a valid photo (JPEG/PNG).</span>
+                </div>
 
             </div>
+            <div class="form-group">
+                <input type="submit" value="Apply" class="btn btn-primary my-2" style="width:100px" id="detailCreate" />
+                @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-danger my-2", style = "width:100px" })
+
+            </div>
+
         </div>
-
-        <div class="col">
-            @if (Model.LoanApplication.Applicant.AadharNumber == null)
-            {
-                <div class="form-group">
-                    @Html.LabelFor(model => model.LoanApplication.Applicant.AadharNumber, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.LoanApplication.Applicant.AadharNumber, new { htmlAttributes = new { @class = "form-control", id = "laadhar", onchange = "CalculateEmi()", min = "1", step = "1", required = "required" } })
-                        @Html.ValidationMessageFor(model => model.LoanApplication.Applicant.AadharNumber, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            }
-            else
-            {
-                <div></div>
-            }
-            @if (Model.LoanApplication.Applicant.PANNumber == null)
-            {
-                <div class="form-group">
-                    @Html.LabelFor(model => model.LoanApplication.Applicant.PANNumber, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.LoanApplication.Applicant.PANNumber, new { htmlAttributes = new { @class = "form-control", id = "lpan", onchange = "CalculateEmi()", min = "1", step = "1", required = "required" } })
-                        @Html.ValidationMessageFor(model => model.LoanApplication.Applicant.PANNumber, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            }
-            else
-            {
-                <div></div>
-            }
-
-            <div class="form-group my-2">
-                <label style="width:200px" for="file">Select Aadhar Document:</label>
-                <input type="file" name="file" id="aadharFile" required />
-            </div>
-            <div class="my-2">
-                <label style="width:200px" for="file">Select PAN Document:</label>
-                <input type="file" name="file" id="panFile" required />
-            </div>
-            <div class="my-2">
-                <label style="width:200px" for="file">Select Photo:</label>
-                <input type="file" name="file" id="photoFile" required />
-            </div>
-
-        </div>
-        <div class="form-group">
-            <input type="submit" value="Apply" class="btn btn-primary my-2" style="width:100px" id="detailCreate" />
-            @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-danger my-2", style = "width:100px" })
-
-        </div>
-
     </div>
-</div>
+</form>
 
 
 
@@ -157,6 +162,46 @@
     }
 
     $(document).ready(function () {
+        function validateFiles() {
+
+            let isValid = true;
+
+            // Reset error messages
+            document.getElementById('aadharError').style.display = 'none';
+            document.getElementById('panError').style.display = 'none';
+            document.getElementById('photoError').style.display = 'none';
+
+            // Validate Aadhar File
+            const aadharFile = document.getElementById('aadharFile').files[0];
+            if (!aadharFile || !validateFileExtension(aadharFile)) {
+                document.getElementById('aadharError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Validate PAN File
+            const panFile = document.getElementById('panFile').files[0];
+            if (!panFile || !validateFileExtension(panFile)) {
+                document.getElementById('panError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Validate Photo File
+            const photoFile = document.getElementById('photoFile').files[0];
+            if (!photoFile || !validateFileExtension(photoFile)) {
+                document.getElementById('photoError').style.display = 'block';
+                isValid = false;
+            }
+
+            return isValid; // Only submit the form if all validations pass
+        }
+
+        function validateFileExtension(file) {
+            const validExtensions = ['image/jpeg', 'image/png'];
+            return validExtensions.includes(file.type);
+        }
+
+
+
         var vllll = $("#lamt").val()
         $('#lamt').on('blur', function () {
             validateInput(this);
@@ -186,6 +231,11 @@
         $("#detailCreate").click(() => {
             event.preventDefault()
 
+            if (!$("form").valid()) {
+                // If the form is not valid, return early
+                return;
+            }
+
             $("#loadingOverlay").show();  // Show the loading overlay
             var formData = new FormData();
             formData.append("files", $("#aadharFile")[0].files[0], $("#aadharFile")[0].files[0].name);
@@ -203,9 +253,9 @@
                 }
             };
 
-            var LoanSchemeData =  {
+            var LoanSchemeData = {
                 LoanSchemeId: $("#lsid").val()
-        }
+            }
 
             formData.append('LoanApplication', JSON.stringify(LoanApplicationData));
 
@@ -222,28 +272,12 @@
                 type: "POST",
                 data: formData,
                 contentType: false,   // Important to set false for sending FormData
-                processData: false, 
+                processData: false,
 
                 success: () => {
                     alert("Your documents have been sent to a loan officer for approval!");
                     window.location.href = "https://localhost:44330/Customer/index"
 
-                    //$.ajax({
-                    //    url: "/customer/uploaddoc",
-                    //    type: "POST",
-                    //    data: formData,
-                    //    processData: false,
-                    //    contentType: false,
-                    //    success: () => {
-                    //        $("#loadingOverlay").hide(500);
-                    //        alert("Your documents have been sent to a loan officer for approval!");
-                    //        window.location.href = "https://localhost:44330/Customer/index"
-
-                    //    },
-                    //    error: (err) => {
-                    //        console.log("Error uploading documents:", err);
-                    //    }
-                    //});
                 },
                 error: (err) => {
                     console.log("Error sending loan application data:", err);
