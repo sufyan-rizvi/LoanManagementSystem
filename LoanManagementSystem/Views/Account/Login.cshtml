@@ -88,7 +88,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="login-page">
-    <div class="login-container">
+    <div class="login-container" style="margin-top:-120px">
         <!-- Left Section: Image and Welcome Text -->
         <div class="login-image-section">
             <img src="~/Content/Images/loginImage.png" alt="Login Image" class="login-image" />
@@ -111,14 +111,14 @@
                     @Html.ValidationSummary(true, "", new { @class = "text-danger text-center" })
 
                     <div class="btn-group login-toggle">
-                        <button type="button" id="asUserLoginBtn" class="btn btn-outline-info">Customer</button>
-                        <button type="button" id="asEmployeeLoginBtn" class="btn btn-outline-info">Employee</button>
+                        <button style="border-radius: 20px; border-bottom-right-radius: 0px; border-top-right-radius: 0px; border-right-color: #A6133C; "  type="button" id="asUserLoginBtn" class="btn dcolor btn-outline-danger"><p class="txtval"  style=" height: 10px;" id="cusId">Customer</p></button>
+                        <button style="border-radius: 20px; border-bottom-left-radius: 0px; border-top-left-radius: 0px; border-right-color: #A6133C; " type="button" id="asEmployeeLoginBtn" class="btn  btn-outline-danger"><p  style=" height: 10px;" id="empId">Employee</p></button>
                     </div>
 
                     @Html.HiddenFor(model => model.LoginType, new { id = "LoginType" })
 
                     <div class="form-group">
-                        @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "input-container" })
                         <div class="input-container">
                             @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
@@ -126,7 +126,7 @@
                     </div>
 
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "input-container" })
                         <div class="input-container">
                             @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
@@ -134,7 +134,10 @@
                     </div>
 
                     <div class="form-group text-center">
-                        <input type="submit" value="Login" class="btn btn-primary login-btn" />
+                        <div class="input-container">
+                            <input style="border: none; padding: 10px; color: white; background-color: #A6133C; border-radius: 20px; border-right-color: none;" type="submit" value="Login" class="btn btn-primary login-btn" />
+                        </div>
+                        @*<input type="submit" value="Login" class="btn btn-primary login-btn" />*@
                         @Html.ActionLink("New Customer? Register", "Register", null, new { id = "userRegister", @class = "register-link", style = "display:none" })
                     </div>
                 </div>
@@ -147,15 +150,20 @@
     $('#asUserLoginBtn').click(function () {
         $('#LoginType').val('Customer');
         $("#userRegister").show();
-        $('#asEmployeeLoginBtn').removeClass("btn-info");
-        $('#asUserLoginBtn').addClass("btn-info text-dark");
+        $('#asEmployeeLoginBtn').removeClass("btn-info dcolor ");
+        $('#asUserLoginBtn').addClass("btn dcolor text-dark ");
+        $('#empId').removeClass("txtval ");
+        $('#cusId').addClass("txtval");
     });
 
     $('#asEmployeeLoginBtn').click(function () {
+        
         $('#LoginType').val('Employee');
         $("#userRegister").hide();
-        $('#asUserLoginBtn').removeClass("btn-info");
-        $('#asEmployeeLoginBtn').addClass("btn-info text-dark");
+        $('#asUserLoginBtn').removeClass("dcolor btn-danger btn-info");
+        $('#asEmployeeLoginBtn').addClass("btn dcolor text-dark");
+        $('#cusId').removeClass("txtval ");
+        $('#empId').addClass("txtval");
     });
 
     $(document).ready(() => {
@@ -166,6 +174,15 @@
 </script>
 
 <style>
+    .txtval {
+        color: white;
+    }
+    .dcolor {
+        color: white;
+        background-color: #A6133C;
+        border-radius: 20px;
+        border-right-color: none;
+    }
     .login-page {
         display: flex;
         justify-content: center;
@@ -252,6 +269,8 @@
     }
 
     .input-container {
+        font-size:20px;
+        margin-left:50px;
         display: flex;
         flex-direction: column;
     }

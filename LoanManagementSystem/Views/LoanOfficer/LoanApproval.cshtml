@@ -3,11 +3,21 @@
     //ViewBag.Title = "LoanApproval";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@using System.ComponentModel.DataAnnotations
+@using System.Reflection
 
 @model IEnumerable<LoanManagementSystem.Models.LoanApplication>
 
 @{
     ViewBag.Title = "Pending Loan Approvals";
+}
+@functions {
+    public string GetEnumDisplayName(Enum value)
+    {
+        var field = value.GetType().GetField(value.ToString());
+        var attribute = field.GetCustomAttribute<DisplayAttribute>();
+        return attribute != null ? attribute.GetName() : value.ToString();
+    }
 }
 
 <h2>Pending Loan Approvals</h2>
@@ -25,11 +35,22 @@
     <tbody>
         @foreach (var loan in Model)
         {
-            <tr>
+            <tr class="table">
 
                 <td>@loan.Applicant.User.FirstName</td>
                 <td>@loan.LoanAmount</td>
-                <td>@loan.Status</td>
+                <td class="
+    @(loan.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment ? "status-active" ://
+    loan.Status == LoanManagementSystem.Models.ApplicationStatus.CollateralPending ? "status-collateral" ://
+    loan.Status == LoanManagementSystem.Models.ApplicationStatus.AddCollateral ? "status-collateral" ://
+    loan.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment ? "status-repayment" :
+    loan.Status == LoanManagementSystem.Models.ApplicationStatus.PendingApproval ? "status-pending" ://
+    loan.Status == LoanManagementSystem.Models.ApplicationStatus.LoanClosed ? "status-active" ://
+    loan.Status == LoanManagementSystem.Models.ApplicationStatus.NPA ? "status-reject":
+    loan.Status == LoanManagementSystem.Models.ApplicationStatus.Rejected ? "status-reject":"")">
+                    <button disabled>@GetEnumDisplayName(loan.Status)</button>
+
+                </td>
                 <td>
                     @Html.ActionLink("Verify", "GetLoanDocuments", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-success" })
                     @*@Html.ActionLink("Approve", "ApproveLoan", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-success" })
@@ -40,7 +61,78 @@
     </tbody>
 </table>
 
-@Html.ActionLink("Back", "Welcome", "LoanOfficer",null, new {@class="btn btn-primary" ,style="width:100px"})
+@Html.ActionLink("Back", "Welcome", "LoanOfficer", null, new { @class = "btn btn-primary", style = "width: 150px;\r\nborder: none;\r\npadding: 10px;\r\ncolor: white;\r\nbackground-color: #A6133C;\r\nborder-radius: 20px;\r\nborder-right-color: none;" })
+<style>
+    table .status-active {
+        padding: 10px;
+    }
+
+        table .status-active button {
+            width: 150px;
+            border: none;
+            padding: 10px;
+            color: white;
+            background-color: green;
+            border-radius: 20px;
+            border-right-color: none;
+        }
+
+    table .status-collateral {
+        padding: 10px;
+    }
+
+        table .status-collateral button {
+            width: 150px;
+            border: none;
+            padding: 10px;
+            color: black;
+            background-color: #ffc107;
+            border-radius: 20px;
+            border-right-color: none;
+        }
+
+    table .status-repayment {
+        padding: 10px;
+    }
+
+        table .status-repayment button {
+            width: 150px;
+            border: none;
+            padding: 10px;
+            color: white;
+            background-color: green;
+            border-radius: 20px;
+            border-right-color: none;
+        }
+
+    table .status-pending {
+        padding: 10px; /* Remove padding to fit the button height */
+    }
+
+        table .status-pending button {
+            width: 150px;
+            border: none;
+            padding: 10px;
+            color: black;
+            background-color: #ffc107;
+            border-radius: 20px;
+            border-right-color: none;
+        }
+
+    table .status-reject {
+        padding: 10px; /* Remove padding to fit the button height */
+    }
+
+        table .status-reject button {
+            width: 150px;
+            border: none;
+            padding: 10px;
+            color: white;
+            background-color: #A6133C;
+            border-radius: 20px;
+            border-right-color: none;
+        }
+</style>
 
 
 

@@ -24,7 +24,7 @@ namespace LoanManagementSystem.Controllers
         // Action method for displaying the welcome page
         public ActionResult Welcome()
         {
-            return View();
+            return View(_loanOfficerService.GetDocuments());
         }
         
 
