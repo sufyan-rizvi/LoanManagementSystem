@@ -11,7 +11,7 @@ using NHibernate.Linq;
 
 namespace LoanManagementSystem.Controllers
 {
-    //[Authorize(Roles = "LoanOfficer")]
+    [Authorize(Roles = "LoanOfficer")]
     public class LoanOfficerController : Controller
     {
         private readonly LoanOfficerService _loanOfficerService;
