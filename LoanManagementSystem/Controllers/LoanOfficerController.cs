@@ -33,6 +33,7 @@ namespace LoanManagementSystem.Controllers
             return View(_loanOfficerService.GetDocuments());
            
         }
+
         //Show Rejistration Documents to the Loan Officesr
         public ActionResult GetLoanDocuments(Guid id)
         {
@@ -57,13 +58,6 @@ namespace LoanManagementSystem.Controllers
             return RedirectToAction("LoanApproval");
             
         }
-
-
-
-
-
-
-
 
 
         // Action method for displaying pending collateral approvals

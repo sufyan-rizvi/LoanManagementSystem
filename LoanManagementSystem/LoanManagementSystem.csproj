@@ -366,6 +366,7 @@
     <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\SchedulerController.cs" />
     <Compile Include="Data\NhibernateHelper.cs" />
+    <Compile Include="DTOs\LoanApplicationMonthWise.cs" />
     <Compile Include="DTOs\LoanSchemeDTO.cs" />
     <Compile Include="Filters\FilterConfig.cs" />
     <Compile Include="Filters\SessionCheckFilter.cs" />
@@ -392,7 +393,6 @@
     <Compile Include="Models\CollateralDocuments.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\DocumentType.cs" />
-    <Compile Include="Models\EMICalculatorModel.cs" />
     <Compile Include="Models\LoanApplication.cs" />
     <Compile Include="Models\LoanOfficer.cs" />
     <Compile Include="Models\LoanScheme.cs" />
@@ -466,7 +466,6 @@
     <Content Include="Views\Shared\_PartialSchemeAdd.cshtml" />
     <Content Include="Views\Documents\ViewRegistrationDocuments.cshtml" />
     <Content Include="Views\Documents\ViewCollateralDocuments.cshtml" />
-    <Content Include="Views\EMICalculator\Index.cshtml" />
     <Content Include="Views\Shared\_PartialSchemeEdit.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Customer\UploadResult.cshtml" />
@@ -491,6 +490,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Jobs\" />
+    <Folder Include="Validations\" />
     <Folder Include="Views\Scheduler\" />
   </ItemGroup>
   <PropertyGroup>

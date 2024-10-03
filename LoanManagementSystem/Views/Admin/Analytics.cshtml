@@ -5,28 +5,20 @@
 }
 
 
-
 <h2>Loan Management Analytics</h2>
 
-<div style="width:75%;">
+<div style="width:75%;" class="my-5">
     <canvas id="barChart"></canvas>
     <p>
-        <strong>Analysis:</strong> The bar chart shows the number of loan applications over the past five months. The data indicates that February saw the highest number of applications, while March had the fewest. This can help assess seasonal trends in loan demand and guide staffing or promotional efforts accordingly.
+        <strong>Analysis:</strong> The bar chart shows the number of loan applications over the months. This can help assess seasonal trends in loan demand and guide staffing or promotional efforts accordingly.
     </p>
 </div>
 
 <div class="row">
-    <div class="col">
-        <div class="form-group" style="width:90%;">
-            <canvas id="pieChart"></canvas>
-            <p>
-                <strong>Analysis:</strong> The pie chart presents the distribution of loan statuses. A large portion of the loans are currently active, with a smaller share either closed or awaiting approval. This helps in understanding the current workload and potential future demands in loan management.
-            </p>
-        </div>
-    </div>
+    
 
     <div class="col">
-        <div class="form-group" style="width:90%;">
+        <div class="form-group my-5" style="width:50%; align-content:center">
             <canvas id="doughnutChart"></canvas>
             <p>
                 <strong>Analysis:</strong> The doughnut chart illustrates the distribution of users by role. Most users are customers, followed by loan officers, with a smaller portion being admins. This insight can help in organizing resources and providing better support for each user group.
@@ -36,7 +28,7 @@
 </div>
 
 <!-- Line Chart Section -->
-<div style="width:75%; margin-top: 30px;">
+<div style="width:70%; margin-top: 30px;" class="my-5">
     <canvas id="lineChart"></canvas>
     <p>
         <strong>Analysis:</strong> The line chart illustrates the total loan amounts approved over the same period. The chart shows an upward trend from March to May, indicating a possible increase in loan size, which could suggest larger or more frequent loans being taken by customers.
@@ -44,7 +36,7 @@
 </div>
 
 <!-- Horizontal Bar Chart for NPA Percentage -->
-<div style="width:75%; margin-top: 30px;">
+<div style="width:75%; margin-top: 30px;" class="my-5">
     <canvas id="npaChart"></canvas>
     <p>
         <strong>Analysis:</strong> The horizontal bar chart shows the NPA percentages across months. May has the highest percentage, indicating an increase in non-performing assets. This could point to a need for more stringent loan recovery methods.
@@ -58,30 +50,15 @@
 <script>
 
 
-    // Pie Chart
-    var pieChart = document.getElementById('pieChart').getContext('2d');
-    var pieChartInstance = new Chart(pieChart, {
-        type: 'pie',
-        data: {
-            labels: ['Active Loans', 'Closed Loans', 'Pending Approval'],
-            datasets: [{
-                label: 'Loan Status',
-                data: [300, 50, 100],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)'
-                ],
-                borderWidth: 1
-            }]
-        }
-    });
 
+
+    var officerCount = @Html.Raw(JsonConvert.SerializeObject(ViewBag.OfficerCount));
+    var customerCount = @Html.Raw(JsonConvert.SerializeObject(ViewBag.CustomerCount));
+    var adminCount = @Html.Raw(JsonConvert.SerializeObject(ViewBag.AdminCount));
+
+    console.log(officerCount)
+    console.log(customerCount)
+    console.log(adminCount)
     // Doughnut Chart
     var doughnutChart = document.getElementById('doughnutChart').getContext('2d');
     var doughnutChartInstance = new Chart(doughnutChart, {
@@ -90,7 +67,7 @@
             labels: ['Loan Officers', 'Customers', 'Admins'],
             datasets: [{
                 label: 'User Roles',
-                data: [50, 100, 10],
+                data: [adminCount, customerCount, officerCount],
                 backgroundColor: [
                     'rgba(153, 102, 255, 0.2)',
                     'rgba(255, 159, 64, 0.2)',
@@ -113,12 +90,23 @@
     //Bar Chart
 
     var loanApplications = @Html.Raw(JsonConvert.SerializeObject(ViewBag.LoanApplications));
-
+    console.log(loanApplications)
     var barChart = document.getElementById('barChart').getContext('2d');
     var barChartInstance = new Chart(barChart, {
         type: 'bar',
         data: {
-            labels: ['January', 'February', 'March', 'April', 'May'],
+            labels: ["January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December"],
             datasets: [{
                 label: 'Loan Applications',
                 data: loanApplications,
@@ -177,7 +165,7 @@
 
 
     var npaPercentages = @Html.Raw(JsonConvert.SerializeObject(ViewBag.NPAPercentages));
-
+    console.log(npaPercentages)
     // Horizontal Bar Chart for NPA Percentage
     var npaChart = document.getElementById('npaChart').getContext('2d');
     var npaChartInstance = new Chart(npaChart, {

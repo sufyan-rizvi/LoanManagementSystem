@@ -11,7 +11,7 @@ namespace LoanManagementSystem.Models
         public virtual DocumentType DocumentType { get; set; }
         public virtual string ImageUrl { get; set; }  //Used to show uploaded image
         public virtual string PublicId { get; set; }   //used to show full image on click on link from cloudinary
-        public virtual Customer Customer { get; set; }
+        public virtual LoanApplication Application { get; set; }
 
 
     }
