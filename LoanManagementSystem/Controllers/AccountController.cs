@@ -59,7 +59,7 @@ namespace LoanManagementSystem.Controllers
             switch (user.Role.RoleName)
             {
                 case "Admin":
-                    Session["Admin"] = _accountService.GetAdminByUserId(user.UserId);
+                    Session["Admin"] = _accountService.GetCustomerByUserId(user.UserId);
                     FormsAuthentication.SetAuthCookie(user.Username, false);
                     return RedirectToAction("Index", "Admin");
 
