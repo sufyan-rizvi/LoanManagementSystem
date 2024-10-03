@@ -32,44 +32,45 @@ else
 
     <h2>Pending Collateral Approvals</h2>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Loan ID</th>
-            <th>Applicant Name</th>
-            <th>Loan Amount</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var loan in Model)
-        {
+    <table class="table">
+        <thead>
             <tr>
-                <td>@loan.ApplicationId</td>
-                <td>@loan.Applicant.User.FirstName</td>
-                <td>@loan.LoanAmount</td>
-                <td class="
-@(loan.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment ? "status-active" ://
-loan.Status == LoanManagementSystem.Models.ApplicationStatus.CollateralPending ? "status-collateral" ://
-loan.Status == LoanManagementSystem.Models.ApplicationStatus.AddCollateral ? "status-collateral" ://
-loan.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment ? "status-repayment" :
-loan.Status == LoanManagementSystem.Models.ApplicationStatus.PendingApproval ? "status-pending" ://
-loan.Status == LoanManagementSystem.Models.ApplicationStatus.LoanClosed ? "status-active" ://
-loan.Status == LoanManagementSystem.Models.ApplicationStatus.NPA ? "status-reject":
-loan.Status == LoanManagementSystem.Models.ApplicationStatus.Rejected ? "status-reject":"")">
-                    <button disabled>@GetEnumDisplayName(loan.Status)</button>
-
-                </td>
-                <td>
-                    @Html.ActionLink("Verify", "GetCollateralDocuments", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-success" })
-                    @*@Html.ActionLink("Approve", "ApproveCollateral", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-success" })
-                        @Html.ActionLink("Reject", "RejectCollateral", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-danger" })*@
-                </td>
+                <th>Loan ID</th>
+                <th>Applicant Name</th>
+                <th>Loan Amount</th>
+                <th>Status</th>
+                <th>Actions</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var loan in Model)
+            {
+                <tr>
+                    <td>@loan.ApplicationId</td>
+                    <td>@loan.Applicant.User.FirstName</td>
+                    <td>@loan.LoanAmount</td>
+                    <td class="
+@(loan.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment ? "status-active" ://
+        loan.Status == LoanManagementSystem.Models.ApplicationStatus.CollateralPending ? "status-collateral" ://
+        loan.Status == LoanManagementSystem.Models.ApplicationStatus.AddCollateral ? "status-collateral" ://
+        loan.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment ? "status-repayment" :
+        loan.Status == LoanManagementSystem.Models.ApplicationStatus.PendingApproval ? "status-pending" ://
+        loan.Status == LoanManagementSystem.Models.ApplicationStatus.LoanClosed ? "status-active" ://
+        loan.Status == LoanManagementSystem.Models.ApplicationStatus.NPA ? "status-reject" :
+        loan.Status == LoanManagementSystem.Models.ApplicationStatus.Rejected ? "status-reject" : "")">
+                        <button disabled>@GetEnumDisplayName(loan.Status)</button>
+
+                    </td>
+                    <td>
+                        @Html.ActionLink("Verify", "GetCollateralDocuments", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-success" })
+                        @*@Html.ActionLink("Approve", "ApproveCollateral", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-success" })
+                            @Html.ActionLink("Reject", "RejectCollateral", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-danger" })*@
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 @Html.ActionLink("Back", "Welcome", "LoanOfficer", null, new { @class = "btn btn-primary", style = " width: 150px;\r\n border: none;\r\n padding: 10px;\r\n color: white;\r\n background-color: #A6133C;\r\n border-radius: 20px;\r\n border-right-color: none;" })
 
 

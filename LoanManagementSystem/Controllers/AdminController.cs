@@ -19,6 +19,7 @@ using AutoMapper;
 using LoanManagementSystem.DTOs;
 using NHibernate.Transform;
 using NHibernate;
+using System.Web.UI.WebControls;
 
 namespace LoanManagementSystem.Controllers
 {
@@ -154,6 +155,12 @@ namespace LoanManagementSystem.Controllers
 
                 return View();
             }
+        }
+
+
+        public ActionResult GeneratePDf()
+        {
+            return new Rotativa.ActionAsPdf("Analytics");
         }
 
         public ActionResult Index()
