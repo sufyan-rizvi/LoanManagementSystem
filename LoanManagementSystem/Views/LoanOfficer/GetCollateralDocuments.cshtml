@@ -8,7 +8,8 @@
 <h2>GetCollateralDocuments</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Approve", "ApproveLoan", new { /* id=item.PrimaryKey */ }, new { @class = "btn btn-success" }) |
+    @Html.ActionLink("Reject", "RejectLoan", new { /* id=item.PrimaryKey */ }, new { @class = "btn btn-danger" })
 </p>
 <table class="table">
     <tr>
@@ -21,7 +22,7 @@
         <th>
             @Html.DisplayNameFor(model => model.PublicId)
         </th>
-        <th></th>
+        
     </tr>
 
 @foreach (var item in Model) {
@@ -37,10 +38,7 @@
             <a href="@Url.Action("ShowImage", "Customer", new { publicId = item.PublicId })">Click to show full image</a>
             @*@Html.DisplayFor(modelItem => item.PublicId)*@
         </td>
-        <td>
-            @Html.ActionLink("Approve", "ApproveCollateral", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Reject", "RejectCollateral", new { /* id=item.PrimaryKey */ }) 
-        </td>
+        
     </tr>
 }
 

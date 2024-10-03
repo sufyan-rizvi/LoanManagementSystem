@@ -163,11 +163,12 @@ namespace LoanManagementSystem.Controllers
             return Json("Nice");
         }
 
-                
+        [AllowAnonymous]
         public ActionResult ShowImage(string publicId)
         {
             string cloudinaryUrl = $"https://res.cloudinary.com/{System.Configuration.ConfigurationManager.AppSettings["CloudinaryCloudName"]}/image/upload/{publicId}";
             return Redirect(cloudinaryUrl);
+            //return Content(cloudinaryUrl);
         }
     }
 }
