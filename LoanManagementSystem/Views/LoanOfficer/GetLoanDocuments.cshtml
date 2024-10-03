@@ -12,9 +12,7 @@
 </p>
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.RegId)
-        </th>
+       
         <th>
             @Html.DisplayNameFor(model => model.ImageUrl)
         </th>
@@ -26,12 +24,10 @@
 
 @foreach (var item in Model) {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.RegId)
-        </td>
+       
         <td>
             
-                <img src="@item.ImageUrl" alt="Uploaded Image" />
+                <img src="@item.ImageUrl" alt="Uploaded Image" style="width:100px;height:100px;" />
             
             @*@Html.DisplayFor(modelItem => item.ImageUrl)*@
         </td>

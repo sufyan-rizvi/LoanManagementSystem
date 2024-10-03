@@ -238,6 +238,9 @@
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\custom.css" />
+    <Content Include="Content\emiScript.js" />
+    <Content Include="Content\emiStyle.css" />
+    <Content Include="Content\Images\asixLogo.png" />
     <Content Include="Content\Images\loginImage.png" />
     <Content Include="Content\Images\logo.png" />
     <Content Include="Content\jquery.jqGrid\ellipsis-xbl.xml" />
@@ -477,6 +480,7 @@
     <Content Include="Views\Payment\Index.cshtml" />
     <Content Include="Views\Payment\Success.cshtml" />
     <Content Include="Views\Payment\Error.cshtml" />
+    <Content Include="Views\Customer\EMIcal.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

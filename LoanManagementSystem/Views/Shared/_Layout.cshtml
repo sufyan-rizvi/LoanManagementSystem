@@ -21,50 +21,45 @@
 
     <script src="~/Scripts/bootstrap.min.js"></script>
 </head>
-<body>
+<body >
     <!-- Wrapper for flexbox layout -->
-    <div class="page-wrapper d-flex flex-column min-vh-100">
+    <div class="page-wrapper d-flex flex-column min-vh-100 ">
         <!-- Header Section -->
         <header class=" text-light py-3 shadow">
-            <div class=" container d-flex justify-content-between align-items-center">
-                <!-- Logo Section -->
-                <div class="col">
-                    <a href="@Url.Action("Index", "Customer")" style="text-decoration: none;">
-                        <img src="~/Content/Images/logo.png" alt="AKSYS Loans" class="logo" />
-                    </a>
-                </div>
-                <div class="col-10">
-                    <div class="row">
+            <div class=" d-flex justify-content-between align-items-center">
+                <!-- Logo Section (Left) -->
 
-                        <a class=" navbar-brand " href="@Url.Action("Index", "Customer")" style="text-decoration: none; margin-left:250px;">
-                            AKSYS LOANS
-                        </a>
-                    </div>
-                    <div class="row ">
-                        <nav class="d-flex align-items-center justify-content-between">
-                            <ul class="nav">
-                                @if (IsSectionDefined("NavbarOptions"))
-                                {
-                                    @RenderSection("NavbarOptions", required: false)
-                                }
-                                <li class="nav-item" style="margin-left:150px;">
-                                    @if (User.Identity.IsAuthenticated)
-                                    {
-                                        <a class="btn btn-outline-light mx-2" href="@Url.Action("Logout", "Account")">Logout</a>
-                                    }
-                                    else
-                                    {
-                                        <a class="btn btn-light mx-2" href="@Url.Action("Login", "Account")">Login</a>
-                                    }
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
+                <a href="@Url.Action("Index", "Customer")" style="text-decoration: none;">
+                    <img src="~/Content/Images/asixLogo.png" alt="AKSYS Loans" class="logo" />
+                </a>
 
-                    
-                </div>
-                    
-            
+                <!-- Title and Navbar Section (Center) -->
+                <!-- Title Section -->
+
+                <a class="navbar-brand d-block" href="@Url.Action("Index", "Customer")" style="text-decoration: none;">
+                    AKSYS LOANS
+                </a>
+
+                <!-- Navbar Section -->
+                <nav class="d-flex justify-content-center align-items-center mt-2">
+                    <ul class="nav">
+                        @if (IsSectionDefined("NavbarOptions"))
+                        {
+                            @RenderSection("NavbarOptions", required: false)
+                        }
+                        <li class="nav-item m-lg-auto">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <a class="btn btn-outline-light mx-2" href="@Url.Action("Logout", "Account")">Logout</a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-light mx-2" href="@Url.Action("Login", "Account")">Login</a>
+                            }
+                        </li>
+                    </ul>
+                </nav>
+
             </div>
         </header>
 

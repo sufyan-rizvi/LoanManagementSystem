@@ -26,6 +26,10 @@ namespace LoanManagementSystem.Controllers
             _adminService = adminService;
         }
         [AllowAnonymous]
+        public ActionResult EMIcal()
+        {
+            return View();
+        }
         public ActionResult Schemes()
         {
             using (var session = NhibernateHelper.CreateSession())
@@ -113,9 +117,9 @@ namespace LoanManagementSystem.Controllers
             application.Applicant = (Customer)Session["Customer"];
             application.Status = ApplicationStatus.PendingApproval;
 
-            var officerList = _adminService.GetAllActiveOfficers();
-            Random number = new Random(); ;
-            application.AssignedOfficer = officerList[number.Next(0, officerList.Count)];
+            //var officerList = _adminService.GetAllActiveOfficers();
+            //Random number = new Random(); ;
+            //application.AssignedOfficer = officerList[number.Next(0, officerList.Count)];
 
             application.ApplicationDate = DateTime.Now;
 
