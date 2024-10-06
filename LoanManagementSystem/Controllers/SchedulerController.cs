@@ -12,6 +12,7 @@ using LoanManagementSystem.Models;
 using Razorpay.Api;
 using static System.Net.Mime.MediaTypeNames;
 using Unity;
+using CloudinaryDotNet.Actions;
 
 namespace LoanManagementSystem.Controllers
 {
@@ -28,96 +29,40 @@ namespace LoanManagementSystem.Controllers
 
         public async Task<ActionResult> RunSchedulerMethod()
         {
-            await SendEmail();
-            await CheckNPA();
+            SetPaymentMadeStatus();
+            SendEmail();
+            PaymentDateMissed();
+            
+           
             return Json("Great Success!");
         }
 
         private async static Task PaymentDateMissed()
         {
-            using (var s = NhibernateHelper.CreateSession())
-            {
-                var applications = _customerService.GetAllLoanApplications().Where(l => l.Status == ApplicationStatus.LoanRepayment);
-
-                foreach (var application in applications)
-                {
-                    if(DateTime.Now > application.NextPaymentDate.AddDays(5))
-                    {
-                        if (!application.Repayments.Any())
-                        {
-                            application.NextPaymentDate = application.NextPaymentDate.AddMonths(1);
-                        }
-                        else if(application.Repayments.Any() && !application.Repayments.Last().IsApproved)
-                        {
-                            application.NextPaymentDate = application.NextPaymentDate.AddMonths(1);
-                        }
-                    }
-                }
-
-            }
+            var applications = _customerService.PaymentMissedApplications();
+            _customerService.UpdateNextPaymentDate(applications);
 
         }
+
         private async static Task CheckNPA()
         {
-            using (var s = NhibernateHelper.CreateSession())
-            {
-                using (var txn = s.BeginTransaction())
-                {
-                    try
-                    {
-                        var applications = _customerService.GetAllLoanApplications().Where(l => l.Status == ApplicationStatus.LoanRepayment);
+            var applications = _customerService.GetNPAApplications();
+            _customerService.CheckNPA(applications);
+        }
 
-                        foreach (var application in applications)
-                        {
-                            int months = ((DateTime.Now.Year - application.PaymentStartDate.Year) * 12) + DateTime.Now.Month - application.PaymentStartDate.Month;
 
-                            // Calculate missed payments
-                            int missedPayments = Math.Max(0, months - application.PaymentsMade);
-                            application.PaymentsMissed = missedPayments;
+        private async static Task SetPaymentMadeStatus()
+        {
 
-                            // Set status to NPA if missed payments are 3 or more
-                            if (missedPayments >= 3 && application.Status != ApplicationStatus.NPA)
-                            {
-                                application.Status = ApplicationStatus.NPA;
-                            }
-
-                            // Merge application with the session
-                            s.Merge(application);
-                        }
-
-                        // Commit the transaction after processing all applications
-                        txn.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        // Rollback the transaction in case of an error
-                        txn.Rollback();
-                        // Log the exception (consider using a logging framework)
-                        Console.WriteLine($"Error processing loan applications: {ex.Message}");
-                    }
-                }
-            }
+            var applications = _customerService.ApplicationsToBeMadeFalse();
+            _customerService.SetApplicationsToFalse(applications);
         }
 
         private async static Task SendEmail()
-        {
-            var applications = _customerService.GetAllLoanApplications().Where(l =>
-            {
-                bool isWithinPaymentDateRange = DateTime.Now >= l.NextPaymentDate.AddDays(-1) && DateTime.Now <= l.NextPaymentDate.AddDays(4);
+        {            
+            var emailsToSend = _customerService.ApplicationsWithEmailDue();            
 
-                var lastApprovedRepayment = l.Repayments
-            .Where(r => r.IsApproved)
-            .OrderByDescending(r => r.PaymentDate)
-            .FirstOrDefault();
-                bool paymentAlreadyDone = lastApprovedRepayment != null && lastApprovedRepayment.PaymentDate >= l.NextPaymentDate.AddMonths(-1) &&
-                                          lastApprovedRepayment.PaymentDate <= l.NextPaymentDate.AddMonths(-1).AddDays(5);
-
-                return l.Status == ApplicationStatus.LoanRepayment &&
-           (isWithinPaymentDateRange && !paymentAlreadyDone);
-            }
-            ).ToList();
-
-            await SendEmailsAsync(applications);
+            await SendEmailsAsync(emailsToSend);
         }
 
 
@@ -144,18 +89,45 @@ namespace LoanManagementSystem.Controllers
                 client.Port = 587;
                 client.EnableSsl = true;
 
-                MailMessage mailMessage = new MailMessage
+                MailMessage mailMessage;
+
+                if (DateTime.Now.Day < application.NextPaymentDate.Day)
                 {
-                    From = new MailAddress("dfgutdxvhuyf@gmail.com"),
-                    Subject = "Loan Repayment Reminder",
-                    Body = $"<p>Dear {application.Applicant.User.FirstName},</p>" +
-           "<p>This is a reminder that your loan repayment is due soon.</p>" +
+                    mailMessage = new MailMessage
+                    {
+                        From = new MailAddress("dfgutdxvhuyf@gmail.com"),
+                        Subject = "Loan Repayment Reminder",
+                        Body = $"<p>Dear {application.Applicant.User.FirstName},</p>" +
+           $"<p>This is a reminder that your loan repayment with the Id: {application.ApplicationId} is due soon.</p>" +
            "<p>Please ensure that you make the payment on or before the due date to avoid any penalties.</p>" +
            "<p>If you have already made the payment, please disregard this message.</p>" +
            "<p>Thank you for your attention to this matter.</p>" +
-           "<p>Best regards,<br/>Your Company Name</p>",
-                    IsBodyHtml = true
-                };
+           "<p> Best regards,<br/>" +
+            "Aksys Loan Pvt.Ltd.</p>" +
+            "<p> &copy; 2024 Aksys Loan Pvt.Ltd." +
+            "</br>All rights reserved.</p>",
+                        IsBodyHtml = true
+                    };
+                }
+                else
+                {
+                    mailMessage = new MailMessage
+                    {
+                        From = new MailAddress("dfgutdxvhuyf@gmail.com"),
+                        Subject = "Loan Repayment Reminder",
+                        Body = $"<p>Dear {application.Applicant.User.FirstName},</p>" +
+                               $"<p>This is a reminder that your loan repayment with the Id: {application.ApplicationId} is due now {DateTime.Now.Date}.</p>" +
+                               $"<a href=\"/Payment/Index?applicationId={application.ApplicationId}\" class=\"btn btn-outline-danger\" style=\"width: 150px; border: none; padding: 10px; color: white; background-color: #A6133C; border-radius: 20px; border-right-color: none;\">\r\n    Pay Now!\r\n</a>" +
+                               "<p>Please ensure that you make the payment on or before the due date to avoid any penalties.</p>" +
+                               "<p>If you have already made the payment, please disregard this message.</p>" +
+                               "<p>Thank you for your attention to this matter.</p>" +
+                               "Aksys Loan Pvt.Ltd.</p>" +
+            "<p> &copy; 2024 Aksys Loan Pvt.Ltd.</p>" +
+            "<p>All rights reserved.</p>",
+                        IsBodyHtml = true
+                    };
+                }
+
 
                 mailMessage.To.Add(email);
 

@@ -3,13 +3,14 @@
 @{
     ViewBag.Title = "GetCollateralDocuments";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var list = Model.ToList();
 }
 
 <h2>GetCollateralDocuments</h2>
 
 <p>
-    @Html.ActionLink("Approve", "ApproveLoan", new { /* id=item.PrimaryKey */ }, new { @class = "btn btn-success" }) |
-    @Html.ActionLink("Reject", "RejectLoan", new { /* id=item.PrimaryKey */ }, new { @class = "btn btn-danger" })
+    @Html.ActionLink("Approve", "ApproveCollateral", new { id = list[0].Application.ApplicationId }, new { @class = "btn btn-success" }) |
+    @Html.ActionLink("Reject", "RejectCollateral", new { id = list[0].Application.ApplicationId }, new { @class = "btn btn-danger" })
 </p>
 <table class="table">
     <tr>
@@ -22,24 +23,25 @@
         <th>
             @Html.DisplayNameFor(model => model.PublicId)
         </th>
-        
+
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.CollateralId)
-        </td>
-        <td>
-            <img src="@item.ImageUrl" alt="Uploaded Image" />
-            @*@Html.DisplayFor(modelItem => item.ImageUrl)*@
-        </td>
-        <td>
-            <a href="@Url.Action("ShowImage", "Customer", new { publicId = item.PublicId })">Click to show full image</a>
-            @*@Html.DisplayFor(modelItem => item.PublicId)*@
-        </td>
-        
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CollateralId)
+            </td>
+            <td>
+                <img src="@item.ImageUrl" alt="Uploaded Image" />
+                @*@Html.DisplayFor(modelItem => item.ImageUrl)*@
+            </td>
+            <td>
+                <a href="@Url.Action("ShowImage", "Customer", new { publicId = item.PublicId })">Click to show full image</a>
+                @*@Html.DisplayFor(modelItem => item.PublicId)*@
+            </td>
+
+        </tr>
+    }
 
 </table>

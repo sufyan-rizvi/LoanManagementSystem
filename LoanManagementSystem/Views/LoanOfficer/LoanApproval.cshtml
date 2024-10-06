@@ -10,6 +10,7 @@
 
 @{
     ViewBag.Title = "Pending Loan Approvals";
+    var list = Model.ToList();
 }
 @functions {
     public string GetEnumDisplayName(Enum value)

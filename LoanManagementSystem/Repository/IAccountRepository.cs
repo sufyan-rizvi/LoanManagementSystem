@@ -10,6 +10,7 @@ namespace LoanManagementSystem.Repository
     public interface IAccountRepository
     {
         User GetByUsername(string username);
+        void AddAdmin(Admin admin);
         Admin GetAdminByUserId(Guid id);
         LoanOfficer GetLoanofficerByUserId(Guid id);
         Customer GetCustomerByUserId(Guid id);

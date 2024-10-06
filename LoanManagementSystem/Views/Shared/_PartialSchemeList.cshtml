@@ -39,7 +39,7 @@
                         + `<td  id="${item.LoanSchemeId}" style="display: ${item.IsActive ? "" : "none"};">
                         <input type= "button" value = "Edit" class="btn btn-primary py-1" style="border: none; padding: 10px; color: white; background-color: #A6133C; border-radius: 20px; border-right-color: none; float:center; height: 40px;" onclick=editScheme('${item.LoanSchemeId}')></input>
                    </td >`
-                        + `<td></td>`
+                        
                         + '</tr>';
                 });
                 $('#tblBody').html(rows);

@@ -18,9 +18,49 @@ namespace LoanManagementSystem.Service
             _customerRepo = customerRepo;
         }
 
+        public IList<LoanApplication> ApplicationsWithEmailDue()
+        {
+            return _customerRepo.ApplicationsWithEmailDue();
+        }
+
+        public void SetApplicationsToFalse(IList<LoanApplication> applications)
+        {
+            _customerRepo.SetApplicationsToFalse(applications);
+        }
+
+        public IList<LoanApplication> ApplicationsToBeMadeFalse()
+        {
+            return _customerRepo.ApplicationsToBeMadeFalse();
+        }
+
+        public IList<LoanApplication> GetNPAApplications()
+        {
+            return _customerRepo.GetNPAApplications();
+        }
+        public void CheckNPA(IList<LoanApplication> applications)
+        {
+            _customerRepo.CheckNPA(applications);
+        }
+
+        public IList<LoanApplication> PaymentMissedApplications()
+        {
+            return _customerRepo.PaymentMissedApplications();
+        }
+
+        public void UpdateNextPaymentDate(IList<LoanApplication> applications)
+        {
+            _customerRepo.UpdateNextPaymentDate(applications);
+        }
+
+
         public IList<LoanScheme> GetAllSchemes()
         {
             return _customerRepo.GetAllSchemes();
+        }
+
+        public IList<Repayment> GetAllPaymentsForApplication(Guid id)
+        {
+            return _customerRepo.GetAllPaymentsForApplication(id);
         }
 
         public LoanScheme GetSchemeById(Guid id)

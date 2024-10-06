@@ -17,6 +17,7 @@ namespace LoanManagementSystem.Models
         [Required(ErrorMessage = "Payment Start Date is required.")]
         [Display(Name = "Payment Start Date")]
         public virtual DateTime PaymentStartDate { get; set; }
+        public virtual bool EMIPaymentMade { get; set; }
 
         [Required(ErrorMessage = "Next Payment Date is required.")]
         [Display(Name = "Next Payment Date")]
@@ -41,6 +42,10 @@ namespace LoanManagementSystem.Models
         [Range(1, double.MaxValue, ErrorMessage = "EMI Amount must be greater than zero.")]
         [Display(Name = "EMI Amount")]
         public virtual double EMIAmount { get; set; }
+        [Required(ErrorMessage = "Comments are required.")]
+        [MinLength(5)]
+        [Display(Name = "Comments")]
+        public virtual string Comments {  get; set; }
 
         public virtual ApplicationStatus Status { get; set; }
 

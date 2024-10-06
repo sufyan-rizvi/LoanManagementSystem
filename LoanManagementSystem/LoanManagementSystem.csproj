@@ -490,6 +490,7 @@
     <Content Include="Views\Customer\EMIcal.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\LoanOfficer\Welcome.cshtml" />
+    <Content Include="Views\Customer\GetAllPayments.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
