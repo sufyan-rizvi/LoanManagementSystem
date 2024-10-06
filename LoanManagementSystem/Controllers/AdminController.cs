@@ -1,25 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mail;
-using System.Net;
-using System.Runtime.Remoting.Messaging;
-using System.Web;
 using System.Web.Mvc;
 using LoanManagementSystem.Data;
 using LoanManagementSystem.Models;
-using LoanManagementSystem.Repository;
 using LoanManagementSystem.Service;
-using LoanManagementSystem.ViewModels;
-using NHibernate.Linq;
-
-using BC = BCrypt.Net.BCrypt;
-using System.Threading.Tasks;
 using AutoMapper;
 using LoanManagementSystem.DTOs;
 using NHibernate.Transform;
-using NHibernate;
-using System.Web.UI.WebControls;
+using PagedList;
+using PagedList.Mvc;
 
 namespace LoanManagementSystem.Controllers
 {
@@ -279,13 +269,13 @@ namespace LoanManagementSystem.Controllers
         public ActionResult Add(LoanOfficer officer)
         {
             officer.User.Age = Convert.ToInt32(officer.User.Age);
-            if(_accountService.CheckUserNameFound(officer.User.Username))
+            if (_accountService.CheckUserNameFound(officer.User.Username))
                 return Json(new { success = false, message = "Officer with same username exists!" });
 
             if (_accountService.CheckEmailFound(officer.User.Email))
                 return Json(new { success = false, message = "Officer with same email exists!" });
 
-            _adminService.AddOfficer(officer);            
+            _adminService.AddOfficer(officer);
             return Json(new { success = true, message = "Officer added successfully" });
         }
 
@@ -311,11 +301,27 @@ namespace LoanManagementSystem.Controllers
             return Json(new { success = true, message = "Officer details updated!" });
         }
 
-        public JsonResult GetAllSchemes()
+        public JsonResult GetAllSchemes(int? i)
         {
             var schemes = _adminService.GetAllSchemes();
-            var dto = Mapper.Map<List<LoanSchemeDTO>>(schemes);
-            return Json(dto, JsonRequestBehavior.AllowGet);
+            var dto = Mapper.Map<List<LoanSchemeDTO>>(schemes).ToPagedList(i ?? 1, 2);
+
+            var result = new
+            {
+                Schemes = dto,
+                Pagination = new
+                {
+                    dto.PageNumber,
+                    dto.PageSize,
+                    dto.TotalItemCount,
+                    dto.PageCount,
+                    dto.HasPreviousPage,
+                    dto.HasNextPage,
+                    dto.IsFirstPage,
+                    dto.IsLastPage
+                }
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

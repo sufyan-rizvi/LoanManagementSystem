@@ -1,47 +1,121 @@
-﻿@model IEnumerable<LoanManagementSystem.Models.CollateralDocuments>
+﻿@model LoanManagementSystem.Models.LoanApplication
 
 @{
     ViewBag.Title = "GetCollateralDocuments";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var list = Model.ToList();
 }
 
-<h2>GetCollateralDocuments</h2>
 
-<p>
-    @Html.ActionLink("Approve", "ApproveCollateral", new { id = list[0].Application.ApplicationId }, new { @class = "btn btn-success" }) |
-    @Html.ActionLink("Reject", "RejectCollateral", new { id = list[0].Application.ApplicationId }, new { @class = "btn btn-danger" })
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.CollateralId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ImageUrl)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PublicId)
-        </th>
 
-    </tr>
+<div id="loader" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); color: white; text-align: center; padding-top: 20%; z-index: 1000;">
+    <img src="~/Content/Loader.gif" />
+    <h2>Loading...</h2>
+</div>
+<div>
 
-    @foreach (var item in Model)
-    {
+
+    <h2>Get Collateral Documents</h2>
+
+
+    <p>
+        <button type="button" id="approveBtn" class="btn btn-success">Approve</button> |
+        <button type="button" id="rejectBtn" class="btn btn-danger">Reject</button>
+    </p>
+    <div>
+        @Html.TextAreaFor(m => m.Comments, new { @class = "form-control wide-textarea my-4", placeholder = "Give Comments!", id = "comments" })
+    </div>
+    <table class="table">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CollateralId)
-            </td>
-            <td>
-                <img src="@item.ImageUrl" alt="Uploaded Image" />
-                @*@Html.DisplayFor(modelItem => item.ImageUrl)*@
-            </td>
-            <td>
-                <a href="@Url.Action("ShowImage", "Customer", new { publicId = item.PublicId })">Click to show full image</a>
-                @*@Html.DisplayFor(modelItem => item.PublicId)*@
-            </td>
+            <th>
+                @Html.DisplayNameFor(model => model.CollateralDocuments.First().CollateralId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CollateralDocuments.First().ImageUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CollateralDocuments.First().PublicId)
+            </th>
 
         </tr>
-    }
 
-</table>
+        @foreach (var item in Model.CollateralDocuments)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CollateralId)
+                </td>
+                <td>
+                    <img src="@item.ImageUrl" alt="Uploaded Image" />
+                    @*@Html.DisplayFor(modelItem => item.ImageUrl)*@
+                </td>
+                <td>
+                    <a href="@Url.Action("ShowImage", "Customer", new { publicId = item.PublicId })">Click to show full image</a>
+                    @*@Html.DisplayFor(modelItem => item.PublicId)*@
+                </td>
+
+            </tr>
+        }
+
+    </table>
+</div>
+
+<script>
+        $(document).ready(function () {
+            $('#approveBtn').click(function () {
+
+                var comments = $('#comments').val();
+                if (comments === ""){
+                    alert("Enter a comment")
+                    return
+                }
+                $("#loader").show()
+                $.ajax({
+                    url: '@Url.Action("ApproveCollateral", "LoanOfficer")',
+                    type: 'POST',
+                    data: {
+                        id: '@Model.ApplicationId',
+                        comments: comments
+                    },
+                    success: function (response) {
+                        // Handle success, e.g., show a success message or redirect
+                        alert("Loan application approved successfully!");
+                        // Optionally, redirect to another page
+                        $("#loader").hide()
+                         window.location.href = '@Url.Action("Welcome", "LoanOfficer")';
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle error
+                        alert("An error occurred while approving the application.");
+                    }
+                });
+            });
+
+            $('#rejectBtn').click(function () {
+                var comments = $('#comments').val();
+                if (comments === "") {
+                    alert("Enter a comment")
+                    return
+                }
+                $("#loader").show()
+                $.ajax({
+                    url: '@Url.Action("RejectCollateral", "LoanOfficer")',
+                    type: 'POST',
+                    data: {
+                        id: '@Model.ApplicationId',
+                        comments: comments
+                    },
+                    success: function (response) {
+                        // Handle success, e.g., show a success message or redirect
+                        alert("Loan application rejected successfully!");
+                        // Optionally, redirect to another page
+                        $("#loader").hide()
+                         window.location.href = '@Url.Action("Welcome", "LoanOfficer")';
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle error
+                        alert("An error occurred while rejecting the application.");
+                    }
+                });
+            });
+        });
+</script>

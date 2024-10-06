@@ -62,11 +62,11 @@ namespace LoanManagementSystem.Controllers
 
 
         [AllowAnonymous]
-        public ActionResult Schemes()
+        public ActionResult Schemes(int? i)
         {
             using (var session = NhibernateHelper.CreateSession())
             {
-                var schemes = _customerService.GetAllSchemes();
+                var schemes = _customerService.GetAllSchemes().ToPagedList(i?? 1,4);
                 return View(schemes);
             }
         }

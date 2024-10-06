@@ -37,6 +37,8 @@ else
             <tr>
                 <th>Loan ID</th>
                 <th>Applicant Name</th>
+                <th>Applicant Age</th>
+                <th>Tenure</th>
                 <th>Loan Amount</th>
                 <th>Status</th>
                 <th>Actions</th>
@@ -48,6 +50,8 @@ else
                 <tr>
                     <td>@loan.ApplicationId</td>
                     <td>@loan.Applicant.User.FirstName</td>
+                    <td>@loan.Applicant.User.Age</td>
+                    <td>@loan.Tenure</td>
                     <td>@loan.LoanAmount</td>
                     <td class="
 @(loan.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment ? "status-active" ://

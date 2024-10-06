@@ -42,10 +42,11 @@ namespace LoanManagementSystem.Models
         [Range(1, double.MaxValue, ErrorMessage = "EMI Amount must be greater than zero.")]
         [Display(Name = "EMI Amount")]
         public virtual double EMIAmount { get; set; }
+
         [Required(ErrorMessage = "Comments are required.")]
         [MinLength(5)]
         [Display(Name = "Comments")]
-        public virtual string Comments {  get; set; }
+        public virtual string Comments { get; set; }
 
         public virtual ApplicationStatus Status { get; set; }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -246,7 +247,7 @@ namespace LoanManagementSystem.Controllers
                     <p><strong>Payment Details:</strong></p>
                     <ul>
                         <li><strong>Loan Amount:</strong> $" + loanApplication.LoanAmount + @"</li>
-                        <li><strong>Repayment Amount:</strong> $" + loanApplication.EMIAmount + @"</li>
+                        <li><strong>Repayment Amount:</strong> $" + loanApplication.EMIAmount.ToString("C", new CultureInfo("en-IN")) + @"</li>
                         <li><strong>Payment Date:</strong> " + DateTime.Now.ToString("dd/MM/yyyy") + @"</li>
                     </ul>
                     <h3>What's Next?</h3>
@@ -349,7 +350,7 @@ namespace LoanManagementSystem.Controllers
                     <p>We are pleased to inform you that your loan has been successfully closed. Thank you for your timely payments and for choosing <strong>Aksys Loans</strong> for your financial needs!</p>
                     <p><strong>Loan Details:</strong></p>
                     <ul>
-                        <li><strong>Loan Amount:</strong> $" + application.LoanAmount + @"</li>
+                        <li><strong>Loan Amount:</strong> $" + application.LoanAmount.ToString("C", new CultureInfo("en-IN")) + @"</li>
                         <li><strong>Final Payment Date:</strong> " + DateTime.Now.ToString("dd/MM/yyyy") + @"</li>
                         <li><strong>Status:</strong> Closed</li>
                     </ul>

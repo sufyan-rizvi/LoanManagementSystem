@@ -15,10 +15,12 @@ namespace LoanManagementSystem.Controllers
 
     public class LoanOfficerController : Controller
     {
-        private readonly LoanOfficerService _loanOfficerService;
-        public LoanOfficerController(LoanOfficerService loanOfficerService)
+        private readonly ILoanOfficerService _loanOfficerService;
+        private readonly ICustomerService _customerService;
+        public LoanOfficerController(ILoanOfficerService loanOfficerService, ICustomerService customerService)
         {
             _loanOfficerService = loanOfficerService;
+            _customerService = customerService;
         }
 
         // Action method for displaying the welcome page
@@ -26,38 +28,38 @@ namespace LoanManagementSystem.Controllers
         {
             return View(_loanOfficerService.GetDocuments());
         }
-        
+
 
         // Action method for displaying pending loan approvals
         public ActionResult LoanApproval()
         {
             return View(_loanOfficerService.GetDocuments());
-           
+
         }
 
         //Show Rejistration Documents to the Loan Officesr
         public ActionResult GetLoanDocuments(Guid id)
         {
             Session["registerApplicationId"] = id;
-            return View(_loanOfficerService.GetAppDocuments(id));
-            
+            var application = _customerService.GetApplicationById(id);
+            return View(application);
+
         }
         public ActionResult ApproveLoan(Guid id)
         {
 
-            //var id = TempData.Peek("registerApplicationId");
             _loanOfficerService.RegApproveLoan((Guid)id);
             return RedirectToAction("LoanApproval");
-           
+
         }
 
         // Action method for rejecting a loan
-        public ActionResult RejectLoan(Guid id)
+        public ActionResult RejectLoan(Guid id, string comments)
         {
             //var id = TempData.Peek("registerApplicationId");
-            _loanOfficerService.RejectApproveLoan((Guid)id);
+            _loanOfficerService.RejectApproveLoan((Guid)id, comments);
             return RedirectToAction("LoanApproval");
-            
+
         }
 
 
@@ -65,34 +67,36 @@ namespace LoanManagementSystem.Controllers
         public ActionResult CollateralApproval()
         {
             return View(_loanOfficerService.GetCollateralDocuments());
-            
+
         }
         //Show Collateral Documents to the Loan Officesr
         public ActionResult GetCollateralDocuments(Guid id)
         {
             TempData["collateralApplicationId"] = id;
-            return View(_loanOfficerService.GetToShowCollateralDocuments(id));
-            
-            
+
+            var application = _customerService.GetApplicationById(id);
+            return View(application);
+
+
         }
         // Action method for approving a collateral
-        public ActionResult ApproveCollateral(Guid id)
+        public ActionResult ApproveCollateral(Guid id, string comments)
         {
             //var id = TempData.Peek("collateralApplicationId");
-            _loanOfficerService.ApproveCollateralDocuments((Guid)id);
+            _loanOfficerService.ApproveCollateralDocuments((Guid)id, comments);
             return RedirectToAction("CollateralApproval");
-            
+
         }
 
         // Action method for rejecting a collateral
-        public ActionResult RejectCollateral(Guid id)
+        public ActionResult RejectCollateral(Guid id, string comments)
         {
-            //var id = TempData.Peek("collateralApplicationId");
-            _loanOfficerService.RejectCollateralDocuments((Guid)id);
-            return RedirectToAction("CollateralApproval");
             
+            _loanOfficerService.RejectCollateralDocuments((Guid)id, comments);
+            return RedirectToAction("CollateralApproval");
+
         }
-        
+
     }
 
 }
