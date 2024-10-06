@@ -434,6 +434,7 @@
     <Compile Include="Service\LoanOfficerService.cs" />
     <Compile Include="Service\PaymentService.cs" />
     <Compile Include="ViewModels\LoanApplicationSchemeVM.cs" />
+    <Compile Include="ViewModels\LoanReportViewModel.cs" />
     <Compile Include="ViewModels\LoginVM.cs" />
     <Compile Include="WebProviders\WebProvider.cs" />
   </ItemGroup>
@@ -491,6 +492,10 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\LoanOfficer\Welcome.cshtml" />
     <Content Include="Views\Customer\GetAllPayments.cshtml" />
+    <Content Include="Views\Admin\LoanReport.cshtml" />
+    <Content Include="Views\Admin\NPAReport.cshtml" />
+    <Content Include="Views\Admin\SchemesReport.cshtml" />
+    <Content Include="Views\Admin\LoanOfficerReport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

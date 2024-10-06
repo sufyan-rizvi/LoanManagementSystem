@@ -20,6 +20,9 @@ using LoanManagementSystem.DTOs;
 using NHibernate.Transform;
 using NHibernate;
 using System.Web.UI.WebControls;
+using Rotativa;
+using System.ServiceModel.Channels;
+using static System.Collections.Specialized.BitVector32;
 
 namespace LoanManagementSystem.Controllers
 {
@@ -163,6 +166,113 @@ namespace LoanManagementSystem.Controllers
             return new Rotativa.ActionAsPdf("Analytics");
         }
 
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+
+        // Action to display the report view
+        [AllowAnonymous]
+        public ActionResult LoanReport()
+        {
+            return View(_adminService.LoanReport());
+
+        }
+
+        public ActionResult NPAReport()
+        {
+            return View(_adminService.NPAReport());
+
+        }
+
+        public ActionResult SchemesReport()
+        {
+            return View(_adminService.SchemesReportk());
+
+        }
+        public ActionResult LoanOfficerReport()
+        {
+            return View(_adminService.LoanOfficerReport());
+
+        }
+
+
+        // Action to generate the PDF
+        public ActionResult DownloadReport()
+        {
+             var dto = _adminService.LoanReport();
+
+                return new ViewAsPdf("LoanReport", dto)
+                {
+                    FileName = "Loan Report.pdf",
+                    PageOrientation = Rotativa.Options.Orientation.Landscape,
+                    PageSize = Rotativa.Options.Size.A4
+                };
+            
+        }
+
+
+        public ActionResult DownloadNPAReport()
+        {
+            
+                var dto = _adminService.NPAReport();
+
+                return new ViewAsPdf("NPAReport", dto)
+                {
+                    FileName = "Loan NPA Report.pdf",
+                    PageOrientation = Rotativa.Options.Orientation.Landscape,
+                    PageSize = Rotativa.Options.Size.A4
+                };
+            
+        }
+
+        public ActionResult DownloadSchemeReport()
+        {
+            
+                var dto = _adminService.SchemesReportk();
+
+                return new ViewAsPdf("SchemesReport", dto)
+                {
+                    FileName = "Loan Schemes Report.pdf",
+                    PageOrientation = Rotativa.Options.Orientation.Landscape,
+                    PageSize = Rotativa.Options.Size.A4
+                };
+            
+        }
+
+        public ActionResult DownloadLoanOfficerReport()
+        {
+            
+                var dto = _adminService.LoanOfficerReport();
+
+                return new ViewAsPdf("LoanOfficerReport", dto)
+                {
+                    FileName = "Loan Officers Report.pdf",
+                    PageOrientation = Rotativa.Options.Orientation.Landscape,
+                    PageSize = Rotativa.Options.Size.A4
+                };
+            
+        }
+
+
+        //
+        //
+        //
+        //
+        //
+        //
+        //
+
+
+
+
+
+
+
+
         public ActionResult Index()
         {
             return View();
@@ -279,13 +389,13 @@ namespace LoanManagementSystem.Controllers
         public ActionResult Add(LoanOfficer officer)
         {
             officer.User.Age = Convert.ToInt32(officer.User.Age);
-            if(_accountService.CheckUserNameFound(officer.User.Username))
+            if (_accountService.CheckUserNameFound(officer.User.Username))
                 return Json(new { success = false, message = "Officer with same username exists!" });
 
             if (_accountService.CheckEmailFound(officer.User.Email))
                 return Json(new { success = false, message = "Officer with same email exists!" });
 
-            _adminService.AddOfficer(officer);            
+            _adminService.AddOfficer(officer);
             return Json(new { success = true, message = "Officer added successfully" });
         }
 

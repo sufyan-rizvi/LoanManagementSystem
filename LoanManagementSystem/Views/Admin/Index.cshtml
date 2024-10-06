@@ -6,6 +6,7 @@
 
 @section NavbarOptions {
     @*<span style="width:270px"></span>*@
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <div style="display: flex; align-items: center; ">
         <p class="m-2 text-light btn" onclick="displayAnalytics()">
             Analytics
@@ -16,7 +17,20 @@
         <p class="m-2 text-light btn" onclick="displayOfficers()">
             View All Loan Officers
         </p>
+        <div class="dropdown">
+            <button style = " border: none; padding: 10px; color: white; background-color: #A6133C; border-radius: 20px; border-right-color: none;" class="btn btn-outline-danger dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Dropdown Button
+            </button>
+            <div class="dropdown-menu" aria-labelledby="Reports">
+                <a class="dropdown-item" style="color: #A6133C" href="@Url.Action("LoanReport", "Admin")">Loans</a>
+                <a class="dropdown-item" style="color: #A6133C" href="@Url.Action("NPAReport", "Admin")">NPA</a>
+                <a class="dropdown-item" style="color: #A6133C" href="@Url.Action("SchemesReport", "Admin")">Schemes</a>
+                <a class="dropdown-item" style="color: #A6133C" href="@Url.Action("LoanOfficerReport", "Admin")">Loan Officers</a>
+            </div>
+        </div>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
     @*<span style="width:250px"></span>*@
 
 }

@@ -19,6 +19,7 @@ namespace LoanManagementSystem.Mappings
             HasMany(c=>c.LoanApplications).Inverse().Cascade.All(); //check cascade all.. if loan officer deleted, distribute his work among other officers
             HasMany(c=>c.Repayments).Inverse().Cascade.All(); //check cascade all.. if loan officer deleted, distribute his work among other officers
             HasOne(c=>c.BankAccountDetails).PropertyRef(b=>b.Customer).Cascade.All(); //check cascade all.. if loan officer deleted, distribute his work among other officers
+
         }
     }
 }

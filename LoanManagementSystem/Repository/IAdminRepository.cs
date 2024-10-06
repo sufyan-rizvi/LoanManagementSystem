@@ -12,6 +12,10 @@ namespace LoanManagementSystem.Repository
         LoanOfficer GetByOfficerId(Guid id);
         LoanOfficer GetByOfficerEmail(string email);
         LoanOfficer GetByOfficerUsername(string username);
+        List<LoanApplication> LoanReport();
+        List<LoanApplication> NPAReport();
+        List<LoanScheme> SchemesReportk();
+        List<LoanOfficer> LoanOfficerReport();
         void AddOfficer(LoanOfficer officer);
         void UpdateOfficer(LoanOfficer officer);
         void DeleteOfficer(LoanOfficer officer);

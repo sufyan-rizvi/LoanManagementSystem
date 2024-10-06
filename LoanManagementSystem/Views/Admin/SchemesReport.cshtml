@@ -1,0 +1,63 @@
+﻿@model IEnumerable<LoanManagementSystem.Models.LoanScheme>
+
+@{
+    ViewBag.Title = "SchemesReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Loan Schemes Report</h2>
+
+<p>Generated on: @DateTime.Now</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.SchemeName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SchemeTypeString)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InterestRate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LongDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ShortDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SchemeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SchemeTypeString)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InterestRate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LongDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShortDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+        </tr>
+    }
+
+</table>
+@Html.ActionLink("Generate Report", "DownloadSchemeReport", null, new { @class = "btn btn-outline-danger", style = " border: none; padding: 10px; color: white; background-color: #A6133C; border-radius: 20px; border-right-color: none;" })
+<br />
+<span style="height:100px"></span>
+<br />
+
+@Html.ActionLink("Back", "Index")

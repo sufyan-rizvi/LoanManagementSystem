@@ -1,0 +1,101 @@
+﻿@model IEnumerable<LoanManagementSystem.Models.LoanApplication>
+
+@{
+    ViewBag.Title = "LoanReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Loan Application Report</h2>
+<p>Generated on: @DateTime.Now</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Applicant.User.Username)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ApplicationDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PaymentStartDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EMIPaymentMade)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NextPaymentDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LoanAmount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Tenure)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PaymentsMissed)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PaymentsMade)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EMIAmount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Comments)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Applicant.User.Username)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApplicationDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentStartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EMIPaymentMade)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NextPaymentDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LoanAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tenure)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentsMissed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentsMade)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EMIAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comments)
+            </td>
+            <td>
+            </td>
+        </tr>
+    }
+
+</table>
+@Html.ActionLink("Generate Report", "DownloadReport", null, new { @class = "btn btn-outline-danger", style = " border: none; padding: 10px; color: white; background-color: #A6133C; border-radius: 20px; border-right-color: none;" })
+<br />
+<span style="height:100px"></span>
+<br />
+
+@Html.ActionLink("Back", "Index")
