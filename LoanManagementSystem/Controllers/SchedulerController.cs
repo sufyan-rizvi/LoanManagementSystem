@@ -31,7 +31,6 @@ namespace LoanManagementSystem.Controllers
         {
             SetPaymentMadeStatus();
             SendEmail();
-            //CheckNPA();
             PaymentDateMissed();
             
            
