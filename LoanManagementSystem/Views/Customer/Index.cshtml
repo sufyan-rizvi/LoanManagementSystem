@@ -1,6 +1,8 @@
-﻿@model IEnumerable<LoanManagementSystem.Models.LoanApplication>
+﻿@model IPagedList<LoanManagementSystem.Models.LoanApplication>
 @using System.ComponentModel.DataAnnotations
 @using System.Reflection
+@using PagedList;
+@using PagedList.Mvc;
 
 @{
     ViewBag.Title = "Index";
@@ -30,25 +32,25 @@
     <table class="table" style="margin-left:-75px;width:1450px;">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Scheme.SchemeName)
+                @Html.DisplayNameFor(model => model.First().Scheme.SchemeName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EMIAmount)
+                @Html.DisplayNameFor(model => model.First().EMIAmount)
             </th>
 
             <th>
-                @Html.DisplayNameFor(model => model.ApplicationDate)
+                @Html.DisplayNameFor(model => model.First().ApplicationDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PaymentStartDate)
+                @Html.DisplayNameFor(model => model.First().PaymentStartDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NextPaymentDate)
+                @Html.DisplayNameFor(model => model.First().NextPaymentDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PaymentsMissed)
+                @Html.DisplayNameFor(model => model.First().PaymentsMissed)
             </th>
-            <th>@Html.DisplayNameFor(m => m.Status)</th>
+            <th>@Html.DisplayNameFor(m => m.First().Status)</th>
             <th style="width:285px">Options</th>
         </tr>
 
@@ -142,13 +144,68 @@
                 {
                     <td style="width:285px">--</td>
                 }
-
-                @*<td>@DateTime.Now</td>*@
+                
             </tr>
         }
 
     </table>
+   
     <div class="demo">
+        <nav class="pagination-outer" aria-label="Page navigation">
+            <ul class="pagination">
+                @if (Model.HasPreviousPage)
+                {
+                    <li class="page-item">
+                        <a href="@Url.Action("Index", new { i = Model.PageNumber - 1 })" class="page-link" aria-label="Previous">
+                            <span aria-hidden="true">«</span>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled-button">
+                        <a href="#" class="page-link" aria-label="Previous">
+                            <span aria-hidden="true">«</span>
+                        </a>
+                    </li>
+                }
+
+                @for (var i = 1; i <= Model.PageCount; i++)
+                {
+                    if (i == Model.PageNumber)
+                    {
+                        <li class="page-item active">
+                            <a class="page-link" href="#">@i</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Index","Customer", new { i = i })">@i</a>
+                        </li>
+                    }
+                }
+
+                @if (Model.HasNextPage)
+                {
+                    <li class="page-item">
+                        <a href="@Url.Action("Index", new { i = Model.PageNumber + 1 })" class="page-link" aria-label="Next">
+                            <span aria-hidden="true">»</span>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled-button">
+                        <a href="#" class="page-link" aria-label="Next">
+                            <span aria-hidden="true">»</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
+    @*<div class="demo">
         <nav class="pagination-outer" aria-label="Page navigation">
             <ul class="pagination">
                 <li class="page-item">
@@ -168,7 +225,7 @@
                 </li>
             </ul>
         </nav>
-    </div>
+    </div>*@
     <p>
         <span class="text-primary"> Want Another Loan? Get instant Approval!</span>
         @Html.ActionLink("Apply Now!", "schemes")

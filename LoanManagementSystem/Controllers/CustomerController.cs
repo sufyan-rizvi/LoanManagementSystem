@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
@@ -9,7 +10,8 @@ using LoanManagementSystem.Models;
 using LoanManagementSystem.Service;
 using LoanManagementSystem.ViewModels;
 using Newtonsoft.Json;
-using static System.Net.Mime.MediaTypeNames;
+using PagedList;
+using PagedList.Mvc;
 
 namespace LoanManagementSystem.Controllers
 {
@@ -31,10 +33,10 @@ namespace LoanManagementSystem.Controllers
         public ActionResult EMIcal()
         {
             return View();
-        }   
+        }
         public ActionResult CalculateEMIForView(LoanScheme scheme, LoanApplication application)
         {
-            var interestRate = _adminService.GetSchemeById(scheme.LoanSchemeId).InterestRate /12 /100;
+            var interestRate = _adminService.GetSchemeById(scheme.LoanSchemeId).InterestRate / 12 / 100;
             var tenure = application.Tenure;
             var amount = application.LoanAmount;
             var factor = Math.Pow((1 + interestRate), tenure);
@@ -43,7 +45,7 @@ namespace LoanManagementSystem.Controllers
             return Json(Math.Max(0, emi), JsonRequestBehavior.AllowGet);
 
         }
-      
+
         public ActionResult GetAllPayments(Guid id)
         {
             var payments = _customerService.GetAllPaymentsForApplication(id);
@@ -52,10 +54,10 @@ namespace LoanManagementSystem.Controllers
 
         public ActionResult GeneratePDF(Guid id)
         {
-            return new Rotativa.ActionAsPdf("Getallpayments",new { id = id })
+            return new Rotativa.ActionAsPdf("Getallpayments", new { id = id })
             {
                 FileName = "PaymentsReport.pdf" // Set the desired PDF filename
-            }; 
+            };
         }
 
 
@@ -68,10 +70,10 @@ namespace LoanManagementSystem.Controllers
                 return View(schemes);
             }
         }
-        public ActionResult Index()
+        public ActionResult Index(int? i)
         {
             var customer = (Customer)Session["Customer"];
-            var loans = _customerService.CustomerApplications(customer.CustId);
+            var loans = (_customerService.CustomerApplications(customer.CustId)).ToPagedList(i ?? 1, 3);
             return View(loans);
         }
 
@@ -149,14 +151,14 @@ namespace LoanManagementSystem.Controllers
 
             var files = Request.Files;
 
-            
+
             application.Scheme = _customerService.GetSchemeById(LoanScheme.LoanSchemeId);
             var interestRate = application.Scheme.InterestRate / 12 / 100;
             var factor = (double)Math.Pow((double)(1 + interestRate), application.Tenure);
             application.EMIAmount = Math.Round(application.LoanAmount * interestRate * factor / (factor - 1), 2);
-            
 
-            
+
+
 
             application.RegistrationDocuments = new List<RegistrationDocuments>();
 
@@ -169,7 +171,7 @@ namespace LoanManagementSystem.Controllers
                 {
                     throw new InvalidOperationException("Unable to Upload images at the moment!");
                 }
-                
+
                 var approvalDocs = new RegistrationDocuments()
                 {
 
