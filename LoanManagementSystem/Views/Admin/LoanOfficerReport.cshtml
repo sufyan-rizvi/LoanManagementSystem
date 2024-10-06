@@ -1,0 +1,64 @@
+﻿@model IEnumerable<LoanManagementSystem.Models.LoanOfficer>
+
+@{
+    ViewBag.Title = "LoanOfficerReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Loan Officer Report</h2>
+
+<p>Generated on: @DateTime.Now</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.User.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User.LastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User.Age)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User.Email)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.User.PhoneNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User.IsActive)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Age)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.IsActive)
+            </td>
+        </tr>
+    }
+
+</table>
+@Html.ActionLink("Generate Report", "DownloadLoanOfficerReport", null, new { @class = "btn btn-outline-danger", style = " border: none; padding: 10px; color: white; background-color: #A6133C; border-radius: 20px; border-right-color: none;" })
+<br />
+<span style="height:100px"></span>
+<br />
+
+@Html.ActionLink("Back", "Index")

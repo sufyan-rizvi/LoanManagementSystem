@@ -10,6 +10,10 @@ namespace LoanManagementSystem.Service
     public interface IAdminService
     {
         IList<LoanOfficer> GetAllOfficers();
+        List<LoanApplication> LoanReport();
+        List<LoanApplication> NPAReport();
+        List<LoanScheme> SchemesReportk();
+        List<LoanOfficer> LoanOfficerReport();
         void AddOfficer(LoanOfficer officer);
         LoanOfficer ToggleOfficerDelete(Guid id);
         void EditOfficer(LoanOfficer officer);

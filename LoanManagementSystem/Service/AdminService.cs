@@ -32,6 +32,23 @@ namespace LoanManagementSystem.Service
             _adminRepo.AddOfficer(officer);
 
         }
+        public List<LoanApplication> LoanReport()
+        {
+            return (_adminRepo.LoanReport());
+        }
+        public List<LoanApplication> NPAReport()
+        {
+            return (_adminRepo.NPAReport());
+        }
+        
+            public List<LoanScheme> SchemesReportk()
+        {
+            return (_adminRepo.SchemesReportk());
+        }
+        public List<LoanOfficer> LoanOfficerReport()
+        {
+            return (_adminRepo.LoanOfficerReport());
+        }
 
         public void AddScheme(LoanScheme scheme)
         {

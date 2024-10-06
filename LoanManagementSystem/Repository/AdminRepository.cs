@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using AutoMapper;
+using LoanManagementSystem.Data;
 using LoanManagementSystem.Models;
 using NHibernate;
 using NHibernate.Linq;
@@ -32,6 +34,45 @@ namespace LoanManagementSystem.Repository
                 txn.Commit();
             }
         }
+        public List<LoanApplication> LoanReport()
+        {
+            using (var session = NhibernateHelper.CreateSession())
+            {
+                var pendingLoans = session.Query<LoanApplication>().Fetch(l => l.Applicant).ThenFetch(a => a.User).ToList();
+
+                var dto = Mapper.Map<List<LoanApplication>>(pendingLoans);
+                return dto;
+            }
+        }
+        public List<LoanApplication> NPAReport()
+        {
+            using (var session = NhibernateHelper.CreateSession())
+            {
+                var pendingLoans = session.Query<LoanApplication>().Fetch(l => l.Applicant).ThenFetch(a => a.User).Where(l => l.Status ==
+                ApplicationStatus.NPA).ToList();
+                var dto = Mapper.Map<List<LoanApplication>>(pendingLoans);
+                return dto;
+            }
+        }
+        public List<LoanScheme> SchemesReportk()
+        {
+            using (var session = NhibernateHelper.CreateSession())
+            {
+                var pendingLoans = session.Query<LoanScheme>().ToList();
+                var dto = Mapper.Map<List<LoanScheme>>(pendingLoans);
+                return dto;
+            }
+        }
+        public List<LoanOfficer> LoanOfficerReport()
+        {
+            using (var session = NhibernateHelper.CreateSession())
+            {
+                var pendingLoans = session.Query<LoanOfficer>().Fetch(l => l.User).ToList();
+                var dto = Mapper.Map<List<LoanOfficer>>(pendingLoans);
+                return dto;
+            }
+        }
+
 
         public void AddScheme(LoanScheme scheme)
         {
