@@ -6,23 +6,31 @@
 
 @section NavbarOptions {
     @*<span style="width:270px"></span>*@
-    <div style="display: flex; align-items: center; ">
-        <p class="m-2 text-light btn" onclick="displayAnalytics()">
-            Analytics
-        </p>
-        <p class="m-2 text-light btn" onclick="displaySchemes()">
-            View Loan Schemes
-        </p>
-        <p class="m-2 text-light btn" onclick="displayOfficers()">
-            View All Loan Officers
-        </p>
-    </div>
+<div style="display: flex; align-items: center; ">
+    <p class="m-2 text-light btn" onclick="displayReport()">
+        Analytics
+    </p>
+
+    <p class="m-2 text-light btn" onclick="displayAnalytics()">
+        Analytics
+    </p>
+    <p class="m-2 text-light btn" onclick="displaySchemes()">
+        View Loan Schemes
+    </p>
+    <p class="m-2 text-light btn" onclick="displayOfficers()">
+        View All Loan Officers
+    </p>
+</div>
     @*<span style="width:250px"></span>*@
 
 }
 
 
 <div id="detailList" class="container">
+
+    <div id="report">
+        @Html.Action("GeneratePDf")
+    </div>
 
     <!--For analytics-->
     <div id="analytics">
@@ -80,10 +88,22 @@
 <script>
     var inTime = 1500
     var outTime = 0
+
+    function displayReport() {
+        
+        $("#listofficer").fadeOut(outTime)
+        $("#loanschemes").fadeOut(outTime)
+        $("#analytics").fadeOut(outTime)
+        $("#report").fadeIn(inTime, function () {
+            localStorage.setItem('currentSection', 'report'); // Save current section
+        });
+    }
+
     function displayAnalytics() {
 
         $("#listofficer").fadeOut(outTime)
         $("#loanschemes").fadeOut(outTime)
+        $("#report").fadeOut(outTime)
         $("#analytics").fadeIn(inTime, function () {
             localStorage.setItem('currentSection', 'analytics'); // Save current section
         });
@@ -92,6 +112,7 @@
     function displaySchemes() {
         $("#listofficer").fadeOut(outTime)
         $("#analytics").fadeOut(outTime)
+        $("#report").fadeOut(outTime)
         $("#loanschemes").fadeIn(inTime, function () {
             localStorage.setItem('currentSection', 'loanschemes'); // Save current section
         });
@@ -100,6 +121,7 @@
     function displayOfficers() {
         $("#loanschemes").fadeOut(outTime)
         $("#analytics").fadeOut(outTime)
+        $("#report").fadeOut(outTime)
         $("#listofficer").fadeIn(inTime, function () {
             localStorage.setItem('currentSection', 'listofficer'); // Save current section
         });
@@ -109,6 +131,7 @@
         $("#analytics").show();
         $("#loanschemes").hide();
         $("#listofficer").hide();
+        $("#report").hide()
 
         const currentSection = localStorage.getItem('currentSection');
 
