@@ -38,8 +38,7 @@
                         + `<td><input type="checkbox" style:"margin=auto" ${item.IsActive ? "checked" : ""} value="${item.IsActive}" onclick=deleteScheme('${item.LoanSchemeId}',this) /></td>`
                         + `<td  id="${item.LoanSchemeId}" style="display: ${item.IsActive ? "" : "none"};">
                         <input type= "button" value = "Edit" class="btn btn-primary py-1" style="border: none; padding: 10px; color: white; background-color: #A6133C; border-radius: 20px; border-right-color: none; float:center; height: 40px;" onclick=editScheme('${item.LoanSchemeId}')></input>
-                   </td >`
-                        
+                           </td >`
                         + '</tr>';
                 });
                 $('#tblBody').html(rows);
@@ -110,12 +109,13 @@
             type: "GET",
             data: { id: itemId },
             success: (data) => {
-                $("#sname").val(data.SchemeName),
-                $("#ir").val(data.InterestRate),
-                $("#sd").val(data.LongDescription),
-                $("#ld").val(data.ShortDescription)
+                $("#idd").val(data.LoanSchemeId),
+                    $("#sname").val(data.SchemeName),
+                    $("#ir").val(data.InterestRate),
+                    $("#sd").val(data.LongDescription),
+                    $("#ld").val(data.ShortDescription)
             },
-            error:(err)=>{
+            error: (err) => {
                 console.log(err)
                 alert("There was a problem in getting the scheme")
             }

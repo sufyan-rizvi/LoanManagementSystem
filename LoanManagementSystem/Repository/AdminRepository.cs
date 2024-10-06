@@ -50,7 +50,7 @@ namespace LoanManagementSystem.Repository
                 var existingOfficer = _session.Query<LoanOfficer>().FirstOrDefault(l => l.OfficerId == officer.OfficerId);
                 existingOfficer.User.IsActive = !existingOfficer.User.IsActive;
                 _session.Update(existingOfficer);
-                txn.Commit();                
+                txn.Commit();
             }
         }
         public IList<LoanOfficer> GetAllOfficers()
@@ -60,21 +60,21 @@ namespace LoanManagementSystem.Repository
 
         public IList<LoanOfficer> GetAllActiveOfficers()
         {
-            return _session.Query<LoanOfficer>().Fetch(l => l.User).ThenFetch(u => u.Address).Where(l=>l.User.IsActive).ToList();
+            return _session.Query<LoanOfficer>().Fetch(l => l.User).ThenFetch(u => u.Address).Where(l => l.User.IsActive).ToList();
         }
 
         public void DeleteScheme(LoanScheme scheme)
         {
-            using(var txn = _session.BeginTransaction())
+            using (var txn = _session.BeginTransaction())
             {
-                var existingScheme = _session.Query<LoanScheme>().FirstOrDefault(s=>s.LoanSchemeId == scheme.LoanSchemeId);
+                var existingScheme = _session.Query<LoanScheme>().FirstOrDefault(s => s.LoanSchemeId == scheme.LoanSchemeId);
                 existingScheme.IsActive = !existingScheme.IsActive;
                 _session.Update(existingScheme);
                 txn.Commit();
             }
         }
 
-        
+
 
         public IList<LoanScheme> GetAllSchemes()
         {
@@ -83,7 +83,7 @@ namespace LoanManagementSystem.Repository
 
         public LoanOfficer GetByOfficerEmail(string email)
         {
-            return _session.Query<LoanOfficer>().FirstOrDefault(l=>l.User.Email == email);  
+            return _session.Query<LoanOfficer>().FirstOrDefault(l => l.User.Email == email);
         }
 
         public LoanOfficer GetByOfficerId(Guid id)
@@ -113,8 +113,9 @@ namespace LoanManagementSystem.Repository
 
         public void UpdateScheme(LoanScheme scheme)
         {
-            using(var txn = _session.BeginTransaction())
+            using (var txn = _session.BeginTransaction())
             {
+                scheme.IsActive = true;
                 _session.Merge(scheme);
                 txn.Commit();
             }
@@ -122,7 +123,7 @@ namespace LoanManagementSystem.Repository
 
         public LoanScheme GetSchemeById(Guid id)
         {
-            return _session.Query<LoanScheme>().FirstOrDefault(s=>s.LoanSchemeId == id);
+            return _session.Query<LoanScheme>().FirstOrDefault(s => s.LoanSchemeId == id);
         }
     }
 }
