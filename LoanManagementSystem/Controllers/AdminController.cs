@@ -1,20 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mail;
-using System.Net;
-using System.Runtime.Remoting.Messaging;
-using System.Web;
 using System.Web.Mvc;
 using LoanManagementSystem.Data;
 using LoanManagementSystem.Models;
-using LoanManagementSystem.Repository;
 using LoanManagementSystem.Service;
-using LoanManagementSystem.ViewModels;
-using NHibernate.Linq;
-
-using BC = BCrypt.Net.BCrypt;
-using System.Threading.Tasks;
 using AutoMapper;
 using LoanManagementSystem.DTOs;
 using NHibernate.Transform;
@@ -23,10 +13,13 @@ using System.Web.UI.WebControls;
 using Rotativa;
 using System.ServiceModel.Channels;
 using static System.Collections.Specialized.BitVector32;
+using PagedList;
+using PagedList.Mvc;
 
 namespace LoanManagementSystem.Controllers
 {
-    //[Authorize(Roles ="Admin")]
+    [Authorize(Roles = "Admin")]
+    [RoutePrefix("Admin")]
     public class AdminController : Controller
     {
         private readonly IAdminService _adminService;
@@ -38,6 +31,9 @@ namespace LoanManagementSystem.Controllers
             _customerService = customerService;
             _accountService = accountService;
         }
+
+        [HttpGet]
+        [Route("Analytics")]
         public ActionResult Analytics()
         {
             using (var session = NhibernateHelper.CreateSession())
@@ -160,39 +156,39 @@ namespace LoanManagementSystem.Controllers
             }
         }
 
-
+        [HttpGet]
+        [Route("GeneratePDF")]
         public ActionResult GeneratePDf()
         {
             return new Rotativa.ActionAsPdf("Analytics");
         }
 
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-
-        // Action to display the report view
-        [AllowAnonymous]
+        [HttpGet]
+        [Route("LoanReport")]
         public ActionResult LoanReport()
         {
             return View(_adminService.LoanReport());
 
         }
 
+        [HttpGet]
+        [Route("NPAReport")]
         public ActionResult NPAReport()
         {
             return View(_adminService.NPAReport());
 
         }
 
+        [HttpGet]
+        [Route("SchemesReport")]
         public ActionResult SchemesReport()
         {
             return View(_adminService.SchemesReportk());
 
         }
+
+        [HttpGet]
+        [Route("LoanOfficerReport")]
         public ActionResult LoanOfficerReport()
         {
             return View(_adminService.LoanOfficerReport());
@@ -200,84 +196,78 @@ namespace LoanManagementSystem.Controllers
         }
 
 
+        [HttpGet]
+        [Route("DownloadReport")]
         // Action to generate the PDF
         public ActionResult DownloadReport()
         {
-             var dto = _adminService.LoanReport();
+            var dto = _adminService.LoanReport();
 
-                return new ViewAsPdf("LoanReport", dto)
-                {
-                    FileName = "Loan Report.pdf",
-                    PageOrientation = Rotativa.Options.Orientation.Landscape,
-                    PageSize = Rotativa.Options.Size.A4
-                };
-            
+            return new ViewAsPdf("LoanReport", dto)
+            {
+                FileName = "Loan Report.pdf",
+                PageOrientation = Rotativa.Options.Orientation.Landscape,
+                PageSize = Rotativa.Options.Size.A4
+            };
+
         }
 
-
+        [HttpGet]
+        [Route("DownloadNPAReport")]
         public ActionResult DownloadNPAReport()
         {
-            
-                var dto = _adminService.NPAReport();
 
-                return new ViewAsPdf("NPAReport", dto)
-                {
-                    FileName = "Loan NPA Report.pdf",
-                    PageOrientation = Rotativa.Options.Orientation.Landscape,
-                    PageSize = Rotativa.Options.Size.A4
-                };
-            
+            var dto = _adminService.NPAReport();
+
+            return new ViewAsPdf("NPAReport", dto)
+            {
+                FileName = "Loan NPA Report.pdf",
+                PageOrientation = Rotativa.Options.Orientation.Landscape,
+                PageSize = Rotativa.Options.Size.A4
+            };
+
         }
-
+        [HttpGet]
+        [Route("DownloadSchemeReport")]
         public ActionResult DownloadSchemeReport()
         {
-            
-                var dto = _adminService.SchemesReportk();
 
-                return new ViewAsPdf("SchemesReport", dto)
-                {
-                    FileName = "Loan Schemes Report.pdf",
-                    PageOrientation = Rotativa.Options.Orientation.Landscape,
-                    PageSize = Rotativa.Options.Size.A4
-                };
-            
+            var dto = _adminService.SchemesReportk();
+
+            return new ViewAsPdf("SchemesReport", dto)
+            {
+                FileName = "Loan Schemes Report.pdf",
+                PageOrientation = Rotativa.Options.Orientation.Landscape,
+                PageSize = Rotativa.Options.Size.A4
+            };
+
         }
 
+        [HttpGet]
+        [Route("DownloadLoanOfficerReport")]
         public ActionResult DownloadLoanOfficerReport()
         {
-            
-                var dto = _adminService.LoanOfficerReport();
 
-                return new ViewAsPdf("LoanOfficerReport", dto)
-                {
-                    FileName = "Loan Officers Report.pdf",
-                    PageOrientation = Rotativa.Options.Orientation.Landscape,
-                    PageSize = Rotativa.Options.Size.A4
-                };
-            
+            var dto = _adminService.LoanOfficerReport();
+
+            return new ViewAsPdf("LoanOfficerReport", dto)
+            {
+                FileName = "Loan Officers Report.pdf",
+                PageOrientation = Rotativa.Options.Orientation.Landscape,
+                PageSize = Rotativa.Options.Size.A4
+            };
+
         }
 
-
-        //
-        //
-        //
-        //
-        //
-        //
-        //
-
-
-
-
-
-
-
-
+        [HttpGet]
+        [Route("Index")]
         public ActionResult Index()
         {
             return View();
         }
 
+        [HttpGet]
+        [Route("GetData")]
         public ActionResult GetData(int page, int rows, string sidx, string sord, bool _search,
            string searchField, string searchString, string searchOper)
         {
@@ -385,7 +375,8 @@ namespace LoanManagementSystem.Controllers
 
         }
 
-
+        [HttpPost]
+        [Route("AddOfficer")]
         public ActionResult Add(LoanOfficer officer)
         {
             officer.User.Age = Convert.ToInt32(officer.User.Age);
@@ -399,6 +390,8 @@ namespace LoanManagementSystem.Controllers
             return Json(new { success = true, message = "Officer added successfully" });
         }
 
+        [HttpPost]
+        [Route("DeleteOfficer")]
         public ActionResult DeleteUpdate(Guid id)
         {
             var Officer = _adminService.ToggleOfficerDelete(id);
@@ -407,7 +400,8 @@ namespace LoanManagementSystem.Controllers
             return Json(new { success = true, message = "Officer Deleted successfully" });
 
         }
-
+        [HttpPost]
+        [Route("EditOfficer")]
         public ActionResult Edit(LoanOfficer officer)
         {
             officer.User.Age = Convert.ToInt32(officer.User.Age);
@@ -421,14 +415,33 @@ namespace LoanManagementSystem.Controllers
             return Json(new { success = true, message = "Officer details updated!" });
         }
 
-        public JsonResult GetAllSchemes()
+        [HttpGet]
+        [Route("Schemes")]
+        public JsonResult GetAllSchemes(int? i)
         {
             var schemes = _adminService.GetAllSchemes();
-            var dto = Mapper.Map<List<LoanSchemeDTO>>(schemes);
-            return Json(dto, JsonRequestBehavior.AllowGet);
+            var dto = Mapper.Map<List<LoanSchemeDTO>>(schemes).ToPagedList(i ?? 1, 2);
+
+            var result = new
+            {
+                Schemes = dto,
+                Pagination = new
+                {
+                    dto.PageNumber,
+                    dto.PageSize,
+                    dto.TotalItemCount,
+                    dto.PageCount,
+                    dto.HasPreviousPage,
+                    dto.HasNextPage,
+                    dto.IsFirstPage,
+                    dto.IsLastPage
+                }
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
+        [Route("AddScheme")]
         public JsonResult AddScheme(LoanScheme scheme)
         {
             _adminService.AddScheme(scheme);
@@ -436,6 +449,7 @@ namespace LoanManagementSystem.Controllers
         }
 
         [HttpPost]
+        [Route("DeleteScheme/{id:guid}")]
         public JsonResult DeleteScheme(Guid id)
         {
             var scheme = _adminService.DeleteScheme(id);
@@ -445,12 +459,15 @@ namespace LoanManagementSystem.Controllers
         }
 
         [HttpPost]
+        [Route("SchemeChange")]
         public JsonResult EditScheme(LoanScheme scheme)
         {
             _adminService.EditScheme(scheme);
             return Json("Scheme Edited Successfully!");
         }
 
+        [HttpGet]
+        [Route("SchemeType")]
         public JsonResult GetSchemeTypes()
         {
             var schemeTypes = Enum.GetValues(typeof(SchemeType))
@@ -464,10 +481,13 @@ namespace LoanManagementSystem.Controllers
             return Json(schemeTypes, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
+        [Route("Scheme/{id:guid}")]
         public JsonResult GetSchemeById(Guid id)
         {
             var scheme = _adminService.GetSchemeById(id);
-            return Json(scheme, JsonRequestBehavior.AllowGet);
+            var dto = Mapper.Map<LoanSchemeDTO>(scheme);
+            return Json(dto, JsonRequestBehavior.AllowGet);
         }
     }
 }

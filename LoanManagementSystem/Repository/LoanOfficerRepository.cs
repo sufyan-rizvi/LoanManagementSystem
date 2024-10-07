@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Net;
+using System.Net.Mail;
 using System.Web;
 using AutoMapper;
 using LoanManagementSystem.Data;
@@ -36,116 +37,111 @@ namespace LoanManagementSystem.Repository
         }
         public void RegApproveLoan(Guid id)
         {
-            using (var session = NhibernateHelper.CreateSession())
+
+            var loan = _session.Get<LoanApplication>(id);
+            if (loan == null)
             {
-                var loan = session.Get<LoanApplication>(id);
-                if (loan == null)
-                {
-                    return;
-                }
-                if (loan.Scheme.SchemeType == SchemeType.Retail)
-                {
-                    loan.Status = ApplicationStatus.LoanRepayment;
-                    loan.PaymentStartDate = DateTime.Now.AddMonths(1);
-                    loan.NextPaymentDate = DateTime.Now.AddMonths(1);
-                }
-                else
-                {
-                    loan.Status = ApplicationStatus.AddCollateral;
-                }
-
-
-                using (var txn = session.BeginTransaction())
-                {
-                    session.Update(loan);
-                    txn.Commit();
-                }
-
+                return;
+            }
+            if (loan.Scheme.SchemeType == SchemeType.Retail)
+            {
+                loan.Status = ApplicationStatus.LoanRepayment;
+                loan.PaymentStartDate = DateTime.Now.AddMonths(1);
+                loan.NextPaymentDate = DateTime.Now.AddMonths(1);
 
             }
+            else
+            {
+                loan.Status = ApplicationStatus.AddCollateral;
+            }
+
+
+            using (var txn = _session.BeginTransaction())
+            {
+                _session.Update(loan);
+                txn.Commit();
+            }
+
+
+
         }
-        public void RejectApproveLoan(Guid id)
+
+        public void RejectApproveLoan(Guid id, string comments)
         {
-            using (var session = NhibernateHelper.CreateSession())
+
+            var loan = _session.Get<LoanApplication>(id);
+            if (loan == null)
             {
-                var loan = session.Get<LoanApplication>(id);
-                if (loan == null)
-                {
-                    return;
-                }
-
-                loan.Status = ApplicationStatus.Rejected;
-
-                using (var txn = session.BeginTransaction())
-                {
-                    session.Update(loan);
-                    txn.Commit();
-                }
-
-
+                return;
             }
+
+            loan.Comments = comments;
+            loan.Status = ApplicationStatus.Rejected;
+
+            using (var txn = _session.BeginTransaction())
+            {
+                _session.Update(loan);
+                txn.Commit();
+            }
+
+
+
         }
         public List<LoanApplication> GetCollateralDocuments()
         {
-            using (var session = NhibernateHelper.CreateSession())
-            {
-                var pendingCollaterals = session.Query<LoanApplication>().Fetch(l=>l.Applicant).ThenFetch(l=>l.User).Where(c => c.Status ==
-                ApplicationStatus.CollateralPending).ToList();
-                return pendingCollaterals;
-            }
+
+            var pendingCollaterals = _session.Query<LoanApplication>().Fetch(l => l.Applicant).ThenFetch(l => l.User).Where(c => c.Status ==
+            ApplicationStatus.CollateralPending).ToList();
+            return pendingCollaterals;
+
         }
         public List<CollateralDocuments> GetToShowCollateralDocuments(Guid id)
         {
-            using (var session = NhibernateHelper.CreateSession())
-            {
+            var documents = _session.Query<CollateralDocuments>().Where(r => r.Application.ApplicationId == id).ToList();
+            return documents;
 
-                var documents = session.Query<CollateralDocuments>().Where(r => r.Application.ApplicationId == id).ToList();
-                return documents;
-            }
         }
-        public void ApproveCollateralDocuments(Guid id)
+        public void ApproveCollateralDocuments(Guid id, string comments)
         {
-            using (var session = NhibernateHelper.CreateSession())
+
+            var collateral = _session.Get<LoanApplication>(id);
+            if (collateral == null)
             {
-                var collateral = session.Get<LoanApplication>(id);
-                if (collateral == null)
-                {
-                    return;
-                }
-
-                collateral.Status = ApplicationStatus.LoanRepayment;
-                collateral.PaymentStartDate = DateTime.Now.AddMonths(1);
-                collateral.NextPaymentDate = DateTime.Now.AddMonths(1);
-
-                using (var txn = session.BeginTransaction())
-                {
-                    session.Update(collateral);
-                    txn.Commit();
-                }
-
-
+                return;
             }
+            collateral.Comments = comments; 
+            collateral.Status = ApplicationStatus.LoanRepayment;
+            collateral.PaymentStartDate = DateTime.Now.AddMonths(1);
+            collateral.NextPaymentDate = DateTime.Now.AddMonths(1);
+
+            using (var txn = _session.BeginTransaction())
+            {
+                _session.Update(collateral);
+                txn.Commit();
+            }
+
+
+
         }
-        public void RejectCollateralDocuments(Guid id)
+        public void RejectCollateralDocuments(Guid id, string comments)
         {
-            using (var session = NhibernateHelper.CreateSession())
+
+            var collateral = _session.Get<LoanApplication>(id);
+            if (collateral == null)
             {
-                var collateral = session.Get<LoanApplication>(id);
-                if (collateral == null)
-                {
-                    return;
-                }
-
-                collateral.Status = ApplicationStatus.Rejected;
-
-                using (var txn = session.BeginTransaction())
-                {
-                    session.Update(collateral);
-                    txn.Commit();
-                }
-
-
+                return;
             }
+            collateral.Comments = comments;
+            collateral.Status = ApplicationStatus.Rejected;
+
+            using (var txn = _session.BeginTransaction())
+            {
+                _session.Update(collateral);
+                txn.Commit();
+            }
+
+
+
         }
 
 

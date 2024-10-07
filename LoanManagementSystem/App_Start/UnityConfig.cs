@@ -22,6 +22,8 @@ namespace LoanManagementSystem
             container.RegisterType<IAccountService, AccountService>();
             container.RegisterType<ICustomerService, CustomerService>();
             container.RegisterType<ICustomerRepository, CustomerRepository>();
+            container.RegisterType<ILoanOfficerRepository, LoanOfficerRepository>();
+            container.RegisterType<ILoanOfficerService, LoanOfficerService>();
            
             // register all your components with the container here
             // it is NOT necessary to register your controllers

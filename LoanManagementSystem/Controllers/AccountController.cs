@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 namespace LoanManagementSystem.Controllers
 {
     [AllowAnonymous]
+    [RoutePrefix("Account")]
     public class AccountController : Controller
     {
         private readonly IAccountService _accountService;
@@ -24,11 +25,15 @@ namespace LoanManagementSystem.Controllers
         {
             _accountService = accountService;
         }
+
+        [HttpGet]
+        [Route("Login")]
         public ActionResult Login()
         {
             return View();
         }
         [HttpPost]
+        [Route("Login")]
         public ActionResult Login(LoginVM model)
         {
             //bool isCaptchaValid = ValidateCaptcha(Request["g-recaptcha-response"]);
@@ -91,17 +96,20 @@ namespace LoanManagementSystem.Controllers
         {
             string secret = ConfigurationManager.AppSettings["GoogleSecretKey"];
             var client = new WebClient();
-            var reply = client.DownloadString(string.Format("https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}",secret,response));
+            var reply = client.DownloadString(string.Format("https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}", secret, response));
 
             var captchaResponse = JsonConvert.DeserializeObject<CaptchaResponse>(reply);
             return Convert.ToBoolean(captchaResponse.Success);
         }
 
+        [HttpGet]
+        [Route("Register")]
         public ActionResult Register()
         {
             return View();
         }
         [HttpPost]
+        [Route("Register")]
         public ActionResult Register(User User)
         {
             var customer = new Customer();
@@ -219,6 +227,9 @@ namespace LoanManagementSystem.Controllers
                 client.Send(mailMessage);
             }
         }
+
+        [HttpGet]
+        [Route("Logout")]
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();

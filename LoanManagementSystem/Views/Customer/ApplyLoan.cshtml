@@ -128,7 +128,7 @@
 
             </div>
             <div class="form-group">
-                <input type="submit" value="Apply" class="btn btn-primary my-2" style="width:100px" id="detailCreate" />
+                <input type="submit" value="Apply" class="btn btn-primary my-2" style="width: 100px; background-color: #9B1B30;border:none; " id="detailCreate" />
                 @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-danger my-2", style = "width:100px" })
 
             </div>
@@ -148,7 +148,7 @@
         amount = amount === "" || isNaN(amount) ? 0 : parseFloat(amount);
 
         $.ajax({
-            url: "/customer/CalculateEMIForView",
+            url: "/customer/emi/calculate",
             type: "GET",
             data:{
                 'scheme.LoanSchemeId': `@Model.LoanScheme.LoanSchemeId`,
@@ -215,15 +215,15 @@
         });
 
 
-        var vllll = $("#lamt").val()
-        $('#lamt').on('blur', function () {
-            validateInput(this);
-        });
+        
+        //$('#lamt').on('blur', function () {
+        //    validateInput(this);
+        //});
 
-        // Validate on blur for Tenure
-        $('#lten').on('blur', function () {
-            validateInput(this);
-        });
+        //// Validate on blur for Tenure
+        //$('#lten').on('blur', function () {
+        //    validateInput(this);
+        //});
         
 
 
@@ -271,7 +271,7 @@
 
 
             $.ajax({
-                url: "/customer/addloandetails",
+                url: "/customer/loan/add",
                 type: "POST",
                 data: formData,
                 contentType: false,   // Important to set false for sending FormData
@@ -279,7 +279,7 @@
 
                 success: () => {
                     alert("Your documents have been sent to a loan officer for approval!");
-                    window.location.href = "https://localhost:44330/Customer/index"
+                    window.location.href = "https://localhost:44330/Customer"
 
                 },
                 error: (err) => {

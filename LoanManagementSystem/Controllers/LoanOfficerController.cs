@@ -11,88 +11,103 @@ using NHibernate.Linq;
 
 namespace LoanManagementSystem.Controllers
 {
-    //[Authorize(Roles = "LoanOfficer")]
+    [Authorize(Roles = "LoanOfficer")]
+    [RoutePrefix("LoanOfficer")]
 
     public class LoanOfficerController : Controller
     {
-        private readonly LoanOfficerService _loanOfficerService;
-        public LoanOfficerController(LoanOfficerService loanOfficerService)
+        private readonly ILoanOfficerService _loanOfficerService;
+        private readonly ICustomerService _customerService;
+        public LoanOfficerController(ILoanOfficerService loanOfficerService, ICustomerService customerService)
         {
             _loanOfficerService = loanOfficerService;
+            _customerService = customerService;
         }
 
         // Action method for displaying the welcome page
+
+        [Route("dashboard")]
         public ActionResult Welcome()
         {
             return View(_loanOfficerService.GetDocuments());
         }
-        
+
 
         // Action method for displaying pending loan approvals
+        [Route("loans/pending")]
         public ActionResult LoanApproval()
         {
             return View(_loanOfficerService.GetDocuments());
-           
+
         }
 
         //Show Rejistration Documents to the Loan Officesr
+        [Route("loans/documents/{id:guid}")]
         public ActionResult GetLoanDocuments(Guid id)
         {
             Session["registerApplicationId"] = id;
-            return View(_loanOfficerService.GetAppDocuments(id));
-            
+            var application = _customerService.GetApplicationById(id);
+            return View(application);
+
         }
+        [Route("loans/approve/{id:guid}")]
         public ActionResult ApproveLoan(Guid id)
         {
 
-            //var id = TempData.Peek("registerApplicationId");
             _loanOfficerService.RegApproveLoan((Guid)id);
             return RedirectToAction("LoanApproval");
-           
+
         }
 
         // Action method for rejecting a loan
-        public ActionResult RejectLoan(Guid id)
+        [Route("loans/reject/{id:guid}")]
+        public ActionResult RejectLoan(Guid id, string comments)
         {
             //var id = TempData.Peek("registerApplicationId");
-            _loanOfficerService.RejectApproveLoan((Guid)id);
+            _loanOfficerService.RejectApproveLoan((Guid)id, comments);
             return RedirectToAction("LoanApproval");
-            
+
         }
 
 
         // Action method for displaying pending collateral approvals
+        [Route("collateral/pending")]
         public ActionResult CollateralApproval()
         {
             return View(_loanOfficerService.GetCollateralDocuments());
-            
+
         }
         //Show Collateral Documents to the Loan Officesr
+        [Route("collateral/documents/{id:guid}")]
         public ActionResult GetCollateralDocuments(Guid id)
         {
             TempData["collateralApplicationId"] = id;
-            return View(_loanOfficerService.GetToShowCollateralDocuments(id));
-            
-            
+
+            var application = _customerService.GetApplicationById(id);
+            return View(application);
+
+
         }
         // Action method for approving a collateral
-        public ActionResult ApproveCollateral(Guid id)
+        [Route("collateral/approve/{id:guid}")]
+        public ActionResult ApproveCollateral(Guid id, string comments)
         {
             //var id = TempData.Peek("collateralApplicationId");
-            _loanOfficerService.ApproveCollateralDocuments((Guid)id);
+            _loanOfficerService.ApproveCollateralDocuments((Guid)id, comments);
             return RedirectToAction("CollateralApproval");
-            
+
         }
 
         // Action method for rejecting a collateral
-        public ActionResult RejectCollateral(Guid id)
+        [Route("collateral/reject/{id:guid}")]
+        public ActionResult RejectCollateral(Guid id, string comments)
         {
-            //var id = TempData.Peek("collateralApplicationId");
-            _loanOfficerService.RejectCollateralDocuments((Guid)id);
+
+            _loanOfficerService.RejectCollateralDocuments((Guid)id, comments);
             return RedirectToAction("CollateralApproval");
-            
+
         }
-        
+
     }
 
 }

@@ -18,17 +18,21 @@
     <tbody id="tblBody">
     </tbody>
 
-
 </table>
+<div id="paginationContainer"></div>
+
+
 <script>
-    function loadItems() {
+    function loadItems(pageNumber = 1) {
         $.ajax({
-            url: "/admin/getallschemes", // Controller action to get data
+            url: "/admin/Schemes", // Controller action to get data
             type: 'GET',
+            data: { i: pageNumber },
             dataType: 'json',
             success: function (data) {
+                console.log(data)
                 var rows = '';
-                $.each(data, function (index, item) {
+                $.each(data.Schemes, function (index, item) {
                     rows += `<tr class="${item.IsActive ? "" : "table-danger"}">`
                         + '<td>' + item.SchemeName + '</td>'
                         + '<td>' + item.SchemeTypeString + '</td>'
@@ -38,10 +42,35 @@
                         + `<td><input type="checkbox" style:"margin=auto" ${item.IsActive ? "checked" : ""} value="${item.IsActive}" onclick=deleteScheme('${item.LoanSchemeId}',this) /></td>`
                         + `<td  id="${item.LoanSchemeId}" style="display: ${item.IsActive ? "" : "none"};">
                         <input type= "button" value = "Edit" class="btn btn-primary py-1" style="border: none; padding: 10px; color: white; background-color: #A6133C; border-radius: 20px; border-right-color: none; float:center; height: 40px;" onclick=editScheme('${item.LoanSchemeId}')></input>
-                           </td >`
+                           </td >`+
+                        `<td></td>` +
+
                         + '</tr>';
                 });
                 $('#tblBody').html(rows);
+                var paginationHtml = '<nav class="pagination-outer" aria-label="Page navigation"><ul class="pagination">';
+
+                // Previous page button
+                if (data.Pagination.HasPreviousPage) {
+                    paginationHtml += `<li class="page-item"><a class="page-link" href="javascript:void(0);" onclick="loadItems(${data.Pagination.PageNumber - 1})" aria-label="Previous"><span aria-hidden="true">«</span></a></li>`;
+                } else {
+                    paginationHtml += `<li class="page-item disabled-button"><a class="page-link" href="javascript:void(0);" aria-label="Previous"><span aria-hidden="true">«</span></a></li>`;
+                }
+
+                // Page numbers
+                for (var i = 1; i <= data.Pagination.PageCount; i++) {
+                    paginationHtml += `<li class="page-item ${data.Pagination.PageNumber === i ? 'active' : ''}"><a class="page-link" href="javascript:void(0);" onclick="loadItems(${i})">${i}</a></li>`;
+                }
+
+                // Next page button
+                if (data.Pagination.HasNextPage) {
+                    paginationHtml += `<li class="page-item"><a class="page-link" href="javascript:void(0);" onclick="loadItems(${data.Pagination.PageNumber + 1})" aria-label="Next"><span aria-hidden="true">»</span></a></li>`;
+                } else {
+                    paginationHtml += `<li class="page-item disabled-button"><a class="page-link" href="javascript:void(0);" aria-label="Next"><span aria-hidden="true">»</span></a></li>`;
+                }
+
+                paginationHtml += '</ul></nav>';
+                $('#paginationContainer').html(paginationHtml);
             },
             error: function (xhr, status, error) {
                 alert('Error: ' + error);
@@ -68,20 +97,20 @@
         }
         if (getConfirm) {
             $.ajax({
-                url: "/Admin/DeleteScheme",
+                url: "/Admin/DeleteScheme/" + itemId,
                 type: "POST",
-                data: { id: itemId },
+                //data: { id: itemId },
                 success: () => {
 
                     if (!checkbox.checked) {
                         row.addClass("table-danger")
                         $(`#${itemId}`).hide()
-                        alert("Contact Deleted Successfully!")
+                        alert("Scheme Deleted Successfully!")
                     }
                     else {
                         row.removeClass("table-danger")
                         $(`#${itemId}`).show()
-                        alert("Contact Re-activated!")
+                        alert("Scheme Re-activated!")
                     }
                 },
                 error: (err) => {
@@ -105,9 +134,9 @@
         $("#editscheme").show()
 
         $.ajax({
-            url: "/admin/GetSchemeById",
+            url: "/admin/Scheme/" + itemId,
             type: "GET",
-            data: { id: itemId },
+            /*data: { id: itemId },*/
             success: (data) => {
                 $("#idd").val(data.LoanSchemeId),
                     $("#sname").val(data.SchemeName),
@@ -126,3 +155,108 @@
     }
 
 </script>
+
+<style>
+    .pagination-outer {
+        text-align: center;
+    }
+
+    .pagination {
+        font-family: 'Poppins', sans-serif;
+        display: inline-flex;
+        position: relative;
+    }
+
+        .pagination li a.page-link {
+            color: #A6232A;
+            background: transparent;
+            font-size: 17px;
+            font-weight: 600;
+            text-align: center;
+            line-height: 36px;
+            height: 35px;
+            width: 35px;
+            padding: 0;
+            margin: 0 7px;
+            border: none;
+            border-radius: 5px;
+            display: block;
+            position: relative;
+            z-index: 0;
+            transition: all 0.1s ease 0s;
+        }
+
+        .pagination li:first-child a.page-link,
+        .pagination li:last-child a.page-link {
+            font-size: 30px;
+            line-height: 33px;
+        }
+
+        .pagination li a.page-link:hover,
+        .pagination li a.page-link:focus,
+        .pagination li.active a.page-link:hover,
+        .pagination li.active a.page-link {
+            color: #fff;
+            background: #A6232A;
+        }
+
+        .pagination li a.page-link:before,
+        .pagination li a.page-link:after {
+            content: '';
+            border-radius: 5px;
+            border: 2px solid #555;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            top: 0;
+            z-index: -1;
+            transition: all 0.3s ease 0s;
+        }
+
+        .pagination li a.page-link:before {
+            border-top-color: transparent;
+            border-bottom-color: transparent;
+        }
+
+        .pagination li a.page-link:after {
+            border-left-color: transparent;
+            border-right-color: transparent;
+        }
+
+        .pagination li a.page-link:hover:before,
+        .pagination li a.page-link:focus:before,
+        .pagination li.active a.page-link:hover:before,
+        .pagination li.active a.page-link:before {
+            left: -4px;
+            right: -4px;
+        }
+
+        .pagination li a.page-link:hover:after,
+        .pagination li a.page-link:focus:after,
+        .pagination li.active a.page-link:hover:after,
+        .pagination li.active a.page-link:after {
+            top: -4px;
+            bottom: -4px;
+        }
+
+    @@media only screen and (max-width: 480px) {
+        .pagination {
+            font-size: 0;
+            display: inline-block;
+        }
+
+            .pagination li {
+                display: inline-block;
+                vertical-align: top;
+                margin: 0 0 15px;
+            }
+    }
+
+    License Terms
+    .disabled-button {
+        pointer-events: none;
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+</style>

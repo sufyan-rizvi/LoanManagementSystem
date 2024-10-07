@@ -9,8 +9,6 @@ using System.Web.Mvc;
 using LoanManagementSystem.Data;
 using LoanManagementSystem.Service;
 using LoanManagementSystem.Models;
-using Razorpay.Api;
-using static System.Net.Mime.MediaTypeNames;
 using Unity;
 using CloudinaryDotNet.Actions;
 
@@ -32,8 +30,8 @@ namespace LoanManagementSystem.Controllers
             SetPaymentMadeStatus();
             SendEmail();
             PaymentDateMissed();
-            
-           
+
+
             return Json("Great Success!");
         }
 
@@ -59,8 +57,8 @@ namespace LoanManagementSystem.Controllers
         }
 
         private async static Task SendEmail()
-        {            
-            var emailsToSend = _customerService.ApplicationsWithEmailDue();            
+        {
+            var emailsToSend = _customerService.ApplicationsWithEmailDue();
 
             await SendEmailsAsync(emailsToSend);
         }

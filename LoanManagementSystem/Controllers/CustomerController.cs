@@ -15,7 +15,8 @@ using PagedList.Mvc;
 
 namespace LoanManagementSystem.Controllers
 {
-    //[Authorize(Roles = "Customer")]
+    [Authorize(Roles = "Customer")]
+    [RoutePrefix("Customer")]
     public class CustomerController : Controller
     {
         private readonly CloudinaryService _cloudinaryService;
@@ -30,10 +31,12 @@ namespace LoanManagementSystem.Controllers
             _adminService = adminService;
         }
         [AllowAnonymous]
+        [Route("emi-calculator")]
         public ActionResult EMIcal()
         {
             return View();
         }
+        [Route("emi/calculate")]
         public ActionResult CalculateEMIForView(LoanScheme scheme, LoanApplication application)
         {
             var interestRate = _adminService.GetSchemeById(scheme.LoanSchemeId).InterestRate / 12 / 100;
@@ -46,12 +49,13 @@ namespace LoanManagementSystem.Controllers
 
         }
 
+        [Route("payments/{id:guid}")]
         public ActionResult GetAllPayments(Guid id)
         {
             var payments = _customerService.GetAllPaymentsForApplication(id);
             return View(payments);
         }
-
+        [Route("payments/pdf/{id:guid}")]
         public ActionResult GeneratePDF(Guid id)
         {
             return new Rotativa.ActionAsPdf("Getallpayments", new { id = id })
@@ -62,21 +66,25 @@ namespace LoanManagementSystem.Controllers
 
 
         [AllowAnonymous]
-        public ActionResult Schemes()
+        [Route("~/")]
+        public ActionResult Schemes(int? i)
         {
             using (var session = NhibernateHelper.CreateSession())
             {
-                var schemes = _customerService.GetAllSchemes();
+                var schemes = _customerService.GetAllSchemes().ToPagedList(i ?? 1, 4);
                 return View(schemes);
             }
         }
+
+        [Route("")]
         public ActionResult Index(int? i)
         {
             var customer = (Customer)Session["Customer"];
             var loans = (_customerService.CustomerApplications(customer.CustId)).ToPagedList(i ?? 1, 3);
             return View(loans);
         }
-
+        [HttpGet]
+        [Route("collateral/add/{applicationId:guid}")]
         public ActionResult AddCollateral(Guid applicationId)
         {
             var application = _customerService.GetApplicationById(applicationId);
@@ -84,8 +92,13 @@ namespace LoanManagementSystem.Controllers
         }
 
         [HttpPost]
+        [Route("collateral/add")]
         public ActionResult AddCollateral(LoanApplication application, List<HttpPostedFileBase> files)
         {
+            if (files.Count() < 3)
+            {
+                throw new InvalidOperationException("Atlease 3 documents should be uploaded!");
+            }
 
             if (files == null || files[1].ContentLength == 0)
             {
@@ -128,6 +141,7 @@ namespace LoanManagementSystem.Controllers
             return RedirectToAction("Index");
         }
 
+        [Route("loan/apply/{id:guid}")]
         public ActionResult ApplyLoan(Guid id)
         {
             var application = new LoanApplicationSchemeVM();
@@ -140,6 +154,8 @@ namespace LoanManagementSystem.Controllers
             return View(application);
         }
 
+        [HttpPost]
+        [Route("loan/add")]
         public JsonResult AddLoanDetails(FormCollection form)
         {
 
@@ -199,6 +215,7 @@ namespace LoanManagementSystem.Controllers
         }
 
         [AllowAnonymous]
+        [Route("image/view/{publicId}")]
         public ActionResult ShowImage(string publicId)
         {
             string cloudinaryUrl = $"https://res.cloudinary.com/{System.Configuration.ConfigurationManager.AppSettings["CloudinaryCloudName"]}/image/upload/{publicId}";
