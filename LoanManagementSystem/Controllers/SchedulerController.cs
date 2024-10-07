@@ -100,8 +100,7 @@ namespace LoanManagementSystem.Controllers
            "<p>Please ensure that you make the payment on or before the due date to avoid any penalties.</p>" +
            "<p>If you have already made the payment, please disregard this message.</p>" +
            "<p>Thank you for your attention to this matter.</p>" +
-           "<p> Best regards,<br/>" +
-            "Aksys Loan Pvt.Ltd.</p>" +
+           "<p> Best regards,<br/>" +  
             "<p> &copy; 2024 Aksys Loan Pvt.Ltd." +
             "</br>All rights reserved.</p>",
                         IsBodyHtml = true
