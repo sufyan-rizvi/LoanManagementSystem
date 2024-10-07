@@ -4,6 +4,8 @@
     ViewBag.Title = "Get Loan Documents";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
 
 <div id="loader" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); color: white; text-align: center; padding-top: 20%; z-index: 1000;">
     <img src="~/Content/Loader.gif" />
@@ -23,38 +25,50 @@
     <table class="table">
         <tr>
 
-            <th>
-                @Html.DisplayNameFor(model => model.RegistrationDocuments.First().ImageUrl)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RegistrationDocuments.First().PublicId)
-            </th>
-        </tr>
 
-        @foreach (var item in Model.RegistrationDocuments)
+    <div class="container ">
+        <h2 class="text-center">Uploaded Images</h2>
+
+        @if (Model.RegistrationDocuments.Any())
         {
-            <tr>
+            <div style="height:90vh; width:500px; margin-left:25%" id="imageCarousel" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner" style="height:90vh; width:500px">
+                    @for (var i = 0; i < Model.RegistrationDocuments.Count(); i++)
+                    {
+                        var image = Model.RegistrationDocuments.ElementAt(i);
+                        <div class="carousel-item @(i == 0 ? "active" : "")">
+                            <img class="d-block w-100" src="@image.ImageUrl" alt="Image @(i + 1)">
+                        </div>
+                    }
+                </div>
 
-                <td>
-
-                    <img src="@item.ImageUrl" alt="Uploaded Image" style="width:100px;height:100px;" />
-
-                    @*@Html.DisplayFor(modelItem => item.ImageUrl)*@
-                </td>
-                <td>
-
-                    <a style="text-decoration:none; color:black" href="@Url.Action("ShowImage", "Customer", new { publicId = item.PublicId })">show image</a>
-
-
-                </td>
-
-
-
-            </tr>
+                <!-- Left and right controls -->
+                <a class="carousel-control-prev" href="#imageCarousel" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#imageCarousel" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
         }
+        else
+        {
+            <div class="alert alert-info text-center">
+                No images found.
+            </div>
+        }
+    </div>
 
-    </table>
+
 </div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
 <script>
         $(document).ready(function () {
             $('#approveBtn').click(function () {
