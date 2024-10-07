@@ -205,5 +205,17 @@ namespace LoanManagementSystem.Controllers
             return Redirect(cloudinaryUrl);
             //return Content(cloudinaryUrl);
         }
+        [AllowAnonymous]
+        public ActionResult ImageSlider(Guid id)
+        {
+            using(var session = NhibernateHelper.CreateSession())
+            {
+                // Fetch the list of images from the database
+                
+                var images = session.Query<RegistrationDocuments>().Where(l => l.Application.ApplicationId == id).ToList();
+                return View(images);
+            }
+            
+        }
     }
 }

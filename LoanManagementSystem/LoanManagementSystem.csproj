@@ -503,6 +503,7 @@
     <Content Include="Views\Admin\NPAReport.cshtml" />
     <Content Include="Views\Admin\SchemesReport.cshtml" />
     <Content Include="Views\Admin\LoanOfficerReport.cshtml" />
+    <Content Include="Views\Customer\ImageSlider.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
