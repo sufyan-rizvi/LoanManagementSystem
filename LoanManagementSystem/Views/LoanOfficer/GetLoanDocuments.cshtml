@@ -18,6 +18,12 @@
         <button type="button" id="approveBtn" class="btn btn-success">Approve</button> |
         <button type="button" id="rejectBtn" class="btn btn-danger">Reject</button>
     </p>
+    <div>
+        @Html.TextAreaFor(m => m.Comments, new { @class = "form-control wide-textarea my-4", placeholder = "Give Comments!", id = "comments" })
+    </div>
+
+    <table class="table">
+        <tr>
 
 
     <div class="container ">
