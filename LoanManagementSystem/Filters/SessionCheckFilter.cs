@@ -11,35 +11,41 @@ namespace LoanManagementSystem.Filters
     public class SessionCheckFilter : ActionFilterAttribute
     {
         private readonly string[] _allowedUrls = new[]
-    {
-        "/Customer/Schemes",  // Allow login page
-        "/Account/Register",  
-        "/Account/logout ",  
-        "/Account/Login"// Allow home page
-        // Add more URLs as needed
+        {
+        "/Account/Login",      // Allow login page
+        "/Account/Register",   // Allow register page
+        "/Account/Logout",     // Allow logout page
+        "/"  ,         // Allow customer-specific pages
+        "/Customer/Schemes"           // Allow customer-specific pages
+        // Add more URLs if needed
     };
+
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-
             var httpContext = filterContext.HttpContext;
+            string requestUrl = httpContext.Request.Url.AbsolutePath;
 
             // Check if the request URL is in the allowed list
-            string requestUrl = httpContext.Request.Url.AbsolutePath;
             if (Array.Exists(_allowedUrls, url => url.Equals(requestUrl, StringComparison.OrdinalIgnoreCase)))
             {
-                return; // Allow the request to go through
+                base.OnActionExecuting(filterContext); // Allow request to proceed
+                return;
             }
 
-            // Check session variables
+            // Check session variables for valid user roles
             if (httpContext.Session["Customer"] == null &&
                 httpContext.Session["Admin"] == null &&
                 httpContext.Session["LoanOfficer"] == null)
             {
-                // Redirect to login page if all session variables are null
-                filterContext.Result = new RedirectResult("/Account/Logout");
+                // If session is null and not an allowed URL, redirect to login
+                filterContext.Result = new RedirectResult("/Account/Login");
             }
-
-            base.OnActionExecuting(filterContext);
+            else
+            {
+                // If session exists, let the request proceed
+                base.OnActionExecuting(filterContext);
+            }
         }
     }
+
 }

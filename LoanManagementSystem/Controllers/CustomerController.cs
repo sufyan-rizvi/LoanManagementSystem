@@ -80,8 +80,18 @@ namespace LoanManagementSystem.Controllers
         [Route("")]
         public ActionResult Index(int? i)
         {
+            
+            if (User.IsInRole("Admin"))
+            {
+                return RedirectToAction("index","admin");
+            }
+            else if (User.IsInRole("LoanOfficer"))
+            {
+                return RedirectToAction("Dashboard", "LoanOfficer");
+            }
+
             var customer = (Customer)Session["Customer"];
-            var loans = (_customerService.CustomerApplications(customer.CustId)).ToPagedList(i ?? 1, 3);
+            var loans = (_customerService.CustomerApplications(customer.CustId)).ToPagedList(i ?? 1, 4);
             return View(loans);
         }
         [HttpGet]
