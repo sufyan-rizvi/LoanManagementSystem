@@ -42,10 +42,32 @@
 
                 <!-- Title and Navbar Section (Center) -->
                 <!-- Title Section -->
+                @if (User.IsInRole("Admin"))
+                {
+                    <a class="navbar-brand d-block" href="@Url.Action("index", "Admin")" style="text-decoration: none; font-size: 60px">
+                        AKSYS LOANS
+                    </a>
+                }
+                else if (User.IsInRole("LoanOfficer"))
+                {
+                    <a class="navbar-brand d-block" href="@Url.Action("dashboard", "Loanofficer")" style="text-decoration: none; font-size:60px">
+                        AKSYS LOANS
+                    </a>
+                }
+                else if(User.IsInRole("Customer"))
+                {
+                    <a class="navbar-brand d-block" href="@Url.Action("", "Customer/")" style="text-decoration: none; font-size: 60px">
+                        AKSYS LOANS
+                    </a>
+                }
+else
+            {
+            <a class="navbar-brand d-block" href="@Url.Action("", "")" style="text-decoration: none; font-size: 60px">
+                AKSYS LOANS
+            </a>
+            }
 
-                <a class="navbar-brand d-block" href="@Url.Action("Index", "Customer")" style="text-decoration: none;">
-                    AKSYS LOANS
-                </a>
+
 
                 <!-- Navbar Section -->
                 <nav class="d-flex justify-content-center align-items-center mt-2">
@@ -63,11 +85,11 @@
                             {
                                 if (User.Identity.IsAuthenticated)
                                 {
-                                    <a class="btn btn-outline-light mx-2" href="@Url.Action("Logout", "Account")">Logout</a>
+                                    <a class="btn btn-outline-light mx-4" style="font-size:15px" href="@Url.Action("Logout", "Account")">Logout</a>
                                 }
                                 else
                                 {
-                                    <a class="btn btn-light mx-2" href="@Url.Action("Login", "Account")">Login</a>
+                                    <a class="btn btn-light mx-4" style="font-size:15px" href="@Url.Action("Login", "Account")">Login</a>
                                 }
                             }
 
@@ -114,10 +136,5 @@
         </footer>
     </div>
 
-    <script>
-        $(function () {
-            // Add custom JS functionality if needed
-        });
-    </script>
 </body>
 </html>
