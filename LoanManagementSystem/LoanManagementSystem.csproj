@@ -247,7 +247,7 @@
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\custom.css" />
-    <Content Include="Content\emiScript.js" />
+    <Content Include="Scripts\allScripts.js" />
     <Content Include="Content\emiStyle.css" />
     <Content Include="Content\Images\asixLogo.png" />
     <Content Include="Content\Images\axisCircleLogo.png" />
