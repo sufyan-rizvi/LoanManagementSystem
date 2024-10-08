@@ -64,8 +64,9 @@ namespace LoanManagementSystem.Controllers
             };
         }
 
-
+        
         [AllowAnonymous]
+        [Authorize(Roles ="Customer")]
         [Route("~/")]
         public ActionResult Schemes(int? i)
         {
