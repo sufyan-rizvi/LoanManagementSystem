@@ -24,58 +24,14 @@
 <p>Please choose one of the following actions:</p>
 
 <div class=" btn-group justify-content-evenly">
-    @*<div class="col-5">
-        @Html.ActionLink("Loan Approval", "LoanApproval", "LoanOfficer", null, new { @class = "btn btn-primary", style = "\r\nborder: none;\r\npadding: 10px;\r\ncolor: white;\r\nbackground-color: #A6133C;\r\nborder-radius: 20px;\r\nborder-right-color: none;" })
-    </div>
-    <div class="col-5">
-        @Html.ActionLink("Collateral Approval", "CollateralApproval", "LoanOfficer", new { }, new { @class = "btn btn-secondary", style = "\r\nborder: none;\r\npadding: 10px;\r\ncolor: white;\r\nbackground-color: #A6133C;\r\nborder-radius: 20px;\r\nborder-right-color: none;" })
-    </div>*@
-    @Html.ActionLink("Loan Approval", "LoanApproval", "LoanOfficer", null, new { @class = "btn btn-primary", style = "\r\nborder: none;\r\npadding: 10px;\r\ncolor: white;\r\nbackground-color: #A6133C;\r\nborder-radius: 20px;\r\nborder-right-color: none;" })
-    <span style="width:100px"></span>
-    @Html.ActionLink("Collateral Approval", "CollateralApproval", "LoanOfficer", new { }, new { @class = "btn btn-secondary", style = "\r\nborder: none;\r\npadding: 10px;\r\ncolor: white;\r\nbackground-color: #A6133C;\r\nborder-radius: 20px;\r\nborder-right-color: none;" })
+
+    @Html.ActionLink("Loan Approval", "LoanApproval", "LoanOfficer", null, new { @class = "btn ", style = "width:200px;\r\nborder: none;\r\npadding: 10px;\r\ncolor: white;\r\nbackground-color: #A6133C;\r\nborder-radius: 20px;\r\nborder-right-color: none;" })
+    @Html.ActionLink("Collateral Approval", "CollateralApproval", "LoanOfficer", new { }, new { @class = "btn mx-4", style = "width:200px;\r\nborder: none;\r\npadding: 10px;\r\ncolor: white;\r\nbackground-color: #A6133C;\r\nborder-radius: 20px;\r\nborder-right-color: none;" })
 </div>
-<h2 style="margin-top:50px">Pending Loan Approvals</h2>
 
-<table class="table">
-    <thead>
-        <tr>
-
-            <th>Applicant Name</th>
-            <th>Loan Amount</th>
-            <th>Status</th>
-            <th>Documents</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var loan in Model)
-        {
-            <tr class="table">
-
-                <td>@loan.Applicant.User.FirstName</td>
-                <td>@loan.LoanAmount</td>
-                <td class="
-    @(loan.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment ? "status-active" ://
-    loan.Status == LoanManagementSystem.Models.ApplicationStatus.CollateralPending ? "status-collateral" ://
-    loan.Status == LoanManagementSystem.Models.ApplicationStatus.AddCollateral ? "status-collateral" ://
-    loan.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment ? "status-repayment" :
-    loan.Status == LoanManagementSystem.Models.ApplicationStatus.PendingApproval ? "status-pending" ://
-    loan.Status == LoanManagementSystem.Models.ApplicationStatus.LoanClosed ? "status-active" ://
-    loan.Status == LoanManagementSystem.Models.ApplicationStatus.NPA ? "status-reject":
-    loan.Status == LoanManagementSystem.Models.ApplicationStatus.Rejected ? "status-reject":"")">
-                    <button disabled>@GetEnumDisplayName(loan.Status)</button>
-
-                </td>
-                <td>
-                    @Html.ActionLink("Verify", "GetLoanDocuments", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-success" })
-                    @*@Html.ActionLink("Approve", "ApproveLoan", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-success" })
-                        @Html.ActionLink("Reject", "RejectLoan", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-danger" })*@
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-@Html.ActionLink("Back", "Welcome", "LoanOfficer", null, new { @class = "btn btn-primary", style = "width: 150px;\r\nborder: none;\r\npadding: 10px;\r\ncolor: white;\r\nbackground-color: #A6133C;\r\nborder-radius: 20px;\r\nborder-right-color: none;" })
+@*<div class="my-5">
+    @Html.ActionLink("Back", "Welcome", "LoanOfficer", null, new { @class = "btn btn-primary", style = "width: 150px;\r\nborder: none;\r\npadding: 10px;\r\ncolor: white;\r\nbackground-color: #A6133C;\r\nborder-radius: 20px;\r\nborder-right-color: none;" })
+</div>*@
 <style>
     table .status-active {
         padding: 10px;

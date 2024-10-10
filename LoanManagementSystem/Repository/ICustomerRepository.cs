@@ -11,6 +11,7 @@ namespace LoanManagementSystem.Repository
     {
         IList<LoanApplication> PaymentMissedApplications();
         IList<LoanApplication> ApplicationsWithEmailDue();
+        void UpdateApplication(LoanApplication application);
         void SetApplicationsToFalse(IList<LoanApplication> applications);
         void CheckNPA(IList<LoanApplication> applications);
         IList<LoanApplication> ApplicationsToBeMadeFalse();

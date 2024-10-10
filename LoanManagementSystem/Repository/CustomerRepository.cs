@@ -82,13 +82,13 @@ namespace LoanManagementSystem.Repository
         {
             try
             {
-                var tomorrowIsPayDay = DateTime.Now.AddDays(1);
+                var tomorrowIsPayDay = DateTime.Now.AddDays(1).Date;
                 _session.Clear();
                 var applications = _session.Query<LoanApplication>().Where(l =>
 
                      l.Status == ApplicationStatus.LoanRepayment &&
                     l.NextPaymentDate != DateTime.MinValue &&
-                    tomorrowIsPayDay == l.NextPaymentDate
+                    tomorrowIsPayDay == l.NextPaymentDate.Date
                 ).ToList();
                 return applications;
             }
@@ -193,7 +193,9 @@ namespace LoanManagementSystem.Repository
 
         public LoanApplication GetApplicationById(Guid id)
         {
-            return _session.Query<LoanApplication>().FirstOrDefault(l => l.ApplicationId == id);
+            var application = _session.Query<LoanApplication>().Fetch(a=>a.Applicant).ThenFetch(a=>a.User).FirstOrDefault(l => l.ApplicationId == id);
+            _session.Evict(application);
+            return application;
         }
 
         public IList<LoanApplication> GetAllApplications()
@@ -207,6 +209,15 @@ namespace LoanManagementSystem.Repository
         public IList<Repayment> GetAllPaymentsForApplication(Guid id)
         {
             return _session.Query<Repayment>().Where(r => r.Application.ApplicationId == id).ToList();
+        }
+
+        public void UpdateApplication(LoanApplication application)
+        {
+            using(var txn = _session.BeginTransaction())
+            {
+                _session.Merge(application);
+                txn.Commit();
+            }
         }
 
     }

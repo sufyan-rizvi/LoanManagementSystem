@@ -8,6 +8,7 @@ using System.Web.Routing;
 using AutoMapper;
 using LoanManagementSystem.Mappers;
 using LoanManagementSystem.Filters;
+using NHibernate.Cache;
 
 namespace LoanManagementSystem
 {
@@ -24,5 +25,8 @@ namespace LoanManagementSystem
                 cfg.AddProfile<MappingProfile>();
             });
         }
+
+        
+
     }
 }

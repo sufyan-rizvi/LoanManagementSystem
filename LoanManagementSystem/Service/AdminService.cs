@@ -2,18 +2,36 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using LoanManagementSystem.DTOs;
 using LoanManagementSystem.Models;
 using LoanManagementSystem.Repository;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace LoanManagementSystem.Service
 {
     public class AdminService : IAdminService
     {
         private readonly IAdminRepository _adminRepo;
+        private readonly ICustomerRepository _customerRepo;
 
-        public AdminService(IAdminRepository adminRepo)
+        public AdminService(IAdminRepository adminRepo, ICustomerRepository customerRepository)
         {
             _adminRepo = adminRepo;
+            _customerRepo = customerRepository;
+        }
+
+        public IList<LoanApplicationMonthWise> AmountResult()
+        {
+            return _adminRepo.AmountResult();
+        }
+        public IList<LoanApplicationMonthWise> NPAResult()
+        {
+            return _adminRepo.NPAResult();
+        }
+
+        public IList<LoanApplicationMonthWise> LoanApplicationMonthWise()
+        {
+            return _adminRepo.LoanApplicationMonthWise();
         }
         public void AddOfficer(LoanOfficer officer)
         {
@@ -40,8 +58,8 @@ namespace LoanManagementSystem.Service
         {
             return (_adminRepo.NPAReport());
         }
-        
-            public List<LoanScheme> SchemesReportk()
+
+        public List<LoanScheme> SchemesReportk()
         {
             return (_adminRepo.SchemesReportk());
         }
@@ -66,7 +84,7 @@ namespace LoanManagementSystem.Service
 
         public void EditOfficer(LoanOfficer officer)
         {
-           
+
             var usernameCheck = _adminRepo.GetByOfficerUsername(officer.User.Username);
             if (usernameCheck != null && officer.OfficerId != usernameCheck.OfficerId)
             {
@@ -83,7 +101,7 @@ namespace LoanManagementSystem.Service
         }
 
         public void EditScheme(LoanScheme scheme)
-        {            
+        {
             _adminRepo.UpdateScheme(scheme);
         }
 
@@ -115,10 +133,27 @@ namespace LoanManagementSystem.Service
         public LoanOfficer ToggleOfficerDelete(Guid id)
         {
             var userExists = _adminRepo.GetByOfficerId(id);
+            var officerPendingLoanApplications = userExists.LoanApplications;
+            Random number = new Random();
+
+
             if (userExists != null)
             {
+                if (userExists.User.IsActive)
+                {
+                    _adminRepo.DeleteOfficer(userExists);
+                    var currentOfficerWorkforce = _adminRepo.GetAllActiveOfficers();
+                    for (var i = 0; i < officerPendingLoanApplications.Count; i++)
+                    {
+                        officerPendingLoanApplications[i].AssignedOfficer = currentOfficerWorkforce[number.Next(0, currentOfficerWorkforce.Count)];
+                        _customerRepo.UpdateApplication(officerPendingLoanApplications[i]);
+                    }
 
-                _adminRepo.DeleteOfficer(userExists);
+                }
+                else
+                {
+                    _adminRepo.DeleteOfficer(userExists);
+                }
                 return userExists;
 
             }

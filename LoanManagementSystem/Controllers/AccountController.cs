@@ -75,13 +75,14 @@ namespace LoanManagementSystem.Controllers
             switch (user.Role.RoleName)
             {
                 case "Admin":
-                    Session["Admin"] = _accountService.GetCustomerByUserId(user.UserId);
+                    Session["Admin"] = _accountService.GetAdminByUserId(user.UserId);
                     FormsAuthentication.SetAuthCookie(user.Username, false);
                     return RedirectToAction("Index", "Admin");
 
                 case "LoanOfficer":
                     Session["Officer"] = _accountService.GetOfficerByUserId(user.UserId);
                     FormsAuthentication.SetAuthCookie(user.Username, false);
+                    var officer = _accountService.GetOfficerByUserId(user.UserId);
                     return RedirectToAction("Welcome", "LoanOfficer");
 
                 default: // Assuming Customer role

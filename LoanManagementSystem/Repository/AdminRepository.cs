@@ -4,9 +4,11 @@ using System.Linq;
 using System.Web;
 using AutoMapper;
 using LoanManagementSystem.Data;
+using LoanManagementSystem.DTOs;
 using LoanManagementSystem.Models;
 using NHibernate;
 using NHibernate.Linq;
+using NHibernate.Transform;
 using BC = BCrypt.Net.BCrypt;
 
 namespace LoanManagementSystem.Repository
@@ -18,6 +20,63 @@ namespace LoanManagementSystem.Repository
         public AdminRepository(ISession session)
         {
             _session = session;
+        }
+
+        public IList<LoanApplicationMonthWise> AmountResult()
+        {
+            return _session.CreateQuery(@"
+        select 
+            month(ApplicationDate) as Month, 
+            year(ApplicationDate) as Year, 
+            count(*) as ApplicationCount, 
+            sum(LoanAmount) as TotalLoanAmount
+        from LoanApplication 
+        where Status = :status
+        group by 
+            month(ApplicationDate), 
+            year(ApplicationDate)
+        order by 
+            Year, Month")
+        .SetParameter("status", ApplicationStatus.NPA)
+        .SetResultTransformer(Transformers.AliasToBean<LoanApplicationMonthWise>())
+        .List<LoanApplicationMonthWise>();
+        }
+
+
+        public IList<LoanApplicationMonthWise> NPAResult()
+        {
+            return _session.CreateQuery(@"
+        select 
+            month(ApplicationDate) as Month, 
+            year(ApplicationDate) as Year, 
+            count(*) as ApplicationCount 
+        from LoanApplication 
+        where Status = :status
+        group by 
+            month(ApplicationDate), 
+            year(ApplicationDate)
+        order by 
+            Year, Month")
+        .SetParameter("status", ApplicationStatus.NPA) // Set the status parameter
+        .SetResultTransformer(Transformers.AliasToBean<LoanApplicationMonthWise>())
+        .List<LoanApplicationMonthWise>();
+        }
+
+        public IList<LoanApplicationMonthWise> LoanApplicationMonthWise()
+        {
+            return _session.CreateQuery(@"
+        select 
+            month(ApplicationDate) as Month, 
+            year(ApplicationDate) as Year, 
+            count(*) as ApplicationCount 
+        from LoanApplication 
+        group by 
+            month(ApplicationDate), 
+            year(ApplicationDate)
+        order by 
+            Year, Month")
+                    .SetResultTransformer(Transformers.AliasToBean<LoanApplicationMonthWise>())
+                    .List<LoanApplicationMonthWise>();
         }
 
         public void AddOfficer(LoanOfficer officer)

@@ -31,7 +31,7 @@
         }
 
         // Make a server request to get the order ID for the amount entered
-        fetch('/Payment/CreateOrder?amount=' + amount)
+        fetch('/Payment/CreateOrder')
             .then(response => response.json())
             .then(data => {
                 var options = {
