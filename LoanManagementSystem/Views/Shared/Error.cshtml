@@ -8,3 +8,29 @@
 <h1>Oops! Something went wrong.</h1>
 <p>An error occurred while processing your request.</p>
 
+@if (User.IsInRole("Admin"))
+{
+    <a class="navbar-brand d-block btn btn-outline-danger" href="@Url.Action("index", "Admin")" style="text-decoration: none; font-size: 20px; color: red; width: 100px; ">
+        Reload
+    </a>
+}
+else if (User.IsInRole("LoanOfficer"))
+{
+    <a class="navbar-brand d-block btn btn-outline-danger" href="@Url.Action("dashboard", "Loanofficer")" style="text-decoration: none; font-size: 20px; color: red; width: 100px; ">
+        Reload
+    </a>
+}
+else if (User.IsInRole("Customer"))
+{
+    <a class="navbar-brand d-block btn btn-outline-danger" href="@Url.Action("", "Customer/")" style="text-decoration: none; font-size: 20px; color: red; width: 100px; ">
+        Reload
+    </a>
+}
+else
+{
+    <a class=" btn btn-outline-danger" href="@Url.Action("", "")" style="text-decoration: none; font-size: 20px; width:100px;">
+        Reload
+    </a>
+}
+
+

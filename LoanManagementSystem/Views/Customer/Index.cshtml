@@ -105,7 +105,7 @@
                 </td>
                 @if (item.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment)
                 {
-                    bool isWithinPaymentDateRange = DateTime.Now >= item.NextPaymentDate && DateTime.Now <= item.NextPaymentDate.AddDays(5);
+                    bool isWithinPaymentDateRange = DateTime.Now.Date >= item.NextPaymentDate.Date && DateTime.Now.Date <= item.NextPaymentDate.AddDays(5).Date;
                     bool paymentAlreadyDone = item.EMIPaymentMade;
 
 

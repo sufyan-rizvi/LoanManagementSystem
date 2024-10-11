@@ -13,6 +13,7 @@ using LoanManagementSystem.Repository;
 using LoanManagementSystem.Service;
 using Razorpay.Api;
 using Unity;
+using static System.Net.Mime.MediaTypeNames;
 
 
 namespace LoanManagementSystem.Controllers
@@ -31,21 +32,26 @@ namespace LoanManagementSystem.Controllers
         public ActionResult Index(string applicationId)
         {
 
-            using (var s = NhibernateHelper.CreateSession())
-            {
-                var application = s.Query<LoanApplication>().FirstOrDefault(l => l.ApplicationId == new Guid(applicationId));
-                Session["application"] = application;
-                return View(application);
 
+            var application = _customerService.GetApplicationById(new Guid(applicationId));
+
+            Session["applicationId"] = applicationId;
+            Session["amount"] = application.EMIAmount;
+            if (application.EMIPaymentMade)
+            {
+                return RedirectToAction("", "Customer/");
             }
+            return View(application);
+
+
         }
         // Create Razorpay Order
         [HttpGet]
-        public JsonResult CreateOrder(string amount)
+        public JsonResult CreateOrder()
         {
             try
             {
-                Session["amount"] = amount;
+                var amount = (double)Session["amount"];
                 var client = new RazorpayClient(_key, _secret);
 
                 // Convert the amount to paise (smallest currency unit)
@@ -102,7 +108,13 @@ namespace LoanManagementSystem.Controllers
 
         public ActionResult Success()
         {
-
+           
+            var id = new Guid((string)Session["applicationId"]);
+            var application = _customerService.GetApplicationById(id);
+            if (application.EMIPaymentMade)
+            {
+                return RedirectToAction("", "Customer/");
+            }
             using (var s = NhibernateHelper.CreateSession())
             {
                 using (var txn = s.BeginTransaction())
@@ -110,11 +122,10 @@ namespace LoanManagementSystem.Controllers
                     var payment = new Repayment
                     {
                         PaymentDate = DateTime.Now,
-                        Amount = Convert.ToDouble(Session["amount"]),
+                        Amount = application.EMIAmount,
                         TransactionId = (string)Session["rzp_order_id"],
                         IsApproved = true,
-                        Application = (LoanApplication)Session["application"]
-
+                        Application = application
                     };
                     s.Save(payment);
                     txn.Commit();
@@ -153,7 +164,8 @@ namespace LoanManagementSystem.Controllers
             {
                 using (var txn = s.BeginTransaction())
                 {
-                    var application = (LoanApplication)Session["application"];
+                    var applicationId = new Guid((string)Session["applicationId"]);
+                    var application = _customerService.GetApplicationById(applicationId);
                     application.PaymentsMade += 1;
                     if (application.PaymentsMade >= application.Tenure)
                     {

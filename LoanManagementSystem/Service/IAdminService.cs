@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LoanManagementSystem.DTOs;
 using LoanManagementSystem.Models;
 
 namespace LoanManagementSystem.Service
@@ -11,6 +12,9 @@ namespace LoanManagementSystem.Service
     {
         IList<LoanOfficer> GetAllOfficers();
         List<LoanApplication> LoanReport();
+        IList<LoanApplicationMonthWise> AmountResult();
+        IList<LoanApplicationMonthWise> NPAResult();
+        IList<LoanApplicationMonthWise> LoanApplicationMonthWise();
         List<LoanApplication> NPAReport();
         List<LoanScheme> SchemesReportk();
         List<LoanOfficer> LoanOfficerReport();

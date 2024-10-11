@@ -35,24 +35,26 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>Loan ID</th>
                 <th>Applicant Name</th>
-                <th>Applicant Age</th>
-                <th>Tenure</th>
+                <th>Scheme Name</th>
                 <th>Loan Amount</th>
+                <th>Tenure(int months)</th>
+                <th>Applicant Age</th>
                 <th>Status</th>
-                <th>Actions</th>
+                <th>Documents</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var loan in Model)
             {
                 <tr>
-                    <td>@loan.ApplicationId</td>
+
                     <td>@loan.Applicant.User.FirstName</td>
-                    <td>@loan.Applicant.User.Age</td>
-                    <td>@loan.Tenure</td>
+                    <td>@loan.Scheme.SchemeName</td>
                     <td>@loan.LoanAmount</td>
+                    <td>@loan.Tenure</td>
+                    <td>@loan.Applicant.User.Age</td>
+
                     <td class="
 @(loan.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment ? "status-active" ://
         loan.Status == LoanManagementSystem.Models.ApplicationStatus.CollateralPending ? "status-collateral" ://
@@ -67,8 +69,6 @@ else
                     </td>
                     <td>
                         @Html.ActionLink("Verify", "GetCollateralDocuments", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-success" })
-                        @*@Html.ActionLink("Approve", "ApproveCollateral", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-success" })
-                            @Html.ActionLink("Reject", "RejectCollateral", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-danger" })*@
                     </td>
                 </tr>
             }

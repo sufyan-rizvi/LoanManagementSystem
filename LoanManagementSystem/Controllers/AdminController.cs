@@ -38,29 +38,14 @@ namespace LoanManagementSystem.Controllers
         {
             using (var session = NhibernateHelper.CreateSession())
             {
-                var result = session.CreateQuery(@"
-        select 
-            month(ApplicationDate) as Month, 
-            year(ApplicationDate) as Year, 
-            count(*) as ApplicationCount 
-        from LoanApplication 
-        group by 
-            month(ApplicationDate), 
-            year(ApplicationDate)
-        order by 
-            Year, Month")
-                    .SetResultTransformer(Transformers.AliasToBean<LoanApplicationMonthWise>())
-                    .List<LoanApplicationMonthWise>();
+                var result = _adminService.LoanApplicationMonthWise();
 
                 var loanApplications = new Int64[12];
                 foreach (var item in result)
                 {
                     // Assuming item.Month is 1 for January, 2 for February, etc.
-                    loanApplications[item.Month - 1] = item.ApplicationCount; // -1 to adjust for zero-based indexing
+                    loanApplications[item.Month - 1] = item.ApplicationCount;
                 }
-
-                //bhai jii we will send these data from our DataBase accordingly
-                // Example data
 
                 var months = new List<string>
 {
@@ -76,24 +61,9 @@ namespace LoanManagementSystem.Controllers
     "October",
     "November",
     "December"
-};  // X-axis labels
-    // Data for NPA (example: percentage of NPAs each month)
+};
 
-                var npaResult = session.CreateQuery(@"
-        select 
-            month(ApplicationDate) as Month, 
-            year(ApplicationDate) as Year, 
-            count(*) as ApplicationCount 
-        from LoanApplication 
-        where Status = :status
-        group by 
-            month(ApplicationDate), 
-            year(ApplicationDate)
-        order by 
-            Year, Month")
-        .SetParameter("status", ApplicationStatus.NPA) // Set the status parameter
-        .SetResultTransformer(Transformers.AliasToBean<LoanApplicationMonthWise>())
-        .List<LoanApplicationMonthWise>();
+                var npaResult = _adminService.NPAResult();
 
 
                 var npaPercentages = new Int64[12];
@@ -103,25 +73,7 @@ namespace LoanManagementSystem.Controllers
                     npaPercentages[item.Month - 1] = item.ApplicationCount; // -1 to adjust for zero-based indexing
                 }
 
-
-                var amountResult = session.CreateQuery(@"
-        select 
-            month(ApplicationDate) as Month, 
-            year(ApplicationDate) as Year, 
-            count(*) as ApplicationCount, 
-            sum(LoanAmount) as TotalLoanAmount
-        from LoanApplication 
-        where Status = :status
-        group by 
-            month(ApplicationDate), 
-            year(ApplicationDate)
-        order by 
-            Year, Month")
-        .SetParameter("status", ApplicationStatus.NPA)
-        .SetResultTransformer(Transformers.AliasToBean<LoanApplicationMonthWise>())
-        .List<LoanApplicationMonthWise>();
-
-
+                var amountResult = _adminService.AmountResult();
 
                 var loanAmounts = new Int64[12];  // Data for line chart
 
@@ -135,12 +87,6 @@ namespace LoanManagementSystem.Controllers
                 int customerCount = session.Query<Customer>().Count();
                 int adminCount = session.Query<Admin>().Count();
 
-
-
-
-
-
-
                 ViewBag.OfficerCount = officerCount;
                 ViewBag.CustomerCount = customerCount;
                 ViewBag.AdminCount = adminCount;
@@ -149,19 +95,11 @@ namespace LoanManagementSystem.Controllers
                 ViewBag.Months = months;
                 ViewBag.NPAPercentages = npaPercentages;
 
-
-
-
                 return View();
             }
         }
 
-        [HttpGet]
-        [Route("GeneratePDF")]
-        public ActionResult GeneratePDf()
-        {
-            return new Rotativa.ActionAsPdf("Analytics");
-        }
+
 
         [HttpGet]
         [Route("LoanReport")]
@@ -392,18 +330,57 @@ namespace LoanManagementSystem.Controllers
 
         [HttpPost]
         [Route("DeleteOfficer")]
+
         public ActionResult DeleteUpdate(Guid id)
         {
-            var Officer = _adminService.ToggleOfficerDelete(id);
-            if (Officer.User.IsActive)
-                return Json(new { success = true, message = "Officer Reactivated successfully" });
-            return Json(new { success = true, message = "Officer Deleted successfully" });
+            var currentActiveOfficers = _adminService.GetAllActiveOfficers();
+            var currentOfficer = _adminService.GetOfficerById(id);
 
+            if (currentOfficer == null)
+            {
+                return Json(new { success = false, message = "Officer not found" });
+            }
+
+            // Prevent deletion if there's only one active officer and the current officer is active
+            if (currentActiveOfficers.Count == 1 && currentOfficer.User.IsActive)
+            {
+                return Json(new { success = false, message = "There should be at least one active officer" });
+            }
+
+            // Toggle delete/reactivate the officer
+            var officer = _adminService.ToggleOfficerDelete(id);
+
+            if (officer.User.IsActive)
+            {
+                return Json(new { success = true, message = "Officer reactivated successfully" });
+            }
+
+            return Json(new { success = true, message = "Officer deleted successfully" });
         }
+
+
+
+        //public ActionResult DeleteUpdate(Guid id)
+        //{
+        //    var currentActiveOfficers = _adminService.GetAllActiveOfficers();
+        //    var currentOfficer = _adminService.GetOfficerById(id);
+        //    if (currentActiveOfficers.Count == 1 && currentOfficer.User.IsActive)
+        //    {
+        //        return Json(new { success = false, message = "There should be atleast one Active Officer" });
+        //    }
+
+        //    var Officer = _adminService.ToggleOfficerDelete(id);
+        //    if (Officer.User.IsActive)
+        //        return Json(new { success = true, message = "Officer Reactivated successfully" });
+        //    return Json(new { success = true, message = "Officer Deleted successfully" });
+
+        //}
         [HttpPost]
         [Route("EditOfficer")]
         public ActionResult Edit(LoanOfficer officer)
         {
+            if (!officer.User.IsActive)
+                return Json(new { success = false, message = "Officer Inactive! Cannot change details at the moment!" });
             officer.User.Age = Convert.ToInt32(officer.User.Age);
             if (_accountService.CheckUserNameFound(officer.User.Username))
                 return Json(new { success = false, message = "Officer with same username exists!" });

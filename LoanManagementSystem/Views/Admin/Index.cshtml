@@ -5,7 +5,9 @@
 }
 
 @section NavbarOptions {
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     <div style="display: flex; align-items: center; ">
         <p class="m-2 text-light btn" onclick="displayAnalytics()">
             Analytics
@@ -17,10 +19,16 @@
             View All Loan Officers
         </p>
         <div class="dropdown">
-            <button style=" border: none; padding: 10px; color: white; background-color: #A6133C; border-radius: 20px; border-right-color: none;" class="btn btn-outline-danger dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Dropdown Button
+            <button style=" border: none; padding: 10px; color: white; background-color: #A6133C; border-radius: 20px;"
+                    class="btn btn-outline-danger dropdown-toggle"
+                    type="button"
+                    id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false">
+                Reports
             </button>
-            <div class="dropdown-menu" aria-labelledby="Reports">
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" style="color: #A6133C" href="@Url.Action("LoanReport", "Admin")">Loans</a>
                 <a class="dropdown-item" style="color: #A6133C" href="@Url.Action("NPAReport", "Admin")">NPA</a>
                 <a class="dropdown-item" style="color: #A6133C" href="@Url.Action("SchemesReport", "Admin")">Schemes</a>
@@ -77,7 +85,7 @@
 
     <div id="listofficer" style="display:none;margin-left:-100px;">
 
-        <h2 class="my-3">List of LoanOfficers</h2>
+        <h2 class="my-3">List of Loan Officers</h2>
         <table id="grid"></table>
         <div id="pager"></div>
 
@@ -206,7 +214,7 @@
                 { name: "User.Address.Country", hidden: true, editable: true, editrules: { edithidden: true, required: true } } // Hidden field for Country
             ],
             height: "275",
-            width: "1300",
+            width: "1470",
             caption: "Product Records",
             pager: "#pager",
             rowNum: 6,

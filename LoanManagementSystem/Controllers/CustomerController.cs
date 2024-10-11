@@ -22,13 +22,15 @@ namespace LoanManagementSystem.Controllers
         private readonly CloudinaryService _cloudinaryService;
         private readonly ICustomerService _customerService;
         private readonly IAdminService _adminService;
+        private readonly IAccountService _accountService;
 
 
-        public CustomerController(ICustomerService customerService, IAdminService adminService)
+        public CustomerController(ICustomerService customerService, IAdminService adminService, IAccountService accountService)
         {
             _cloudinaryService = new CloudinaryService();
             _customerService = customerService;
             _adminService = adminService;
+            _accountService = accountService;
         }
         [AllowAnonymous]
         [Route("emi-calculator")]
@@ -158,7 +160,8 @@ namespace LoanManagementSystem.Controllers
             var application = new LoanApplicationSchemeVM();
             application.LoanApplication = new LoanApplication();
 
-            var customer = (Customer)Session["Customer"];
+            var userId = ((Customer)Session["Customer"]).User.UserId;
+            var customer = _accountService.GetCustomerByUserId(userId);
             application.LoanApplication.Applicant = customer;
             ViewData["loanaapl"] = application.LoanApplication;
             application.LoanScheme = _customerService.GetSchemeById(id);
@@ -174,6 +177,8 @@ namespace LoanManagementSystem.Controllers
             string loanSchemeJson = form["LoanScheme"];
 
             var application = JsonConvert.DeserializeObject<LoanApplication>(loanApplicationJson);
+            var aadhar = application.Applicant.AadharNumber; 
+            var pan = application.Applicant.PANNumber; 
             var LoanScheme = JsonConvert.DeserializeObject<LoanScheme>(loanSchemeJson);
 
             var files = Request.Files;
@@ -212,11 +217,16 @@ namespace LoanManagementSystem.Controllers
                 application.RegistrationDocuments.Add(approvalDocs);
             }
 
-            application.Applicant = (Customer)Session["Customer"];
+            var customer = (Customer)Session["Customer"];
+            customer.AadharNumber = aadhar;
+            customer.PANNumber = pan;
+
+            application.Applicant = customer;
+            
             application.Status = ApplicationStatus.PendingApproval;
 
             var officerList = _adminService.GetAllActiveOfficers();
-            Random number = new Random(); ;
+            Random number = new Random(); 
             application.AssignedOfficer = officerList[number.Next(0, officerList.Count)];
 
             application.ApplicationDate = DateTime.Now;

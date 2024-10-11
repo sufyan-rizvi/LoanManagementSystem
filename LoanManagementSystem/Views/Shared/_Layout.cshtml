@@ -17,8 +17,10 @@
 
     <!-- JS Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/jquery-3.7.1.min.js"></script>
+    <!-- Popper.js for Bootstrap -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/jquery.jqGrid.min.js"></script>
     <script src="~/Scripts/i18n/grid.locale-en.js"></script>
     <script src="~/Scripts/jquery.validate.min.js"></script>
@@ -54,18 +56,18 @@
                         AKSYS LOANS
                     </a>
                 }
-                else if(User.IsInRole("Customer"))
+                else if (User.IsInRole("Customer"))
                 {
                     <a class="navbar-brand d-block" href="@Url.Action("", "Customer/")" style="text-decoration: none; font-size: 60px">
                         AKSYS LOANS
                     </a>
                 }
-else
-            {
-            <a class="navbar-brand d-block" href="@Url.Action("", "")" style="text-decoration: none; font-size: 60px">
-                AKSYS LOANS
-            </a>
-            }
+                else
+                {
+                    <a class="navbar-brand d-block" href="@Url.Action("", "")" style="text-decoration: none; font-size: 60px">
+                        AKSYS LOANS
+                    </a>
+                }
 
 
 
