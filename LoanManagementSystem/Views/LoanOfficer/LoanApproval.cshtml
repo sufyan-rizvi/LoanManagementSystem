@@ -66,16 +66,16 @@ else
 
                     </td>
                     <td>
-                        
-                        @*@Html.ActionLink("Verify", "ImageSlider", "Customer", new { id = loan.ApplicationId }, new { @class = "btn btn-success" })*@
+
+
                         @Html.ActionLink("Verify", "GetLoanDocuments", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-success" })
-                        @*@Html.ActionLink("Approve", "ApproveLoan", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-success" })
-        @Html.ActionLink("Reject", "RejectLoan", "LoanOfficer", new { id = loan.ApplicationId }, new { @class = "btn btn-danger" })*@
+
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+    @Html.ActionLink("Back", "Welcome", "LoanOfficer", null, new { @class = "btn btn-primary", style = "width: 150px;\r\nborder: none;\r\npadding: 10px;\r\ncolor: white;\r\nbackground-color: #A6133C;\r\nborder-radius: 20px;\r\nborder-right-color: none;" })
 }
 
 
@@ -93,7 +93,7 @@ else
         height: 50px;
     }
 </style>
-@Html.ActionLink("Back", "Welcome", "LoanOfficer", null, new { @class = "btn btn-primary", style = "width: 150px;\r\nborder: none;\r\npadding: 10px;\r\ncolor: white;\r\nbackground-color: #A6133C;\r\nborder-radius: 20px;\r\nborder-right-color: none;" })
+
 <style>
     table .status-active {
         padding: 10px;

@@ -17,6 +17,7 @@ namespace LoanManagementSystem.Service
         void CheckNPA(IList<LoanApplication> applications);
         IList<LoanApplication> GetNPAApplications();
         void UpdateNextPaymentDate(IList<LoanApplication> applications);
+        void UpdateApplication(LoanApplication application);
         IList<LoanScheme> GetAllSchemes();
         LoanScheme GetSchemeById(Guid id);
         IList<LoanApplication> CustomerApplications(Guid id);

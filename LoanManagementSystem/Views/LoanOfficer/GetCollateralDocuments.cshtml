@@ -14,31 +14,52 @@
 <div>
 
     <div class="container ">
-        <h2 class="text-center">Collateral Documents</h2>
+        <h2 class="text-center mb-5">Collateral Documents</h2>
 
         @if (Model.RegistrationDocuments.Any())
         {
-            <div style="height:90vh; width:500px; margin-left:25%" id="imageCarousel" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner" style="height:90vh; width:500px">
-                    @for (var i = 0; i < Model.RegistrationDocuments.Count(); i++)
-                    {
-                        var image = Model.RegistrationDocuments.ElementAt(i);
-                        <div class="carousel-item @(i == 0 ? "active" : "")">
-                            <img class="d-block w-100" src="@image.ImageUrl" alt="Image @(i + 1)">
-                        </div>
-                    }
-                </div>
 
-                <!-- Left and right controls -->
-                <a class="carousel-control-prev" href="#imageCarousel" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#imageCarousel" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
+            <div class="row">
+                <div class="col" style="margin-top:175px">
+                    <div class="form-group">
+                        <label for="aadharNumber" class="font-weight-bold text-muted">Aadhar Number:</label>
+                        <p id="aadharNumber" class="border p-2 bg-light rounded">@Model.Applicant.AadharNumber</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="panNumber" class="font-weight-bold text-muted">PAN Number:</label>
+                        <p id="panNumber" class="border p-2 bg-light rounded">@Model.Applicant.PANNumber</p>
+                    </div>
+
+                </div>
+                <div class="col">
+
+                    <div style="width:500px; margin-left:25%" id="imageCarousel" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner" style="width:500px">
+                            @for (var i = 0; i < Model.CollateralDocuments.Count(); i++)
+                            {
+                                var image = Model.CollateralDocuments.ElementAt(i);
+                                <div class="carousel-item @(i == 0 ? "active" : "")">
+                                    <img class="d-block w-100" src="@image.ImageUrl" alt="Image @(i + 1)">
+                                </div>
+                            }
+                        </div>
+
+                        <button class="carousel-control-prev" data-bs-target="#imageCarousel" data-bs-slide="prev">
+
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </button>
+
+                        <button class="carousel-control-next" data-bs-target="#imageCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </button>
+                    </div>
+
+                </div>
             </div>
+
         }
         else
         {
@@ -46,10 +67,10 @@
                 No images found.
             </div>
         }
-        <div class="text-center" style="margin-top:-8%">
+        <div class="text-center">
             <p>
-                <div>
-                    @Html.TextAreaFor(m => m.Comments, new { @class = "form-control wide-textarea my-4", placeholder = "Give Comments!", id = "comments" })
+                <div class="text-center" ">
+                    @Html.TextAreaFor(m => m.Comments, new { @class = " form-control wide-textarea my-4", placeholder = "Give Comments!", id = "comments", style = "margin-left:35%" })
                 </div>
                 <button type="button" id="approveBtn" class="btn btn-success">Approve</button> |
                 <button type="button" id="rejectBtn" class="btn btn-danger">Reject</button>
@@ -57,15 +78,40 @@
 
         </div>
     </div>
+    @Html.ActionLink("Back", "collateral/pending", "LoanOfficer/", null, new { @class = "btn btn-primary", style = "width: 150px;\r\nborder: none;\r\npadding: 10px;\r\ncolor: white;\r\nbackground-color: #A6133C;\r\nborder-radius: 20px;\r\nborder-right-color: none;" })
 </div>
+<style>
+    /* Apply the background and padding to make the buttons visible */
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+        border-radius: 50%; /* Makes it circular */
+        padding: 10px; /* Adds space around the icon */
+    }
+
+    /* Optional: Adjust the size of the icons if necessary */
+    .carousel-control-prev-icon {
+        width: 50px;
+        height: 50px;
+    }
+
+    .carousel-control-next-icon {
+        width: 50px;
+        height: 50px;
+    }
+
+    /* Hover effect for the icons */
+    .carousel-control-prev:hover .carousel-control-prev-icon,
+    .carousel-control-next:hover .carousel-control-next-icon {
+        background-color: rgba(0, 0, 0, 0.7); /* Darker on hover */
+    }
+</style>
 
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
 <script>
+
         $(document).ready(function () {
             $('#approveBtn').click(function () {
 
@@ -74,13 +120,13 @@
                     alert("Enter a comment")
                     return
                 }
+                console.log('@Url.Action("ApproveCollateral", "LoanOfficer")')
                 $("#loader").show()
                 $.ajax({
-                    url: '@Url.Action("ApproveCollateral", "LoanOfficer")',
+                    url: 'Loanofficer/collateral/approve/' + applicationId,
                     type: 'POST',
                     data: {
-                        id: '@Model.ApplicationId',
-                        comments: comments
+                                              comments: comments
                     },
                     success: function (response) {
                         // Handle success, e.g., show a success message or redirect
@@ -102,12 +148,13 @@
                     alert("Enter a comment")
                     return
                 }
+
                 $("#loader").show()
                 $.ajax({
-                    url: '@Url.Action("RejectCollateral", "LoanOfficer")',
+                    url: 'Loanofficer/collateral/reject/' + applicationId,
                     type: 'POST',
                     data: {
-                        id: '@Model.ApplicationId',
+
                         comments: comments
                     },
                     success: function (response) {

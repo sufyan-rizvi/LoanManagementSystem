@@ -92,6 +92,7 @@ namespace LoanManagementSystem.Controllers
                     return RedirectToAction("index", "customer");
             }
         }
+
         [AllowAnonymous]
         private bool ValidateCaptcha(string response)
         {

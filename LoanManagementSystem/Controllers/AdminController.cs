@@ -375,6 +375,7 @@ namespace LoanManagementSystem.Controllers
         //    return Json(new { success = true, message = "Officer Deleted successfully" });
 
         //}
+
         [HttpPost]
         [Route("EditOfficer")]
         public ActionResult Edit(LoanOfficer officer)

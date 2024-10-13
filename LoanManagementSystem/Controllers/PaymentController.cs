@@ -23,6 +23,7 @@ namespace LoanManagementSystem.Controllers
     public class PaymentController : Controller
     {
         private static ICustomerService _customerService = UnityConfig.container.Resolve<CustomerService>();
+        private static IPaymentService _paymentService = UnityConfig.container.Resolve<PaymentService>();
         // GET: RazorPayment
         private string _key = ConfigurationManager.AppSettings["RazorpayKey"];
         private string _secret = ConfigurationManager.AppSettings["RazorpaySecret"];
@@ -108,30 +109,23 @@ namespace LoanManagementSystem.Controllers
 
         public ActionResult Success()
         {
-           
+
             var id = new Guid((string)Session["applicationId"]);
             var application = _customerService.GetApplicationById(id);
             if (application.EMIPaymentMade)
             {
                 return RedirectToAction("", "Customer/");
             }
-            using (var s = NhibernateHelper.CreateSession())
-            {
-                using (var txn = s.BeginTransaction())
-                {
-                    var payment = new Repayment
-                    {
-                        PaymentDate = DateTime.Now,
-                        Amount = application.EMIAmount,
-                        TransactionId = (string)Session["rzp_order_id"],
-                        IsApproved = true,
-                        Application = application
-                    };
-                    s.Save(payment);
-                    txn.Commit();
-                }
 
-            }
+            var payment = new Repayment
+            {
+                PaymentDate = DateTime.Now,
+                Amount = application.EMIAmount,
+                TransactionId = (string)Session["rzp_order_id"],
+                IsApproved = true,
+                Application = application
+            };
+            _paymentService.SaveRepayment(payment);
 
             return View();
         }
@@ -139,51 +133,39 @@ namespace LoanManagementSystem.Controllers
 
         public ActionResult Error()
         {
-            using (var s = NhibernateHelper.CreateSession())
-            {
-                using (var txn = s.BeginTransaction())
-                {
-                    var payment = new Repayment
-                    {
-                        PaymentDate = DateTime.Now,
-                        Amount = (double)Session["amount"],
-                        TransactionId = (string)Session["rzp_order_id"],
-                        IsApproved = false
-                    };
-                    s.Save(payment);
-                    txn.Commit();
-                }
 
-            }
+            var payment = new Repayment
+            {
+                PaymentDate = DateTime.Now,
+                Amount = (double)Session["amount"],
+                TransactionId = (string)Session["rzp_order_id"],
+                IsApproved = false
+            };
+            _paymentService.SaveRepayment(payment);
+
             return View();
         }
         public ActionResult UpdateApplicationAfterPayment()
         {
 
-            using (var s = NhibernateHelper.CreateSession())
+            var applicationId = new Guid((string)Session["applicationId"]);
+            var application = _customerService.GetApplicationById(applicationId);
+            application.PaymentsMade += 1;
+            if (application.PaymentsMade >= application.Tenure)
             {
-                using (var txn = s.BeginTransaction())
-                {
-                    var applicationId = new Guid((string)Session["applicationId"]);
-                    var application = _customerService.GetApplicationById(applicationId);
-                    application.PaymentsMade += 1;
-                    if (application.PaymentsMade >= application.Tenure)
-                    {
-                        application.Status = ApplicationStatus.LoanClosed;
-                        LoanClosureMail(application);
-                    }
-
-                    application.EMIPaymentMade = true;
-                    application.PaymentsMissed = 0;
-                    application.NextPaymentDate = application.NextPaymentDate.AddMonths(1);
-
-                    s.Merge(application);
-                    txn.Commit();
-                    SuccessPaymentEmail(application);
-
-
-                }
+                application.Status = ApplicationStatus.LoanClosed;
+                LoanClosureMail(application);
             }
+
+            application.EMIPaymentMade = true;
+            application.PaymentsMissed = 0;
+            application.NextPaymentDate = application.NextPaymentDate.AddMonths(1);
+            _customerService.UpdateApplication(application);
+
+
+            SuccessPaymentEmail(application);
+
+
             return Json("YAY", JsonRequestBehavior.AllowGet);
         }
 

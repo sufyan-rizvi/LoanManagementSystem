@@ -9,7 +9,7 @@
             <th>Scheme Name</th>
             <th>Scheme Type</th>
             <th>Rate of Interest</th>
-            <th>Short Description</th>
+
             <th>Long Description</th>
             <th>Active Status</th>
             <th>Options</th>
@@ -37,7 +37,7 @@
                         + '<td>' + item.SchemeName + '</td>'
                         + '<td>' + item.SchemeTypeString + '</td>'
                         + '<td>' + item.InterestRate + '</td>'
-                        + '<td>' + item.ShortDescription + '</td>'
+
                         + '<td>' + item.LongDescription + '</td>'
                         + `<td><input type="checkbox" style:"margin=auto" ${item.IsActive ? "checked" : ""} value="${item.IsActive}" onclick=deleteScheme('${item.LoanSchemeId}',this) /></td>`
                         + `<td  id="${item.LoanSchemeId}" style="display: ${item.IsActive ? "" : "none"};">

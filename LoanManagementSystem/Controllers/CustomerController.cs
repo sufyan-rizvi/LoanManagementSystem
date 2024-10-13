@@ -66,26 +66,25 @@ namespace LoanManagementSystem.Controllers
             };
         }
 
-        
+
         [AllowAnonymous]
-        [Authorize(Roles ="Customer")]
+        [Authorize(Roles = "Customer")]
         [Route("~/")]
         public ActionResult Schemes(int? i)
         {
-            using (var session = NhibernateHelper.CreateSession())
-            {
-                var schemes = _customerService.GetAllSchemes().ToPagedList(i ?? 1, 4);
-                return View(schemes);
-            }
+
+            var schemes = _customerService.GetAllSchemes().ToPagedList(i ?? 1, 4);
+            return View(schemes);
+
         }
 
         [Route("")]
         public ActionResult Index(int? i)
         {
-            
+
             if (User.IsInRole("Admin"))
             {
-                return RedirectToAction("index","admin");
+                return RedirectToAction("index", "admin");
             }
             else if (User.IsInRole("LoanOfficer"))
             {
@@ -177,9 +176,12 @@ namespace LoanManagementSystem.Controllers
             string loanSchemeJson = form["LoanScheme"];
 
             var application = JsonConvert.DeserializeObject<LoanApplication>(loanApplicationJson);
-            var aadhar = application.Applicant.AadharNumber; 
-            var pan = application.Applicant.PANNumber; 
+            
+            var aadhar = application.Applicant.AadharNumber;
+            var pan = application.Applicant.PANNumber;
+            
             var LoanScheme = JsonConvert.DeserializeObject<LoanScheme>(loanSchemeJson);
+            
 
             var files = Request.Files;
 
@@ -218,15 +220,17 @@ namespace LoanManagementSystem.Controllers
             }
 
             var customer = (Customer)Session["Customer"];
-            customer.AadharNumber = aadhar;
-            customer.PANNumber = pan;
+            if(aadhar != null)
+                customer.AadharNumber = aadhar;
+            if(pan != null)
+                customer.PANNumber = pan;
 
             application.Applicant = customer;
-            
+
             application.Status = ApplicationStatus.PendingApproval;
 
             var officerList = _adminService.GetAllActiveOfficers();
-            Random number = new Random(); 
+            Random number = new Random();
             application.AssignedOfficer = officerList[number.Next(0, officerList.Count)];
 
             application.ApplicationDate = DateTime.Now;
@@ -246,14 +250,14 @@ namespace LoanManagementSystem.Controllers
         [AllowAnonymous]
         public ActionResult ImageSlider(Guid id)
         {
-            using(var session = NhibernateHelper.CreateSession())
+            using (var session = NhibernateHelper.CreateSession())
             {
                 // Fetch the list of images from the database
-                
+
                 var images = session.Query<RegistrationDocuments>().Where(l => l.Application.ApplicationId == id).ToList();
                 return View(images);
             }
-            
+
         }
     }
 }

@@ -193,7 +193,10 @@ namespace LoanManagementSystem.Repository
 
         public LoanApplication GetApplicationById(Guid id)
         {
-            var application = _session.Query<LoanApplication>().Fetch(a=>a.Applicant).ThenFetch(a=>a.User).FirstOrDefault(l => l.ApplicationId == id);
+            var application = _session.Query<LoanApplication>().Fetch(a => a.Applicant).ThenFetch(a => a.User).FirstOrDefault(l => l.ApplicationId == id);
+            NHibernateUtil.Initialize(application.RegistrationDocuments);
+            NHibernateUtil.Initialize(application.CollateralDocuments);
+            NHibernateUtil.Initialize(application.Scheme);
             _session.Evict(application);
             return application;
         }
@@ -213,7 +216,7 @@ namespace LoanManagementSystem.Repository
 
         public void UpdateApplication(LoanApplication application)
         {
-            using(var txn = _session.BeginTransaction())
+            using (var txn = _session.BeginTransaction())
             {
                 _session.Merge(application);
                 txn.Commit();

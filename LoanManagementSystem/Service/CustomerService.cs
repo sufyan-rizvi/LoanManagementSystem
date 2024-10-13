@@ -9,13 +9,18 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace LoanManagementSystem.Service
 {
-    public class CustomerService:ICustomerService
+    public class CustomerService : ICustomerService
     {
         private readonly ICustomerRepository _customerRepo;
 
         public CustomerService(ICustomerRepository customerRepo)
         {
             _customerRepo = customerRepo;
+        }
+
+        public void UpdateApplication(LoanApplication application)
+        {
+            _customerRepo.UpdateApplication(application);
         }
 
         public IList<LoanApplication> ApplicationsWithEmailDue()
@@ -80,7 +85,7 @@ namespace LoanManagementSystem.Service
 
         public LoanApplication GetApplicationById(Guid id)
         {
-           return  _customerRepo.GetApplicationById(id);   
+            return _customerRepo.GetApplicationById(id);
         }
 
         public IList<LoanApplication> GetAllLoanApplications()
