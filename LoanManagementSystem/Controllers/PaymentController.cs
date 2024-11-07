@@ -9,21 +9,27 @@ using System.Web;
 using System.Web.Mvc;
 using LoanManagementSystem.Data;
 using LoanManagementSystem.Models;
+using LoanManagementSystem.Repository;
+using LoanManagementSystem.Service;
 using Razorpay.Api;
+using Unity;
 
 
 namespace LoanManagementSystem.Controllers
 {
-    [Authorize(Roles ="Customer")]
+    [Authorize(Roles = "Customer")]
+
     public class PaymentController : Controller
     {
+        private static ICustomerService _customerService = UnityConfig.container.Resolve<CustomerService>();
         // GET: RazorPayment
         private string _key = ConfigurationManager.AppSettings["RazorpayKey"];
         private string _secret = ConfigurationManager.AppSettings["RazorpaySecret"];
 
         // GET: Payment
+
         public ActionResult Index(string applicationId)
-        {            
+        {
 
             using (var s = NhibernateHelper.CreateSession())
             {
@@ -31,7 +37,7 @@ namespace LoanManagementSystem.Controllers
                 Session["application"] = application;
                 return View(application);
 
-            }                
+            }
         }
         // Create Razorpay Order
         [HttpGet]
@@ -96,7 +102,7 @@ namespace LoanManagementSystem.Controllers
 
         public ActionResult Success()
         {
-            
+
             using (var s = NhibernateHelper.CreateSession())
             {
                 using (var txn = s.BeginTransaction())
@@ -120,7 +126,6 @@ namespace LoanManagementSystem.Controllers
         }
 
 
-
         public ActionResult Error()
         {
             using (var s = NhibernateHelper.CreateSession())
@@ -141,11 +146,10 @@ namespace LoanManagementSystem.Controllers
             }
             return View();
         }
-
         public ActionResult UpdateApplicationAfterPayment()
         {
-            
-            using(var s =  NhibernateHelper.CreateSession())
+
+            using (var s = NhibernateHelper.CreateSession())
             {
                 using (var txn = s.BeginTransaction())
                 {
@@ -165,14 +169,15 @@ namespace LoanManagementSystem.Controllers
                     txn.Commit();
                     SuccessPaymentEmail(application);
 
-                    
+
                 }
             }
-            return Json("YAY",JsonRequestBehavior.AllowGet);
+            return Json("YAY", JsonRequestBehavior.AllowGet);
         }
 
-        private static void SuccessPaymentEmail(LoanApplication loanApplication)
+        private static void SuccessPaymentEmail(LoanApplication applicationId)
         {
+            var loanApplication = _customerService.GetApplicationById(applicationId.ApplicationId);
             using (var client = new SmtpClient("smtp.gmail.com", 587))
             {
                 client.Credentials = new NetworkCredential("dfgutdxvhuyf@gmail.com", "gpjb izjt kmfs tnzs");
@@ -242,7 +247,7 @@ namespace LoanManagementSystem.Controllers
                     <h1>Loan Repayment Successful!</h1>
                 </div>
                 <div class='content'>
-                    <h1>Dear " +loanApplication.Applicant.User.FirstName + @",</h1>
+                    <h1>Dear " + loanApplication.Applicant.User.FirstName + @",</h1>
                     <p>We are pleased to inform you that your recent loan repayment has been successfully processed. Thank you for your timely payment!</p>
                     <p><strong>Payment Details:</strong></p>
                     <ul>

@@ -66,10 +66,7 @@ namespace LoanManagementSystem.Service
 
         public void EditOfficer(LoanOfficer officer)
         {
-            if (!officer.User.IsActive)
-            {
-                throw new InvalidOperationException("Inactive Loanofficer!");
-            }
+           
             var usernameCheck = _adminRepo.GetByOfficerUsername(officer.User.Username);
             if (usernameCheck != null && officer.OfficerId != usernameCheck.OfficerId)
             {

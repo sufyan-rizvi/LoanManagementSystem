@@ -25,7 +25,7 @@
 <script>
     function loadItems(pageNumber = 1) {
         $.ajax({
-            url: "/admin/getallschemes", // Controller action to get data
+            url: "/admin/Schemes", // Controller action to get data
             type: 'GET',
             data: { i: pageNumber },
             dataType: 'json',
@@ -42,7 +42,9 @@
                         + `<td><input type="checkbox" style:"margin=auto" ${item.IsActive ? "checked" : ""} value="${item.IsActive}" onclick=deleteScheme('${item.LoanSchemeId}',this) /></td>`
                         + `<td  id="${item.LoanSchemeId}" style="display: ${item.IsActive ? "" : "none"};">
                         <input type= "button" value = "Edit" class="btn btn-primary py-1" style="border: none; padding: 10px; color: white; background-color: #A6133C; border-radius: 20px; border-right-color: none; float:center; height: 40px;" onclick=editScheme('${item.LoanSchemeId}')></input>
-                           </td >`
+                           </td >`+
+                        `<td></td>` +
+
                         + '</tr>';
                 });
                 $('#tblBody').html(rows);
@@ -95,20 +97,20 @@
         }
         if (getConfirm) {
             $.ajax({
-                url: "/Admin/DeleteScheme",
+                url: "/Admin/DeleteScheme/" + itemId,
                 type: "POST",
-                data: { id: itemId },
+                //data: { id: itemId },
                 success: () => {
 
                     if (!checkbox.checked) {
                         row.addClass("table-danger")
                         $(`#${itemId}`).hide()
-                        alert("Contact Deleted Successfully!")
+                        alert("Scheme Deleted Successfully!")
                     }
                     else {
                         row.removeClass("table-danger")
                         $(`#${itemId}`).show()
-                        alert("Contact Re-activated!")
+                        alert("Scheme Re-activated!")
                     }
                 },
                 error: (err) => {
@@ -132,9 +134,9 @@
         $("#editscheme").show()
 
         $.ajax({
-            url: "/admin/GetSchemeById",
+            url: "/admin/Scheme/" + itemId,
             type: "GET",
-            data: { id: itemId },
+            /*data: { id: itemId },*/
             success: (data) => {
                 $("#idd").val(data.LoanSchemeId),
                     $("#sname").val(data.SchemeName),

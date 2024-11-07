@@ -11,7 +11,8 @@ using NHibernate.Linq;
 
 namespace LoanManagementSystem.Controllers
 {
-    //[Authorize(Roles = "LoanOfficer")]
+    [Authorize(Roles = "LoanOfficer")]
+    [RoutePrefix("LoanOfficer")]
 
     public class LoanOfficerController : Controller
     {
@@ -24,6 +25,8 @@ namespace LoanManagementSystem.Controllers
         }
 
         // Action method for displaying the welcome page
+
+        [Route("dashboard")]
         public ActionResult Welcome()
         {
             return View(_loanOfficerService.GetDocuments());
@@ -31,6 +34,7 @@ namespace LoanManagementSystem.Controllers
 
 
         // Action method for displaying pending loan approvals
+        [Route("loans/pending")]
         public ActionResult LoanApproval()
         {
             return View(_loanOfficerService.GetDocuments());
@@ -38,6 +42,7 @@ namespace LoanManagementSystem.Controllers
         }
 
         //Show Rejistration Documents to the Loan Officesr
+        [Route("loans/documents/{id:guid}")]
         public ActionResult GetLoanDocuments(Guid id)
         {
             Session["registerApplicationId"] = id;
@@ -45,6 +50,7 @@ namespace LoanManagementSystem.Controllers
             return View(application);
 
         }
+        [Route("loans/approve/{id:guid}")]
         public ActionResult ApproveLoan(Guid id)
         {
 
@@ -54,6 +60,7 @@ namespace LoanManagementSystem.Controllers
         }
 
         // Action method for rejecting a loan
+        [Route("loans/reject/{id:guid}")]
         public ActionResult RejectLoan(Guid id, string comments)
         {
             //var id = TempData.Peek("registerApplicationId");
@@ -64,12 +71,14 @@ namespace LoanManagementSystem.Controllers
 
 
         // Action method for displaying pending collateral approvals
+        [Route("collateral/pending")]
         public ActionResult CollateralApproval()
         {
             return View(_loanOfficerService.GetCollateralDocuments());
 
         }
         //Show Collateral Documents to the Loan Officesr
+        [Route("collateral/documents/{id:guid}")]
         public ActionResult GetCollateralDocuments(Guid id)
         {
             TempData["collateralApplicationId"] = id;
@@ -80,6 +89,7 @@ namespace LoanManagementSystem.Controllers
 
         }
         // Action method for approving a collateral
+        [Route("collateral/approve/{id:guid}")]
         public ActionResult ApproveCollateral(Guid id, string comments)
         {
             //var id = TempData.Peek("collateralApplicationId");
@@ -89,9 +99,10 @@ namespace LoanManagementSystem.Controllers
         }
 
         // Action method for rejecting a collateral
+        [Route("collateral/reject/{id:guid}")]
         public ActionResult RejectCollateral(Guid id, string comments)
         {
-            
+
             _loanOfficerService.RejectCollateralDocuments((Guid)id, comments);
             return RedirectToAction("CollateralApproval");
 

@@ -129,7 +129,7 @@
                 else if (item.Status == LoanManagementSystem.Models.ApplicationStatus.AddCollateral)
                 {
                     <td style="width:285px">
-                        @Html.ActionLink("Add Collateral Documents", "AddCollateral", "Customer", new { applicationId = item.ApplicationId }, new { @class = "btn btn-primary" })
+                        @Html.ActionLink("Add Collateral Documents", $"collateral/Add/{item.ApplicationId}", "Customer", new { @class = "btn btn-primary" })
                     </td>
                 }
                 else if (item.Status == LoanManagementSystem.Models.ApplicationStatus.LoanClosed)
@@ -144,12 +144,12 @@
                 {
                     <td style="width:285px">--</td>
                 }
-                
+
             </tr>
         }
 
     </table>
-   
+
     <div class="demo">
         <nav class="pagination-outer" aria-label="Page navigation">
             <ul class="pagination">
@@ -205,10 +205,10 @@
             </ul>
         </nav>
     </div>
-    
+
     <p>
         <span class="text-primary"> Want Another Loan? Get instant Approval!</span>
-        @Html.ActionLink("Apply Now!", "schemes")
+        @Html.ActionLink("Apply Now!", "schemes", "")
     </p>
 </div>
 

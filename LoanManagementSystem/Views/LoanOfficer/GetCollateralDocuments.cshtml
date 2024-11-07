@@ -1,8 +1,8 @@
 ﻿@model LoanManagementSystem.Models.LoanApplication
 
 @{
-    ViewBag.Title = "GetCollateralDocuments";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+        ViewBag.Title = "GetCollateralDocuments";
+        Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
@@ -39,22 +39,22 @@
         </tr>
 
         @foreach (var item in Model.CollateralDocuments)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CollateralId)
-                </td>
-                <td>
-                    <img src="@item.ImageUrl" alt="Uploaded Image" />
-                    @*@Html.DisplayFor(modelItem => item.ImageUrl)*@
-                </td>
-                <td>
-                    <a href="@Url.Action("ShowImage", "Customer", new { publicId = item.PublicId })">Click to show full image</a>
-                    @*@Html.DisplayFor(modelItem => item.PublicId)*@
-                </td>
+                {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CollateralId)
+            </td>
+            <td>
+                <img src="@item.ImageUrl" alt="Uploaded Image" />
+                @*@Html.DisplayFor(modelItem => item.ImageUrl)*@
+            </td>
+            <td>
+                <a href="@Url.Action("ShowImage", "Customer", new { publicId = item.PublicId })">Click to show full image</a>
+                @*@Html.DisplayFor(modelItem => item.PublicId)*@
+            </td>
 
-            </tr>
-        }
+        </tr>
+                }
 
     </table>
 </div>

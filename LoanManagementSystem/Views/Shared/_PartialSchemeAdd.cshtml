@@ -54,15 +54,13 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input style="border: none; padding: 10px; color: white; background-color: #A6133C; border-radius: 20px; border-right-color: none;" type="button" value="Create" class="btn btn-primary" id="btnCreate" />
+                <input style="border: none; padding: 10px; color: white; background-color: #A6133C;width:100px; border-radius: 20px; border-right-color: none;" type="button" value="Create" class="btn btn-primary" id="btnCreate" />
+                @Html.ActionLink("Back to List", "Index", null, new {@class="btn btn-danger my-2", style= "border-radius: 20px; border-right-color: none;border: none; padding: 10px; color: white;" })
             </div>
         </div>
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 
 <script>

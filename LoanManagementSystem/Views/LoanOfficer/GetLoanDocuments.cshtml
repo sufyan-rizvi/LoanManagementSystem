@@ -64,7 +64,7 @@
                 }
                 $("#loader").show()
                 $.ajax({
-                    url: '@Url.Action("ApproveCollateral", "LoanOfficer")',
+                    url: '@Url.Action("ApproveLoan", "LoanOfficer")',
                     type: 'POST',
                     data: {
                         id: '@Model.ApplicationId',
@@ -92,7 +92,7 @@
                 }
                 $("#loader").show()
                 $.ajax({
-                    url: '@Url.Action("RejectCollateral", "LoanOfficer")',
+                    url: '@Url.Action("RejectLoan", "LoanOfficer")',
                     type: 'POST',
                     data: {
                         id: '@Model.ApplicationId',

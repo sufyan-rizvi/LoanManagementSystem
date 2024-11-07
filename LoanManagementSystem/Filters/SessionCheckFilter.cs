@@ -36,7 +36,7 @@ namespace LoanManagementSystem.Filters
                 httpContext.Session["LoanOfficer"] == null)
             {
                 // Redirect to login page if all session variables are null
-                filterContext.Result = new RedirectResult("/Account/Login");
+                filterContext.Result = new RedirectResult("/Account/Logout");
             }
 
             base.OnActionExecuting(filterContext);
