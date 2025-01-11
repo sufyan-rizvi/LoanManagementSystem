@@ -222,26 +222,17 @@
         $('#lten').on('blur', function () {
             validateInput(this);
         });
-        //function validateInput(input) {
-        //    var value = parseFloat($(input).val());
-        //    var min = parseFloat($(input).attr('min'));
-        //    var step = parseFloat($(input).attr('step'));
-
-        //    if (isNaN(value) || value < min) {
-        //        // Show validation error
-        //        $(input).addClass('is-invalid');
-        //        $(input).siblings('.text-danger').text('Value must be at least ' + min + '.');
-        //    } else {
-        //        // Clear validation error
-        //        $(input).removeClass('is-invalid');
-        //        $(input).siblings('.text-danger').text('');
-        //    }
-        //}
+        
 
 
         $("#detailCreate").click(() => {
             event.preventDefault()
-
+            if ($("#aadharFile").val() === "" ||
+                $("#panFile").val() === "" ||
+                $("#photoFile").val() === "") {
+                alert("Please add all images!");
+                return;
+            }
             if (!$("form").valid()) {
 
                 return;

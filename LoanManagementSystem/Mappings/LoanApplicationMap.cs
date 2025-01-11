@@ -16,6 +16,8 @@ namespace LoanManagementSystem.Mappings
             Map(a => a.ApplicationDate);
             Map(a => a.PaymentStartDate);
             Map(a => a.NextPaymentDate);
+            Map(a => a.EMIPaymentMade);
+            Map(a => a.Comments);
             Map(a => a.LoanAmount);
             Map(a => a.EMIAmount);
             Map(a => a.PaymentsMissed);

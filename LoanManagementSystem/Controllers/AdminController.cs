@@ -23,7 +23,7 @@ using System.Web.UI.WebControls;
 
 namespace LoanManagementSystem.Controllers
 {
-    [Authorize(Roles ="Admin")]
+    //[Authorize(Roles ="Admin")]
     public class AdminController : Controller
     {
         private readonly IAdminService _adminService;

@@ -1,5 +1,6 @@
 ﻿@model LoanManagementSystem.Models.LoanScheme
-
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -20,8 +21,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.SchemeType, htmlAttributes: new { @class = "control-label col-md-2 my-1" })
             <div class="col-md-10">
-                @Html.EnumDropDownListFor(m => m.SchemeType, new {id="schemeenum"})
-                @Html.ValidationMessageFor(model => model.SchemeType, "", new { @class = "text-danger" }) 
+                @Html.EnumDropDownListFor(m => m.SchemeType, new { id = "schemeenum" })
+                @Html.ValidationMessageFor(model => model.SchemeType, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -67,7 +68,9 @@
 <script>
 
     $("#btnCreate").click(() => {
-
+        if (!$("form").valid()) {
+            return;
+        }
         var scheme = {
             InterestRate: $("#interest").val(),
             SchemeName: $("#schemename").val(),

@@ -11,6 +11,7 @@ namespace LoanManagementSystem.Service
     {
         User GetUserByUsername(string username);
         Admin GetAdminByUserId(Guid id);
+        void AddAdmin(Admin admin);
         LoanOfficer GetOfficerByUserId(Guid id);
         Customer GetCustomerByUserId(Guid id);
         void AddCustomer(Customer customer);

@@ -13,7 +13,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace LoanManagementSystem.Controllers
 {
-    [Authorize(Roles = "Customer")]
+    //[Authorize(Roles = "Customer")]
     public class CustomerController : Controller
     {
         private readonly CloudinaryService _cloudinaryService;
@@ -34,16 +34,30 @@ namespace LoanManagementSystem.Controllers
         }   
         public ActionResult CalculateEMIForView(LoanScheme scheme, LoanApplication application)
         {
-            var interestRate = _adminService.GetSchemeById(scheme.LoanSchemeId).InterestRate /12/100;
+            var interestRate = _adminService.GetSchemeById(scheme.LoanSchemeId).InterestRate /12 /100;
             var tenure = application.Tenure;
             var amount = application.LoanAmount;
-
-            var factor = (double)Math.Pow((double)(1 + interestRate), tenure);
-            var emi = amount * interestRate * factor / (factor - 1);
+            var factor = Math.Pow((1 + interestRate), tenure);
+            var emi = (amount * interestRate * factor) / (factor - 1);
 
             return Json(Math.Max(0, emi), JsonRequestBehavior.AllowGet);
 
         }
+      
+        public ActionResult GetAllPayments(Guid id)
+        {
+            var payments = _customerService.GetAllPaymentsForApplication(id);
+            return View(payments);
+        }
+
+        public ActionResult GeneratePDF(Guid id)
+        {
+            return new Rotativa.ActionAsPdf("Getallpayments",new { id = id })
+            {
+                FileName = "PaymentsReport.pdf" // Set the desired PDF filename
+            }; 
+        }
+
 
         [AllowAnonymous]
         public ActionResult Schemes()
@@ -172,9 +186,9 @@ namespace LoanManagementSystem.Controllers
             application.Applicant = (Customer)Session["Customer"];
             application.Status = ApplicationStatus.PendingApproval;
 
-            //var officerList = _adminService.GetAllActiveOfficers();
-            //Random number = new Random(); ;
-            //application.AssignedOfficer = officerList[number.Next(0, officerList.Count)];
+            var officerList = _adminService.GetAllActiveOfficers();
+            Random number = new Random(); ;
+            application.AssignedOfficer = officerList[number.Next(0, officerList.Count)];
 
             application.ApplicationDate = DateTime.Now;
 

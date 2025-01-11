@@ -1,68 +1,33 @@
-﻿document.getElementById('calculateBtn').addEventListener('click', function () {
-    // Get values from the input fields
-    const loanAmount = parseFloat(document.getElementById('loanAmount').value);
-    const annualInterestRate = parseFloat(document.getElementById('interestRate').value);
-    const loanTenureYears = parseInt(document.getElementById('loanTenure').value);
+﻿//document.getElementById("calculateBtn").addEventListener('click', function () {
+//    // Get values from the input fields
+//    const loanAmount = parseFloat(document.getElementById('loanAmount').value);
+//    console.log(loanAmount)
+//    const annualInterestRate = parseFloat(document.getElementById('interestRate').value);
+//    const loanTenureYears = parseInt(document.getElementById('loanTenure').value);
 
-    // Validation for empty inputs
-    if (isNaN(loanAmount) || isNaN(annualInterestRate) || isNaN(loanTenureYears)) {
-        alert("Please fill in all fields with valid numbers");
-        return;
-    }
+//    // Get error message elements
+//    const loanAmountError = document.getElementById("loanAmountError");
+//    const interestRateError = document.getElementById("interestRateError");
+//    const loanTenureError = document.getElementById("loanTenureError");
 
-    // Convert annual interest rate to monthly interest rate
-    const monthlyInterestRate = (annualInterestRate / 100) / 12;
+//    // Initialize valid flag
+//    let isValid = true;
 
-    // Convert loan tenure to months
-    const loanTenureMonths = loanTenureYears * 12;
+//    // Loan Amount Validation: between ₹1,000 and ₹10,000,000
+//    if (loanAmount < 1000 || loanAmount > 10000000 || isNaN(loanAmount)) {
+//        loanAmountError.style.display = "inline";
+//        isValid = false;
+//    } else {
+//        loanAmountError.style.display = "none";
+//    }
 
-    // EMI Formula: [P * r * (1 + r)^n] / [(1 + r)^n - 1]
-    const emi = (loanAmount * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, loanTenureMonths)) /
-        (Math.pow(1 + monthlyInterestRate, loanTenureMonths) - 1);
+//    // Interest Rate Validation: between 0% and 100%
+//    if (annualInterestRate < 0 || annualInterestRate > 100 || isNaN(annualInterestRate)) {
+//        interestRateError.style.display = "inline";
+//        isValid = false;
+//    } else {
+//        interestRateError.style.display = "none";
+//    }
 
-    // Display the calculated EMI
-    document.getElementById('emiResult').innerText = emi.toFixed(2);
-
-    // Total amount to be paid over the entire tenure
-    const totalAmountPayable = emi * loanTenureMonths;
-
-    // Interest component
-    const totalInterestPayable = totalAmountPayable - loanAmount;
-
-    // Principal component is the loan amount itself
-    const principal = loanAmount;
-
-    // Call function to render pie chart with the breakdown
-    renderEMIChart(principal, totalInterestPayable);
-});
-
-// Function to render pie chart
-function renderEMIChart(principal, interest) {
-    const ctx = document.getElementById('emiChart').getContext('2d');
-
-    // Destroy any existing chart instance before creating a new one (for repeated calculations)
-    if (window.myPieChart) {
-        window.myPieChart.destroy();
-    }
-
-    // Create new pie chart
-    window.myPieChart = new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: ['Principal', 'Interest'],
-            datasets: [{
-                data: [principal, interest],
-                backgroundColor: ['#4CAF50', '#FF5733'],  // Green for principal, red for interest
-                hoverBackgroundColor: ['#45a049', '#e74c3c']
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'bottom',
-                }
-            }
-        }
-    });
-}
+//    // Loan Tenure Validation: between 1 and 30 years
+//    if (loanTenureYears < 1 || loanTenureYears > 30 || isNaN(loanTenureYears))

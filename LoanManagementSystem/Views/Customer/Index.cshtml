@@ -27,7 +27,7 @@
     <h1 class="my-2">My Loans</h1>
 
 
-    <table class="table">
+    <table class="table" style="margin-left:-75px;width:1450px;">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Scheme.SchemeName)
@@ -49,7 +49,7 @@
                 @Html.DisplayNameFor(model => model.PaymentsMissed)
             </th>
             <th>@Html.DisplayNameFor(m => m.Status)</th>
-            <th>Options</th>
+            <th style="width:285px">Options</th>
         </tr>
 
         @foreach (var item in Model)
@@ -78,12 +78,12 @@
                 else if (item.Status == LoanManagementSystem.Models.ApplicationStatus.NPA)
                 {
                     <td>@item.PaymentStartDate.ToString("dd-MM-yyy")</td>
-                    <td>-------</td>
+                    <td>--</td>
                 }
                 else
                 {
-                    <td>-------</td>
-                    <td>-------</td>
+                    <td>--</td>
+                    <td>--</td>
                 }
 
                 <td>
@@ -104,36 +104,46 @@
                 @if (item.Status == LoanManagementSystem.Models.ApplicationStatus.LoanRepayment)
                 {
                     bool isWithinPaymentDateRange = DateTime.Now >= item.NextPaymentDate && DateTime.Now <= item.NextPaymentDate.AddDays(5);
-                    bool paymentAlreadyDone = item.Repayments.Any() && item.Repayments.Last(r => r.IsApproved).PaymentDate >= item.NextPaymentDate.AddMonths(-1) &&
-                        item.Repayments.Last(r => r.IsApproved).PaymentDate >= item.NextPaymentDate.AddMonths(-1).AddDays(5);
+                    bool paymentAlreadyDone = item.EMIPaymentMade;
 
 
                     if (isWithinPaymentDateRange && !paymentAlreadyDone)
                     {
-                        <td>
-
-                            @Html.ActionLink("Pay Now!", "Index", "Payment", new { applicationId = item.ApplicationId }, new { @class = "btn btn-primary" })
+                        <td style="width:285px">
+                            @Html.ActionLink("Payments PDF", "GeneratePDF", "customer", new { id = item.ApplicationId }, new { @class = "btn btn-outline-danger", style = "width: 150px; border: none; padding: 10px; color: white; background-color: #A6133C; border-radius: 20px; border-right-color: none;" })
+                            @Html.ActionLink("Pay Now!", "Index", "Payment", new { applicationId = item.ApplicationId }, new { @class = "btn btn-outline-danger", style = "width: 150px; border: none; padding: 10px; color: white; background-color: #A6133C; border-radius: 20px; border-right-color: none;" })
                         </td>
                     }
                     else
                     {
-                        <td>
+                        <td style="width:285px">
 
-                            <button class="btn btn-outline-danger" style="width: 150px; border: none; padding: 10px; color: white; background-color: #A6133C; border-radius: 20px; border-right-color: none;" disabled>Pay Now!</button>
+                            @Html.ActionLink("Payments PDF", "GeneratePDF", "customer", new { id = item.ApplicationId }, new { @class = "btn btn-outline-danger", style = "width: 150px; border: none; padding: 10px; color: white; background-color: #A6133C; border-radius: 20px; border-right-color: none;" })
+                            <button class="btn btn-outline-danger" style="width: 100px; border: none; padding: 10px; color: white; background-color: #A6133C; border-radius: 20px; border-right-color: none;" disabled>Pay Now!</button>
                         </td>
                     }
                 }
 
                 else if (item.Status == LoanManagementSystem.Models.ApplicationStatus.AddCollateral)
                 {
-                    <td>
+                    <td style="width:285px">
                         @Html.ActionLink("Add Collateral Documents", "AddCollateral", "Customer", new { applicationId = item.ApplicationId }, new { @class = "btn btn-primary" })
                     </td>
                 }
+                else if (item.Status == LoanManagementSystem.Models.ApplicationStatus.LoanClosed)
+                {
+                    <td style="width:285px">
+                        @Html.ActionLink("Payments PDF", "GeneratePDF", "customer", new { id = item.ApplicationId }, new { @class = "btn btn-outline-danger", style = "width: 150px; border: none; padding: 10px; color: white; background-color: #A6133C; border-radius: 20px; border-right-color: none;margin-left:-105px;" })
+
+                    </td>
+
+                }
                 else
                 {
-                    <td></td>
+                    <td style="width:285px">--</td>
                 }
+
+                @*<td>@DateTime.Now</td>*@
             </tr>
         }
 

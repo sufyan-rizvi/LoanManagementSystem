@@ -3,13 +3,14 @@
 @{
     ViewBag.Title = "Get Loan Documents";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var list = Model.ToList();
 }
 
 <h2>Get Loan Documents</h2>
 
 <p>
-    @Html.ActionLink("Approve", "ApproveLoan", new { /* id=item.PrimaryKey */ }, new {@class="btn btn-success"}) |
-    @Html.ActionLink("Reject", "RejectLoan", new { /* id=item.PrimaryKey */ }, new { @class = "btn btn-danger" })
+    @Html.ActionLink("Approve", "ApproveLoan", new {id = list[0].Application.ApplicationId }, new { @class = "btn btn-success" }) |
+    @Html.ActionLink("Reject", "RejectLoan", new { id=list[0].Application.ApplicationId }, new { @class = "btn btn-danger" })
 </p>
 <table class="table">
     <tr>
@@ -40,8 +41,11 @@
             </td>
             
 
+
         </tr>
     }
-   
+
 </table>
+
+
 

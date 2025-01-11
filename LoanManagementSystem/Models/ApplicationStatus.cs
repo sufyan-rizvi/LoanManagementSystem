@@ -17,7 +17,7 @@ namespace LoanManagementSystem.Models
         [Display(Name = "Add Collateral")]
         AddCollateral,
 
-        [Display(Name = "Collateral Approval Pending")]
+        [Display(Name = "Pending Approval")]
         CollateralPending,
 
         [Display(Name = "Collateral Approved")]//

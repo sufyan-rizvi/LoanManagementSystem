@@ -54,6 +54,20 @@
 }
 
 <script>
+    $("#validateBtn").click(() => {
+        if ($("#vehicledoc").val() === "" ||
+            $("#sharedoc").val() === "" ||
+            $("#housedoc").val() === "") {
+            alert("Please add all images!");
+            return;
+        }
+        if (!$("form").valid()) {
+
+            return;
+        }
+    })
+
+
     $(document).ready(function () {
         var allowedExtensions = ["jpg", "jpeg", "png"];
         function validateFileInput(inputElement, errorElement) {

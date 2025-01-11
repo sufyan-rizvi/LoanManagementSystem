@@ -9,11 +9,19 @@ namespace LoanManagementSystem.Repository
 {
     public interface ICustomerRepository
     {
+        IList<LoanApplication> PaymentMissedApplications();
+        IList<LoanApplication> ApplicationsWithEmailDue();
+        void SetApplicationsToFalse(IList<LoanApplication> applications);
+        void CheckNPA(IList<LoanApplication> applications);
+        IList<LoanApplication> ApplicationsToBeMadeFalse();
+        IList<LoanApplication> GetNPAApplications();
+        void UpdateNextPaymentDate(IList<LoanApplication> applications);
         IList<LoanScheme> GetAllSchemes();
         LoanScheme GetById(Guid id);
         IList<LoanApplication> GetAllApplications(Guid id);
         void AddloanDetail(LoanApplication application);
         LoanApplication GetApplicationById(Guid id);
         IList<LoanApplication> GetAllApplications();
+        IList<Repayment> GetAllPaymentsForApplication(Guid id);
     }
 }

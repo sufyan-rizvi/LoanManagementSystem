@@ -35,10 +35,12 @@ namespace LoanManagementSystem.Models
         public virtual double InterestRate { get; set; }
 
         [Display(Name = "Long Description")]
+        [Required(ErrorMessage = "A Long description is required.")]
         [Column(TypeName = "text")]
         public virtual string LongDescription { get; set; }
 
         [Display(Name = "Short Description")]
+        [Required(ErrorMessage = "A Short description is required.")]
         [Column(TypeName = "text")]
         public virtual string ShortDescription { get; set; }
 

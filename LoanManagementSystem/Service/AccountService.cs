@@ -17,6 +17,11 @@ namespace LoanManagementSystem.Service
             _accRepo = accRepo;
         }
 
+        public void AddAdmin(Admin admin)
+        {
+            _accRepo.AddAdmin(admin);
+        }
+
         public User GetUserByUsername(string username)
         {
             return _accRepo.GetByUsername(username);

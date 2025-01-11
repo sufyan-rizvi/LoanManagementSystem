@@ -7,6 +7,7 @@ using LoanManagementSystem.Models;
 using NHibernate;
 using NHibernate.Linq;
 
+
 namespace LoanManagementSystem.Repository
 {
     public class AccountRepository : IAccountRepository
@@ -29,6 +30,21 @@ namespace LoanManagementSystem.Repository
                 customer.User.Role.RoleName = "Customer";
                 customer.User.Role.User = customer.User;
                 _session.Save(customer);
+                txn.Commit();
+            }
+        }
+
+        public void AddAdmin(Admin admin)
+        {
+            using (var txn = _session.BeginTransaction())
+            {
+                admin.User.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(admin.User.Password, 6);
+                admin.User.IsActive = true;
+                admin.User.Address.User = admin.User;
+                admin.User.Role = new Role();
+                admin.User.Role.RoleName = "Admin";
+                admin.User.Role.User = admin.User;
+                _session.Save(admin);
                 txn.Commit();
             }
         }
